@@ -2,8 +2,8 @@
   "back-to-home": "Back to home",
   "error-with-status": "A {{statusCode}} error occurred on server",
   "error-without-status": "An error occurred on the server",
-  "h1": "A simple example",
+  "h1": "Your lamp configurator",
   "title": "Home | next-i18next",
-  "to-second-page": "To second page",
+  "to-lamp-swiping": "To lamp selecting",
   "this-is-a-lamp": "This is a lamp"
 }

@@ -2,8 +2,8 @@
   "back-to-home": "Retour à la page d'accueil",
   "error-with-status": "Une erreur {{statusCode}} s'est produite sur le serveur",
   "error-without-status": "Une erreur s'est produite sur le serveur",
-  "h1": "Un exemple simple",
+  "h1": "Votre configurateur de lampe",
   "title": "Accueil | next-i18next",
-  "to-second-page": "Vers la deuxième page",
+  "to-lamp-swiping": "Vers la sélection de lampe",
   "this-is-a-lamp": "Ceci est une lampe"
 }
