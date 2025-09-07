@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import TinderCards from '../../components/TinderCards';
 import { getStaticPaths, makeStaticProps } from '@/lib/getStatic';
 
 import lamp_01 from '/assets/images/lamp-series/lamp_01.jpg';
@@ -34,7 +33,7 @@ export const TinderSlides = () => {
       <div className="relative w-80 h-[500px]">
         {cards.map((lamp, index) => (
           <TinderCard
-            key={lamp.src}
+            key={index}
             url={lamp.src}
             index={index}
             onLike={() => onLike(index)}
