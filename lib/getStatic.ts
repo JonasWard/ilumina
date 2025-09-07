@@ -22,7 +22,7 @@ export const getI18nProps = async (ctx: any, ns = ['common']) => {
 };
 
 export const makeStaticProps =
-  (ns = []) =>
+  (ns: string[] = []) =>
   async (ctx: any) => ({
     props: await getI18nProps(ctx, ns)
   });
