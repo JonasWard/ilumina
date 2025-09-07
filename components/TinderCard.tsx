@@ -1,5 +1,7 @@
 import { useRef } from 'react';
 
+const SWIPE_X_REGISTRATION_DISTANCE = 60;
+
 export const TinderCard = ({
   url,
   index,
@@ -36,9 +38,9 @@ export const TinderCard = ({
     const rotate = dragData.current.offsetX / 20;
     elementRef.current.style.transform = `translate(${dragData.current.offsetX}px, ${dragData.current.offsetY}px) rotate(${rotate}deg)`;
 
-    if (dragData.current.offsetX > 120)
+    if (dragData.current.offsetX > SWIPE_X_REGISTRATION_DISTANCE)
       elementRef.current.style.boxShadow = '#3fdd5e 0px 14px 28px, #3fdd5e 0px 0px 18px 14px';
-    else if (dragData.current.offsetX < -120)
+    else if (dragData.current.offsetX < -SWIPE_X_REGISTRATION_DISTANCE)
       elementRef.current.style.boxShadow = '#d14949 0px 14px 28px, #d14949 0px 0px 18px 14px';
     else elementRef.current.style.boxShadow = 'rgba(0, 0, 0, 0.1) 0px 14px 28px, rgba(0, 0, 0, 0.1) 0px 0px 18px 14px';
   };
@@ -46,14 +48,14 @@ export const TinderCard = ({
   const endDrag = () => {
     if (!elementRef.current) return;
     const { offsetX } = dragData.current;
-    if (offsetX > 120) {
+    if (offsetX > SWIPE_X_REGISTRATION_DISTANCE) {
       const direction = offsetX > 0 ? 1000 : -1000;
       elementRef.current.style.transform = `translate(${direction}px, ${dragData.current.offsetY}px) rotate(${
         direction > 0 ? 45 : -45
       }deg)`;
       elementRef.current.style.opacity = '0';
       setTimeout(() => onLike(), 300);
-    } else if (offsetX < -120) {
+    } else if (offsetX < -SWIPE_X_REGISTRATION_DISTANCE) {
       elementRef.current.style.transform = `translate(${offsetX}px, ${dragData.current.offsetY}px) rotate(${
         offsetX > 0 ? 45 : -45
       }deg)`;
