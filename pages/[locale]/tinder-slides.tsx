@@ -30,7 +30,7 @@ export const TinderSlides = () => {
   };
 
   return (
-    <div className="overflow-clip flex items-center justify-center h-screen bg-gray-100">
+    <div className="overflow-clip flex items-center justify-center h-screen bg-gray-100 touch-none">
       <div className="relative w-80 h-[500px]">
         {cards.map((lamp, index) => (
           <TinderCard
