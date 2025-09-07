@@ -2,6 +2,6 @@
 
 module.exports = {
   output: 'export',
-  // i18n,
-  trailingSlash: true,
-}
+  basePath: process.env.PAGES_BASE_PATH,
+  trailingSlash: true
+};
