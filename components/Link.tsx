@@ -1,17 +1,17 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 const LinkComponent: React.FC<{
-  children: React.ReactNode;
-  skipLocaleHandling: boolean;
+  children: ReactNode;
+  skipLocaleHandling?: boolean;
   href: string;
-  locale: string;
-}> = ({ children, skipLocaleHandling, ...rest }) => {
+  locale?: string;
+}> = ({ children, skipLocaleHandling, ...props }) => {
   const router = useRouter();
-  const locale = (rest.locale || router.query.locale || '') as string;
+  const locale = (props.locale || router.query.locale || '') as string;
 
-  let href = rest.href || router.asPath;
+  let href = props.href || router.asPath;
   if (href.indexOf('http') === 0) skipLocaleHandling = true;
   if (locale && !skipLocaleHandling) {
     href = href ? `/${locale}${href}` : router.pathname.replace('[locale]', locale);
@@ -20,7 +20,7 @@ const LinkComponent: React.FC<{
   return (
     <>
       <Link href={href} legacyBehavior>
-        <a {...rest}>{children}</a>
+        <a {...props}>{children}</a>
       </Link>
     </>
   );
