@@ -1,8 +1,10 @@
 import Head from 'next/head';
+import icon from '/assets/icons/icon.svg';
 
 export const Header: React.FC<{ heading: string; title: string }> = ({ heading, title }) => (
   <>
     <Head>
+      <link rel="icon" href={icon.src} />
       <title>{title}</title>
     </Head>
     <h2>
