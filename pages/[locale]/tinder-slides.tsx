@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { getStaticPaths, makeStaticProps } from '@/lib/getStatic';
+import { Navigation } from '@/components/Navigation';
 
 import lamp_01 from '/assets/images/lamp-series/lamp_01.jpg';
 import lamp_02 from '/assets/images/lamp-series/lamp_02.jpg';
@@ -29,24 +30,27 @@ export const TinderSlides = () => {
   };
 
   return (
-    <div className="overflow-clip flex items-center justify-center h-screen bg-gray-100 touch-none">
-      <div className="relative w-80 h-[500px]">
-        {cards.map((lamp, index) => (
-          <TinderCard
-            key={index}
-            url={lamp.src}
-            index={index}
-            onLike={() => onLike(index)}
-            onDislike={() => onDislike(index)}
-            name={t('this-is-a-lamp')}
-          />
-        ))}
+    <main className="bg-slate-800">
+      <Navigation heading={t('heading')} />
+      <div className="overflow-clip flex items-center justify-center h-screen w-screen touch-none">
+        <div className="relative w-[min(80vw,400px)] h-[max(60vh,500px)]">
+          {cards.map((lamp, index) => (
+            <TinderCard
+              key={index}
+              url={lamp.src}
+              index={index}
+              onLike={() => onLike(index)}
+              onDislike={() => onDislike(index)}
+              name={t('this-is-a-lamp')}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+    </main>
   );
 };
 
 export default TinderSlides;
 
-const getStaticProps = makeStaticProps(['second-page', 'common', 'footer']);
+const getStaticProps = makeStaticProps(['common']);
 export { getStaticPaths, getStaticProps };

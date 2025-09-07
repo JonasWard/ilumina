@@ -11,7 +11,7 @@ const Homepage = () => {
 
   return (
     <>
-      <main>
+      <main className="bg-slate-800">
         <Header heading={t('h1')} title={t('title')} />
         <div>
           <Link href="/tinder-slides">
