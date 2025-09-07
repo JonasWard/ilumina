@@ -16,6 +16,8 @@
     "clean": "rimraf .next out"
   },
   "dependencies": {
+    "@react-three/drei": "^10.7.4",
+    "@react-three/fiber": "^9.3.0",
     "i18next": "24.2.2",
     "next": "15.1.6",
     "next-i18next": "^15.4.2",
@@ -28,10 +30,12 @@
   },
   "devDependencies": {
     "@types/node": "^24.3.1",
+    "autoprefixer": "^10.4.21",
     "eslint-config-next": "15.1.6",
     "http-server": "14.1.1",
     "locize-cli": "8.4.0",
     "rimraf": "^6.0.1",
+    "tailwindcss": "^3",
     "typescript": "^5.9.2"
   }
 }
