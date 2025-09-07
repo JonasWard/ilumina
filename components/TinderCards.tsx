@@ -1,15 +1,9 @@
-import ThreeScene from '@/pages/[locale]/three-scene';
 import React, { useState, useRef } from 'react';
 import { SimpleScene } from './SimpleScene';
+import { TFunction } from 'i18next';
 
-const people = [
-  'https://jonasward.eu/assets/sdfLamps_28-9cFV6c5L.jpg',
-  'https://jonasward.eu/assets/sdfLamps_31-wvag9_rw.jpg',
-  'https://jonasward.eu/assets/sdfLamps_35-zVWyfGh6.jpg'
-];
-
-const TinderCards = () => {
-  const [cards, setCards] = useState(people);
+const TinderCards = ({ t, lamps }: { t: TFunction<readonly ['common'], undefined>; lamps: string[] }) => {
+  const [cards, setCards] = useState(lamps);
   const dragData = useRef({ offsetX: 0, offsetY: 0, startX: 0, startY: 0, index: 0 });
 
   const startDrag = (e: any, index: number) => {
@@ -65,12 +59,12 @@ const TinderCards = () => {
           <div
             key={url}
             id={`card-${index}`}
-            className="absolute inset-0 rounded-2xl shadow-lg bg-cover bg-center cursor-grab"
+            className="absolute inset-0 rounded-2xl shadow-lg bg-cover bg-center cursor-grab bg-image-contain"
+            style={{ backgroundImage: `url(${url})` }}
             onMouseDown={(e) => startDrag(e, index)}
             onTouchStart={(e) => startDrag(e, index)}
           >
-            <SimpleScene className="rounded-2xl" withOrbitControls={false} />
-            <div className="absolute bottom-10 left-0 right-0 text-white text-center">this is a lamp</div>
+            <div className="absolute bottom-10 left-0 right-0 text-white text-center">{t('this-is-a-lamp')}</div>
           </div>
         ))}
       </div>
