@@ -23,6 +23,8 @@ export const TinderCard = ({
     const x = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
     const y = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
     dragData.current = { startX: x, startY: y, offsetX: 0, offsetY: 0 };
+
+    elementRef.current.style.transition = '';
     document.addEventListener('mousemove', moveDrag);
     document.addEventListener('touchmove', moveDrag, { passive: false });
     document.addEventListener('mouseup', endDrag);
@@ -63,6 +65,7 @@ export const TinderCard = ({
       setTimeout(() => onDislike(), 300);
     } else {
       elementRef.current.style.transform = '';
+      elementRef.current.style.transition = 'transform 0.3s ease-in-out';
     }
 
     document.removeEventListener('mousemove', moveDrag);
