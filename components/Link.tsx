@@ -7,6 +7,7 @@ const LinkComponent: React.FC<{
   skipLocaleHandling?: boolean;
   href: string;
   locale?: string;
+  className?: string;
 }> = ({ children, skipLocaleHandling, ...props }) => {
   const router = useRouter();
   const locale = (props.locale || router.query.locale || '') as string;
