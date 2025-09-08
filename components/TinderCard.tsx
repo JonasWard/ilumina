@@ -50,19 +50,22 @@ export const TinderCard = ({
   const endDrag = () => {
     if (!elementRef.current) return;
     const { offsetX } = dragData.current;
+    const rotate = dragData.current.offsetX / 20;
     if (offsetX > SWIPE_X_REGISTRATION_DISTANCE) {
       const direction = offsetX > 0 ? 1000 : -1000;
       elementRef.current.style.transform = `translate(${direction}px, ${dragData.current.offsetY}px) rotate(${
         direction > 0 ? 45 : -45
       }deg)`;
-      elementRef.current.style.opacity = '0';
-      setTimeout(() => onLike(), 300);
+      elementRef.current.style.transform = `translate(${1500}px, ${dragData.current.offsetY}px) rotate(${rotate}deg)`;
+      elementRef.current.style.transition = 'transform 0.3s ease-in-out';
+      setTimeout(() => onLike(), 1000);
     } else if (offsetX < -SWIPE_X_REGISTRATION_DISTANCE) {
       elementRef.current.style.transform = `translate(${offsetX}px, ${dragData.current.offsetY}px) rotate(${
         offsetX > 0 ? 45 : -45
       }deg)`;
-      elementRef.current.style.opacity = '0';
-      setTimeout(() => onDislike(), 300);
+      elementRef.current.style.transform = `translate(${-1500}px, ${dragData.current.offsetY}px) rotate(${rotate}deg)`;
+      elementRef.current.style.transition = 'transform 0.3s ease-in-out';
+      setTimeout(() => onDislike(), 1000);
     } else {
       elementRef.current.style.transform = '';
       elementRef.current.style.transition = 'transform 0.3s ease-in-out';
