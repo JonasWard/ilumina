@@ -30,10 +30,10 @@ export const TinderSlides = () => {
   };
 
   return (
-    <main className="bg-slate-800">
+    <main className="bg-white-900">
       <Navigation heading={t('heading')} />
-      <div className="overflow-clip flex items-center justify-center h-screen w-screen touch-none">
-        <div className="relative w-[min(80vw,400px)] h-[max(60vh,500px)]">
+      <div className="overflow-clip flex items-center justify-center touch-none w-screen h-screen">
+        <div className="relative w-[min(80vw,600px)] h-[min(80vh,800px)]">
           {cards.map((lamp, index) => (
             <TinderCard
               key={index}
@@ -52,5 +52,5 @@ export const TinderSlides = () => {
 
 export default TinderSlides;
 
-const getStaticProps = makeStaticProps(['common']);
+const getStaticProps = makeStaticProps(['common', 'navigation']);
 export { getStaticPaths, getStaticProps };

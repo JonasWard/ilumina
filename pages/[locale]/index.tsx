@@ -11,8 +11,8 @@ const Homepage = () => {
 
   return (
     <>
-      <main className="bg-slate-800">
-        <Header heading={t('h1')} title={t('title')} />
+      <main className="bg-white-900">
+        <Header className="text-black" heading={t('h1')} title={t('title')} />
         <div>
           <Link href="/tinder-slides">
             <button type="button">{t('to-lamp-swiping')}</button>
