@@ -19,11 +19,9 @@ const LinkComponent: React.FC<{
   }
 
   return (
-    <>
-      <Link href={href} legacyBehavior>
-        <a {...props}>{children}</a>
-      </Link>
-    </>
+    <Link href={href} legacyBehavior>
+      {children}
+    </Link>
   );
 };
 
