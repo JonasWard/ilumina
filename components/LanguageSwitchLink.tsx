@@ -8,6 +8,7 @@ const LanguageSwitchLink: React.FC = () => {
 
   return (
     <select
+      className="border-[1px] border-gray-300 rounded-md px-[2px]"
       value={currentLocale}
       onChange={(e) => {
         const locale = e.target.value;
