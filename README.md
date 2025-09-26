@@ -1,2 +1,2 @@
 # ilumina
-iLumina lamp concept
+ilumina lamp concept
