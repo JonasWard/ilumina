@@ -3,7 +3,10 @@ import { useTranslation } from 'react-i18next';
 import LanguageSwitchLink from './LanguageSwitchLink';
 import Link from './Link';
 
-export const Navigation: React.FC<{ heading: string; links: { href: string; text: string }[] }> = ({ links }) => {
+export const Navigation: React.FC<{
+  heading: string;
+  links: { href: string; text: string; icon?: React.ReactNode }[];
+}> = ({ links }) => {
   const { t } = useTranslation('common');
 
   return (
@@ -17,9 +20,13 @@ export const Navigation: React.FC<{ heading: string; links: { href: string; text
       </Link>
       <span className="text-sm flex flex-row items-center gap-2">
         {links.map((link) => (
-          <Link href={link.href} children={t(link.text)} key={link.href} />
+          <Link
+            href={link.href}
+            children={link.icon ? link.icon : t(link.text)}
+            tooltip={link.icon ? t(link.text) : undefined}
+            key={link.href}
+          />
         ))}
-        {t('footer:change-locale')}:
         <LanguageSwitchLink />
       </span>
     </div>

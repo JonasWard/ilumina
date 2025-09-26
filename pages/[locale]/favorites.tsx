@@ -18,8 +18,8 @@ const Favorites: React.FC<{ children: ReactNode }> = ({ children }) => {
         <Navigation
           heading={'heading'}
           links={[
-            { href: '/', text: 'back-to-home' },
-            { href: 'tinder-slides', text: 'to-lamp-swiping' }
+            { href: '/', text: 'back-to-home', icon: <p className="text-2xl">🏠</p> },
+            { href: 'tinder-slides', text: 'to-lamp-swiping', icon: <p className="text-2xl">🔄</p> }
           ]}
         />
         <div className="mt-[65px] w-full">

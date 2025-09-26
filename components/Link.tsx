@@ -5,6 +5,7 @@ import Link from 'next/link';
 
 const LinkComponent: React.FC<{
   children: ReactNode;
+  tooltip?: string;
   skipLocaleHandling?: boolean;
   href: string;
   className?: string;

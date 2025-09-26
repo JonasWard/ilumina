@@ -26,8 +26,8 @@ export const TinderSlides = () => {
       <Navigation
         heading={t('heading')}
         links={[
-          { href: '/', text: t('back-to-home') },
-          { href: 'favorites', text: t('to-favorites') }
+          { href: '/', text: 'back-to-home', icon: <p className="text-2xl">🏠</p> },
+          { href: 'favorites', text: 'to-favorites', icon: <p className="text-2xl">❤️</p> }
         ]}
       />
       <div className="overflow-clip flex items-center justify-center touch-none w-[100vw] h-[100vh] mt-[calc(100svh-100vh)]">
