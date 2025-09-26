@@ -20,17 +20,19 @@ const lamps = [lamp_01, lamp_02, lamp_03, lamp_04, lamp_05, lamp_06, lamp_07, la
 
 export const TinderSlides = () => {
   const { t } = useTranslation(['common']);
-  const [cards, setCards] = useState(lamps);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const onLike = (index: number) => {
     useLampStore.getState().addLiked(lamps[index].src);
-    setCards((prev) => prev.filter((_, i) => i !== index));
+    setActiveIndex((prev) => prev + 1);
   };
 
   const onDislike = (index: number) => {
     useLampStore.getState().addDisliked(lamps[index].src);
-    setCards((prev) => prev.filter((_, i) => i !== index));
+    setActiveIndex((prev) => prev + 1);
   };
+
+  console.log(activeIndex);
 
   return (
     <main className="bg-white-900 w-[100vw]">
@@ -43,16 +45,28 @@ export const TinderSlides = () => {
       />
       <div className="overflow-clip flex items-center justify-center touch-none w-[100vw] h-[100vh] mt-[calc(100svh-100vh)]">
         <div className="relative w-[min(85svw,600px)] h-[min(80svh,800px)]">
-          {cards.map((lamp, index) => (
+          {lamps[activeIndex + 1] ? (
             <TinderCard
-              key={index}
-              url={lamp.src}
-              index={index}
-              onLike={() => onLike(index)}
-              onDislike={() => onDislike(index)}
+              active={false}
+              key={activeIndex + 1}
+              url={lamps[activeIndex + 1].src}
+              index={activeIndex + 1}
+              onLike={() => onLike(activeIndex + 1)}
+              onDislike={() => onDislike(activeIndex + 1)}
               name={t('this-is-a-lamp')}
             />
-          ))}
+          ) : null}
+          {lamps[activeIndex] ? (
+            <TinderCard
+              active
+              key={activeIndex}
+              url={lamps[activeIndex].src}
+              index={activeIndex}
+              onLike={() => onLike(activeIndex)}
+              onDislike={() => onDislike(activeIndex)}
+              name={t('this-is-a-lamp')}
+            />
+          ) : null}
         </div>
       </div>
     </main>

@@ -7,12 +7,14 @@ export const TinderCard = ({
   index,
   onLike,
   onDislike,
+  active,
   name
 }: {
   url: string;
   index: number;
   onLike: () => void;
   onDislike: () => void;
+  active: boolean;
   name: string;
 }) => {
   const elementRef = useRef<HTMLDivElement>(null);
@@ -56,18 +58,21 @@ export const TinderCard = ({
       elementRef.current.style.transform = `translate(${direction}px, ${dragData.current.offsetY}px) rotate(${
         direction > 0 ? 45 : -45
       }deg)`;
-      elementRef.current.style.transform = `translate(${1500}px, ${dragData.current.offsetY}px) rotate(${rotate}deg)`;
-      elementRef.current.style.transition = 'transform 0.3s ease-in-out';
-      setTimeout(() => onLike(), 1000);
+      elementRef.current.style.transform = `translate(${500}px, ${dragData.current.offsetY}px) rotate(${rotate}deg)`;
+      elementRef.current.style.opacity = '0';
+      elementRef.current.style.transition = 'all 0.3s ease-in-out';
+      setTimeout(() => onLike(), 300);
     } else if (offsetX < -SWIPE_X_REGISTRATION_DISTANCE) {
       elementRef.current.style.transform = `translate(${offsetX}px, ${dragData.current.offsetY}px) rotate(${
         offsetX > 0 ? 45 : -45
       }deg)`;
-      elementRef.current.style.transform = `translate(${-1500}px, ${dragData.current.offsetY}px) rotate(${rotate}deg)`;
-      elementRef.current.style.transition = 'transform 0.3s ease-in-out';
-      setTimeout(() => onDislike(), 1000);
+      elementRef.current.style.transform = `translate(${-500}px, ${dragData.current.offsetY}px) rotate(${rotate}deg)`;
+      elementRef.current.style.opacity = '0';
+      elementRef.current.style.transition = 'all 0.3s ease-in-out';
+      setTimeout(() => onDislike(), 300);
     } else {
       elementRef.current.style.transform = '';
+      elementRef.current.style.opacity = '1';
       elementRef.current.style.transition = 'transform 0.3s ease-in-out';
     }
 
@@ -83,9 +88,13 @@ export const TinderCard = ({
       ref={elementRef}
       id={`card-${index}`}
       className="absolute inset-0 rounded-2xl shadow-lg bg-cover bg-center cursor-grab bg-image-contain transition-shadow duration-300"
-      style={{ backgroundImage: `url(${url})` }}
-      onMouseDown={(e) => startDrag(e)}
-      onTouchStart={(e) => startDrag(e)}
+      style={{
+        backgroundImage: `url(${url})`,
+        filter: active ? 'grayscale(0)' : 'grayscale(0.8)',
+        zIndex: 1000 - index
+      }}
+      onMouseDown={active ? (e) => startDrag(e) : undefined}
+      onTouchStart={active ? (e) => startDrag(e) : undefined}
     >
       <div className="absolute bottom-10 left-0 right-0 text-white text-center">{name}</div>
     </div>
