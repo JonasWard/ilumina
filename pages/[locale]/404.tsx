@@ -12,7 +12,7 @@ const Homepage = () => {
   return (
     <>
       <main>
-        <Header heading={t('h1')} title={t('title')} />
+        <Header heading={'h1'} title={'title'} />
         <div>
           <Link href="/" skipLocaleHandling={false}>
             <button type="button">{t('common:back-to-home')}</button>

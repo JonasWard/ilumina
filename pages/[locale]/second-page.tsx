@@ -13,7 +13,7 @@ const SecondPage: React.FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <>
       <main>
-        <Header heading={t('h1')} title={t('title')} />
+        <Header heading={'h1'} title={'title'} />
         <Link href="/">
           <button type="button">{t('common:back-to-home')}</button>
         </Link>

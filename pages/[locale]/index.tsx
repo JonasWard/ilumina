@@ -12,7 +12,7 @@ const Homepage = () => {
   return (
     <>
       <main className="bg-white-900">
-        <Header className="text-black" heading={t('h1')} title={t('title')} />
+        <Header className="text-black" heading={'h1'} title={'title'} />
         <div>
           <Link href="/tinder-slides">
             <button type="button">{t('to-lamp-swiping')}</button>
