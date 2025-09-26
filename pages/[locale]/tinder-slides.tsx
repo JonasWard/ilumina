@@ -14,6 +14,7 @@ import lamp_09 from '/assets/images/lamp-series/lamp_09.jpg';
 import lamp_10 from '/assets/images/lamp-series/lamp_10.jpg';
 import { useState } from 'react';
 import { TinderCard } from '@/components/TinderCard';
+import { useLampStore } from '@/lib/store';
 
 const lamps = [lamp_01, lamp_02, lamp_03, lamp_04, lamp_05, lamp_06, lamp_07, lamp_08, lamp_09, lamp_10];
 
@@ -22,16 +23,24 @@ export const TinderSlides = () => {
   const [cards, setCards] = useState(lamps);
 
   const onLike = (index: number) => {
+    useLampStore.getState().addLiked(lamps[index].src);
     setCards((prev) => prev.filter((_, i) => i !== index));
   };
 
   const onDislike = (index: number) => {
+    useLampStore.getState().addDisliked(lamps[index].src);
     setCards((prev) => prev.filter((_, i) => i !== index));
   };
 
   return (
     <main className="bg-white-900 w-[100vw]">
-      <Navigation heading={t('heading')} />
+      <Navigation
+        heading={t('heading')}
+        links={[
+          { href: '/', children: t('back-to-home') },
+          { href: 'favorites', children: t('to-favorites') }
+        ]}
+      />
       <div className="overflow-clip flex items-center justify-center touch-none w-[100vw] h-[100vh] mt-[calc(100svh-100vh)]">
         <div className="relative w-[min(85svw,600px)] h-[min(80svh,800px)]">
           {cards.map((lamp, index) => (

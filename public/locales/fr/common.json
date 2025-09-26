@@ -5,5 +5,10 @@
   "h1": "Votre configurateur de lampe",
   "title": "Accueil | next-i18next",
   "to-lamp-swiping": "Vers la sélection de lampe",
-  "this-is-a-lamp": "Ceci est une lampe"
+  "this-is-a-lamp": "Ceci est une lampe",
+  "favorites": "Favorites",
+  "to-favorites": "Vers favorites",
+  "your-favorites": "Vos lampes favorites",
+  "name": "Nom",
+  "description": "Description"
 }
