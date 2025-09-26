@@ -2,14 +2,15 @@ import { BASE_HREF } from './config';
 
 const deconstructHref = (href: string) => ({
   locale: href.replace(BASE_HREF !== '/' ? BASE_HREF + '/' : '/', '').split('/')[0],
-  relevantPath: href.replace(BASE_HREF !== '/' ? BASE_HREF + '/' : '/', '').split('/')[1]
+  relevantPath: href
+    .replace(BASE_HREF !== '/' ? BASE_HREF + '/' : '/', '')
+    .split('/')
+    .slice(1)
+    .join('/')
 });
 
 export const navigateTo = (currentHref: string, newHref: string): string => {
   const { locale } = deconstructHref(currentHref);
-  console.log(
-    (BASE_HREF === '/' ? BASE_HREF : BASE_HREF + '/') + locale + (newHref.startsWith('/') ? newHref : '/' + newHref)
-  );
   return (
     (BASE_HREF === '/' ? BASE_HREF : BASE_HREF + '/') + locale + (newHref.startsWith('/') ? newHref : '/' + newHref)
   );
