@@ -14,11 +14,11 @@ export const LampContentCard: React.FC<{ index: number; img: string; name: strin
       <div className="my-auto px-4 font-bold flex flex-col items-start justify-between w-full gap-4 shadow-none">
         <h3>{t('name')}</h3>
         <p className="text-justify">{t('description')}</p>
-        <div className="flex flex-row gap-2 justify-between w-full pb-4">
-          <span className="bg-white-700 text-black cursor-pointer py-2 px-10 shadow-xl border-1 rounded-2xl">
+        <div className="grid grid-cols-2 gap-4 md:gap-10 justify-between w-full pb-4">
+          <span className="bg-white-700 text-black cursor-pointer p-2 shadow-xl border-1 rounded-2xl">
             💔 {t('dislike')}
           </span>
-          <span className="bg-white-500 text-black cursor-pointer py-2 px-10 shadow-xl border-1 rounded-2xl">
+          <span className="bg-white-500 text-black cursor-pointer p-2 shadow-xl border-1 rounded-2xl">
             🛒 {t('buy')}
           </span>
         </div>
