@@ -15,15 +15,15 @@ export const Lamp = () => {
 
   return (
     <>
-      <main className="w-[min(100vw,1200px)] mx-[max(0px,calc(50vw-600px))]">
-        <Navigation
-          heading={'heading'}
-          links={[
-            { href: '/', text: 'back-to-home', icon: <p className="text-2xl">🏠</p> },
-            { href: 'tinder-slides', text: 'to-lamp-swiping', icon: <p className="text-2xl">🔄</p> }
-          ]}
-        />
-        <div className="mt-[65px] w-full">
+      <Navigation
+        heading={'heading'}
+        links={[
+          { href: '/', text: 'back-to-home', icon: <p className="text-2xl">🏠</p> },
+          { href: 'tinder-slides', text: 'to-lamp-swiping', icon: <p className="text-2xl">🔄</p> }
+        ]}
+      />
+      <main className="w-[calc(min(100vw,1200px)-50px)] mx-auto">
+        <div className="mt-[65px] w-[calc(min(100vw,1200px)-50px)]">
           {Lamps[index] && (
             <LampContentCard index={index} img={Lamps[index].src} name={t('name')} description={t('description')} />
           )}

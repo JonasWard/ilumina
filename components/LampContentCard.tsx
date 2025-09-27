@@ -1,22 +1,26 @@
+import { Lamps } from '@/lib/lamps';
 import { useTranslation } from 'react-i18next';
 
 export const LampContentCard: React.FC<{ index: number; img: string; name: string; description: string }> = ({
   index,
-  img,
   name,
   description
 }) => {
   const { t } = useTranslation('common');
 
   return (
-    <div className="flex flex-row items-center w-[min(90svw,900px)] h-[min(80svh,400px)] rounded-2xl overflow-clip shadow-xl">
-      <img src={img} alt="lamp" className="w-auto h-full object-cover" />
-      <div className="my-auto px-4 font-bold flex flex-col items-start justify-between w-full gap-2 shadow-none">
+    <div className="flex md:flex-row flex-col items-center w-[90%] rounded-2xl overflow-clip shadow-xl mx-auto gap-4">
+      <img src={Lamps[index].src} alt="lamp" className="md:h-[50vh] w-full md:w-auto h-[40vh] object-cover" />
+      <div className="my-auto px-4 font-bold flex flex-col items-start justify-between w-full gap-4 shadow-none">
         <h3>{t('name')}</h3>
-        <p>{t('description')}</p>
-        <div className="flex flex-row gap-2">
-          <button>🤍</button>
-          <button>🛒</button>
+        <p className="text-justify">{t('description')}</p>
+        <div className="flex flex-row gap-2 justify-between w-full pb-4">
+          <span className="bg-white-700 text-black cursor-pointer py-2 px-10 shadow-xl border-1 rounded-2xl">
+            💔 {t('dislike')}
+          </span>
+          <span className="bg-white-500 text-black cursor-pointer py-2 px-10 shadow-xl border-1 rounded-2xl">
+            🛒 {t('buy')}
+          </span>
         </div>
       </div>
     </div>

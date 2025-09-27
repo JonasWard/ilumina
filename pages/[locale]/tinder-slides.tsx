@@ -22,7 +22,7 @@ export const TinderSlides = () => {
   };
 
   return (
-    <main className="bg-white-900 w-[100vw]">
+    <>
       <Navigation
         heading={t('heading')}
         links={[
@@ -30,33 +30,35 @@ export const TinderSlides = () => {
           { href: 'favorites', text: 'to-favorites', icon: <p className="text-2xl">❤️</p> }
         ]}
       />
-      <div className="overflow-clip flex items-center justify-center touch-none w-[100vw] h-[100vh] mt-[calc(100svh-100vh)]">
-        <div className="relative w-[min(85svw,600px)] h-[min(80svh,800px)]">
-          {Lamps[activeIndex + 1] ? (
-            <TinderCard
-              active={false}
-              key={activeIndex + 1}
-              url={Lamps[activeIndex + 1].src}
-              index={activeIndex + 1}
-              onLike={() => onLike(activeIndex + 1)}
-              onDislike={() => onDislike(activeIndex + 1)}
-              name={t('this-is-a-lamp')}
-            />
-          ) : null}
-          {Lamps[activeIndex] ? (
-            <TinderCard
-              active
-              key={activeIndex}
-              url={Lamps[activeIndex].src}
-              index={activeIndex}
-              onLike={() => onLike(activeIndex)}
-              onDislike={() => onDislike(activeIndex)}
-              name={t('this-is-a-lamp')}
-            />
-          ) : null}
+      <main className="bg-white-900 w-[100vw]">
+        <div className="overflow-clip flex items-center justify-center touch-none w-[100vw] h-[100vh] mt-[calc(100svh-100vh)]">
+          <div className="relative w-[min(85svw,600px)] h-[min(80svh,800px)]">
+            {Lamps[activeIndex + 1] ? (
+              <TinderCard
+                active={false}
+                key={activeIndex + 1}
+                url={Lamps[activeIndex + 1].src}
+                index={activeIndex + 1}
+                onLike={() => onLike(activeIndex + 1)}
+                onDislike={() => onDislike(activeIndex + 1)}
+                name={t('this-is-a-lamp')}
+              />
+            ) : null}
+            {Lamps[activeIndex] ? (
+              <TinderCard
+                active
+                key={activeIndex}
+                url={Lamps[activeIndex].src}
+                index={activeIndex}
+                onLike={() => onLike(activeIndex)}
+                onDislike={() => onDislike(activeIndex)}
+                name={t('this-is-a-lamp')}
+              />
+            ) : null}
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </>
   );
 };
 
