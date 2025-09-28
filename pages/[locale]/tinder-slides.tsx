@@ -7,6 +7,12 @@ import { TinderCard } from '@/components/TinderCard';
 import { useLampStore } from '@/lib/store';
 import { Lamps } from '@/lib/lamps';
 
+import { SVGIcon } from '@/components/SVGIcon';
+import heart from '/assets/icons/heart.svg';
+import cart from '/assets/icons/shopping_cart.svg';
+import customize from '/assets/icons/customize.svg';
+import burger from '/assets/icons/burger.svg';
+
 export const TinderSlides = () => {
   const { t } = useTranslation(['common']);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -26,8 +32,10 @@ export const TinderSlides = () => {
       <Navigation
         heading={t('heading')}
         links={[
-          { href: '/', text: 'back-to-home', icon: <p className="text-2xl">🏠</p> },
-          { href: 'favorites', text: 'to-favorites', icon: <p className="text-2xl">❤️</p> }
+          { href: 'tinder-slides', text: 'to-lamp-swiping', icon: <SVGIcon src={heart.src} /> },
+          { href: 'tinder-slides', text: 'to-lamp-swiping', icon: <SVGIcon src={cart.src} /> },
+          { href: 'favorites', text: 'to-favorites', icon: <SVGIcon src={customize.src} /> },
+          { href: '/', text: 'back-to-home', icon: <SVGIcon src={burger.src} /> }
         ]}
       />
       <main className="bg-white-900 w-[100vw]">

@@ -5,6 +5,10 @@ import { Lamps } from '@/lib/lamps';
 import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
 import { LampContentCard } from '@/components/LampContentCard';
+import { SVGIcon } from '@/components/SVGIcon';
+import heart from '/assets/icons/heart.svg';
+import cart from '/assets/icons/shopping_cart.svg';
+import customize from '/assets/icons/customize.svg';
 
 export const Lamp = () => {
   const { t } = useTranslation(['404', 'common', 'footer']);
@@ -18,8 +22,9 @@ export const Lamp = () => {
       <Navigation
         heading={'heading'}
         links={[
-          { href: '/', text: 'back-to-home', icon: <p className="text-2xl">🏠</p> },
-          { href: 'tinder-slides', text: 'to-lamp-swiping', icon: <p className="text-2xl">🔄</p> }
+          { href: 'tinder-slides', text: 'to-lamp-swiping', icon: <SVGIcon src={heart.src} /> },
+          { href: 'tinder-slides', text: 'to-lamp-swiping', icon: <SVGIcon src={cart.src} /> },
+          { href: 'tinder-slides', text: 'to-lamp-swiping', icon: <SVGIcon src={customize.src} /> }
         ]}
       />
       <main className="w-[calc(min(100vw,1200px)-50px)] mx-auto">
@@ -29,7 +34,6 @@ export const Lamp = () => {
           )}
         </div>
       </main>
-      <Footer />
     </>
   );
 };

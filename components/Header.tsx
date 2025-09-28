@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import icon from '/assets/icons/icon.svg';
-import logo from '/assets/icons/logo.svg';
+import logo from '/assets/icons/logo_ilumina.svg';
 import { useTranslation } from 'react-i18next';
 
 export const Header: React.FC<{ heading: string; title: string; className?: string }> = ({ heading, title, className }) => {

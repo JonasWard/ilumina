@@ -1,4 +1,4 @@
-import logo from '/assets/icons/logo.svg';
+import logo from '/assets/icons/logo_ilumina.svg';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitchLink from './LanguageSwitchLink';
 import Link from './Link';
