@@ -64,3 +64,18 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Enforce HTTPS on Pages
+        if: steps.deployment.outputs.page_url != ''
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          REPO="${{ github.repository }}"
+          echo "Enforcing HTTPS for Pages site on $REPO"
+          curl -sSL -X PATCH \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            "https://api.github.com/repos/$REPO/pages" \
+            -d '{"https_enforced":true}' \
+            || echo "Warning: failed to enforce HTTPS via API. The Pages site may still be provisioning a certificate; check repository Pages settings or the Actions run logs."
