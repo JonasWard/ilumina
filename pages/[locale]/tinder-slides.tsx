@@ -55,7 +55,12 @@ export const TinderSlides = () => {
           ) : null}
         </div>
         {hasCard && (
-          <div className="flex flex-row gap-10 pt-4">
+          <p aria-live="polite" className="m-0 pt-3 text-sm leading-none opacity-60">
+            {Lamps.length - queue.length + 1} / {Lamps.length}
+          </p>
+        )}
+        {hasCard && (
+          <div className="flex flex-row gap-10 pt-3">
             <button
               type="button"
               aria-label={t('dislike')}
