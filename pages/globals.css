@@ -4,6 +4,28 @@
   --color-circrete-red: #dc4057;
   --color-circrete-mokka: #eaf1cf;
   --font-sans: 'Quicksand', ui-sans-serif, system-ui, sans-serif;
+
+  --animate-breathe: breathe 7s ease-in-out infinite;
+  --animate-drift: drift 24s ease-in-out infinite alternate;
+
+  @keyframes breathe {
+    0%,
+    100% {
+      opacity: 0.55;
+    }
+    50% {
+      opacity: 0.9;
+    }
+  }
+
+  @keyframes drift {
+    from {
+      transform: scale(1.05) translateY(0);
+    }
+    to {
+      transform: scale(1.15) translateY(-2%);
+    }
+  }
 }
 
 @layer base {
