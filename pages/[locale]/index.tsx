@@ -4,9 +4,11 @@ import { PageTitle } from '@/components/PageTitle';
 import { TopBar } from '@/components/landing/TopBar';
 import Link from '@/components/Link';
 import { Lamps } from '@/lib/lamps';
+import { useAfterLoad } from '@/lib/useAfterLoad';
 
 const Homepage = () => {
   const { t } = useTranslation(['landing', 'common']);
+  const showCollection = useAfterLoad();
 
   return (
     <div className="bg-black text-white text-left">
@@ -43,14 +45,18 @@ const Homepage = () => {
             <Link
               key={lamp.src}
               href={`/lamps/${i}`}
+              aria-label={t('common:lamp-alt', { number: i + 1 })}
               className="relative shrink-0 w-[68vw] max-w-72 snap-center rounded-2xl overflow-clip"
             >
-              <img
-                src={lamp.src}
-                alt={t('common:lamp-alt', { number: i + 1 })}
-                loading="lazy"
-                className="w-full aspect-[3/4] object-cover"
-              />
+              {showCollection ? (
+                <img
+                  src={lamp.src}
+                  alt=""
+                  className="w-full aspect-[3/4] object-cover"
+                />
+              ) : (
+                <div className="w-full aspect-[3/4] bg-white/5" />
+              )}
               <span className="absolute bottom-3 left-4 text-sm text-white/90">
                 {String(i + 1).padStart(2, '0')}
               </span>
