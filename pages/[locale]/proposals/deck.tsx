@@ -29,16 +29,16 @@ const DeckLanding = () => {
       <TopBar />
 
       <section className="flex flex-col items-center gap-4 px-6 pt-4">
-        <div className="relative w-full h-[36dvh] min-h-52 max-h-96 grid place-items-center">
+        <div className="relative w-full h-[36dvh] min-h-52 max-h-96 flex items-center justify-center">
           {FAN.map(({ lamp, className }) => (
             <img
               key={lamp}
               src={Lamps[lamp].src}
               alt=""
-              className={`absolute h-[85%] aspect-[3/4] object-cover rounded-2xl shadow-xl grayscale-[0.5] ${className}`}
+              className={`absolute h-[80%] w-auto aspect-[3/4] object-cover rounded-2xl shadow-xl grayscale-[0.5] ${className}`}
             />
           ))}
-          <div className="relative h-full aspect-[3/4] origin-bottom motion-safe:animate-sway">
+          <div className="relative h-full w-auto aspect-[3/4] origin-bottom motion-safe:animate-sway">
             <img
               src={Lamps[0].src}
               alt={t('common:lamp-alt', { number: 1 })}
