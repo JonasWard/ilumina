@@ -89,9 +89,8 @@ export const TinderCard = ({
       key={url}
       ref={elementRef}
       id={`card-${index}`}
-      className="absolute inset-0 rounded-2xl shadow-lg bg-cover bg-center cursor-grab bg-image-contain transition-shadow duration-300 touch-none select-none"
+      className="absolute inset-0 rounded-2xl overflow-clip shadow-lg cursor-grab transition-shadow duration-300 touch-none select-none"
       style={{
-        backgroundImage: `url(${url})`,
         filter: active ? 'grayscale(0)' : 'grayscale(0.8)',
         zIndex: 1000 - index
       }}
@@ -100,6 +99,14 @@ export const TinderCard = ({
       onPointerUp={active ? endDrag : undefined}
       onPointerCancel={active ? endDrag : undefined}
     >
+      <img
+        src={url}
+        alt=""
+        draggable={false}
+        decoding="async"
+        fetchPriority={active ? 'high' : 'auto'}
+        className="absolute inset-0 size-full object-cover pointer-events-none"
+      />
       <div
         ref={likeStampRef}
         className="absolute top-6 left-6 grid place-items-center size-16 rounded-full bg-white/90 border-4 border-green-500 -rotate-12 opacity-0 pointer-events-none"
