@@ -199,3 +199,33 @@ LCP criterion not met: the swipe page measures 3.5 s with real throttling (150 m
 ## Total
 Planned: 33 commits, ~ +336 / ~181 / -192.
 Shipped: 41 commits, net +481 / -410 (git does not split out changed lines).
+
+---
+
+## 9. Landing page proposals
+Three alternative landing pages, side by side, so one can be picked to replace the home page.
+Routes: `/[locale]/proposals/glow/`, `/[locale]/proposals/gallery/`, `/[locale]/proposals/deck/`.
+
+- **Glow**: dark, full-bleed lamp photo with a warm breathing glow, large thin headline, snap carousel below.
+- **Gallery**: light editorial page, oversized wordmark, two marquee rows of lamps drifting in opposite directions.
+- **Deck**: fanned stack of swipe cards that sways, "swipe, like, light" in three steps.
+
+Commits:
+- `feat: add landing proposal copy`
+- `feat: add glow landing proposal`
+- `feat: add gallery landing proposal`
+- `feat: add deck landing proposal`
+
+Success:
+- Each proposal exports for all 5 locales and builds.
+- Headline and CTA are fully visible without scrolling at 320×568.
+- No horizontal scroll; all tap targets ≥ 44 px; no console errors.
+- All motion stops under `prefers-reduced-motion: reduce`.
+- Text over photos has a scrim that gives ≥ 4.5:1 contrast.
+
+Failure:
+- Any proposal needs new image assets or dependencies.
+- Any proposal changes the existing home page or other routes.
+- Missing copy in any locale.
+
+Estimate: +380 / ~0 / -0
