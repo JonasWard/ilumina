@@ -18,7 +18,7 @@ export const Navigation: React.FC = () => {
   const current = router.pathname.split('/').pop();
 
   return (
-    <div className="fixed inset-x-0 top-0 z-10 pt-[env(safe-area-inset-top)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] bg-linear-to-b from-white to-transparent">
+    <div className="fixed inset-x-0 top-0 z-10 pt-[env(safe-area-inset-top)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] bg-white/80 backdrop-blur-md">
       <div className="max-w-[1200px] mx-auto px-3 py-1 flex flex-row items-center justify-between gap-2">
         <Link href="/" aria-label={t('back-to-home')} className="flex items-center min-h-11 shrink-0">
           <img src={logo.src} alt="ilumina" className="h-6 w-auto" />
