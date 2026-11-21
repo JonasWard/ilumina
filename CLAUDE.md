@@ -16,8 +16,8 @@ Examples: `fix/nav-tap-targets`, `feat/swipe-buttons`, `chore/remove-template`.
 - Examples: `fix: use array map for liked set`, `feat: add like and dislike buttons`.
 
 ## Planning
-Every plan (see `PLAN.md`) lists per item:
-- **Branch** name.
+Every plan (see `PLAN.md`) lists its branch and, per item:
+- **Branch**: one per plan, or per item if the plan says so.
 - **Commits**: the atomic commits it will contain.
 - **Success criteria**: concrete, checkable outcomes (measured, not "looks better").
 - **Failure criteria**: conditions that mean the item is not done or must be reverted.

@@ -1,13 +1,14 @@
 # Mobile UI plan
 
-Ordered by impact. Each item is one branch, merged to `main` before the next starts.
-Global failure criteria for every item: `build` or `lint` fails, horizontal scroll appears at 320 px, or desktop (1280 px) layout regresses.
+Branch: `feat/mobile-ui` (single branch, one PR to `main`).
+Items are worked in order; each is a group of atomic commits on that branch.
+Global failure criteria for every commit: `build` or `lint` fails, horizontal scroll appears at 320 px, or desktop (1280 px) layout regresses.
 
 Estimates are `+added / ~changed / -removed` lines.
 
 ---
 
-## 1. `fix/mobile-basics`
+## 1. Mobile basics
 Crash and viewport fixes.
 
 Commits:
@@ -27,7 +28,7 @@ Failure:
 
 Estimate: +6 / ~6 / -2
 
-## 2. `fix/nav-tap-targets`
+## 2. Nav tap targets
 Usable, labeled, correct navigation.
 
 Commits:
@@ -47,7 +48,7 @@ Failure:
 
 Estimate: +25 / ~20 / -10
 
-## 3. `feat/swipe-buttons`
+## 3. Swipe buttons
 Swipe alternative and feedback.
 
 Commits:
@@ -69,7 +70,7 @@ Failure:
 
 Estimate: +70 / ~40 / -35
 
-## 4. `feat/swipe-progress`
+## 4. Swipe progress
 Resume, progress and end of deck.
 
 Commits:
@@ -89,7 +90,7 @@ Failure:
 
 Estimate: +60 / ~15 / -5
 
-## 5. `feat/favorites-layout`
+## 5. Favorites layout
 Phone friendly grid with working card actions.
 
 Commits:
@@ -109,7 +110,7 @@ Failure:
 
 Estimate: +45 / ~25 / -10
 
-## 6. `feat/lamp-detail-actions`
+## 6. Lamp detail actions
 Working detail page actions.
 
 Commits:
@@ -129,7 +130,7 @@ Failure:
 
 Estimate: +50 / ~20 / -10
 
-## 7. `chore/remove-template`
+## 7. Remove template
 Remove next-i18next example leftovers.
 
 Commits:
@@ -151,7 +152,7 @@ Failure:
 
 Estimate: +50 / ~30 / -110
 
-## 8. `perf/lamp-images`
+## 8. Lamp images
 Lighter, accessible images.
 
 Commits:
@@ -172,4 +173,4 @@ Estimate: +30 / ~25 / -10
 ---
 
 ## Total
-~ +336 / ~181 / -192
+33 commits, ~ +336 / ~181 / -192
