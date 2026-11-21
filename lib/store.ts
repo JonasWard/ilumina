@@ -14,6 +14,8 @@ type LampStore = {
   removeLiked: (likedId: number) => void;
   removeDisliked: (disliked: number) => void;
   resetRatings: () => void;
+  toggleLike: (index: number) => void;
+  toggleDislike: (index: number) => void;
 };
 
 export const useLampStore = create<LampStore>((set, get) => ({
@@ -34,6 +36,16 @@ export const useLampStore = create<LampStore>((set, get) => ({
   addDisliked: (disliked) => get()._updateDisliked(new Set([...get().disliked, disliked])),
   removeLiked: (likedId) => get()._updateLiked(new Set([...get().liked].filter((i) => i !== likedId))),
   removeDisliked: (dislikedId) => get()._updateDisliked(new Set([...get().disliked].filter((i) => i !== dislikedId))),
+  toggleLike: (index) => {
+    if (get().liked.has(index)) return get().removeLiked(index);
+    get().removeDisliked(index);
+    get().addLiked(index);
+  },
+  toggleDislike: (index) => {
+    if (get().disliked.has(index)) return get().removeDisliked(index);
+    get().removeLiked(index);
+    get().addDisliked(index);
+  },
   resetRatings: () => {
     get()._updateLiked(new Set());
     get()._updateDisliked(new Set());
