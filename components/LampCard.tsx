@@ -8,15 +8,21 @@ export const LampCard: React.FC<{ index: number; img: string; name: string }> = 
   const { t } = useTranslation('common');
 
   return (
-    <Link href={`/lamps/${index}`} className="block">
-      <div className="flex flex-col items-center w-full rounded-2xl overflow-clip shadow-xl bg-white/60">
+    <div className="relative w-full rounded-2xl overflow-clip shadow-xl bg-white/60">
+      <Link href={`/lamps/${index}`} className="block">
         <img src={img} alt="lamp" className="w-full aspect-[3/4] object-cover" />
-        <div className="px-3 py-2 font-bold flex flex-row items-center justify-between w-full gap-2 shadow-none">
-          <SVGIcon src={heart.src} className="h-4 my-auto" />
-          <h3 className="m-0 text-base truncate">{t('name')}</h3>
-          <SVGIcon src={cart.src} className="h-4 my-auto" />
-        </div>
-      </div>
-    </Link>
+        <h3 className="m-0 px-11 py-3 text-base font-bold truncate">{t('name')}</h3>
+      </Link>
+      <span className="absolute bottom-0 left-0 grid place-items-center size-11 pointer-events-none">
+        <SVGIcon src={heart.src} className="h-4" />
+      </span>
+      <Link
+        href={`/lamps/${index}`}
+        aria-label={t('buy')}
+        className="absolute bottom-0 right-0 grid place-items-center size-11"
+      >
+        <SVGIcon src={cart.src} className="h-4" />
+      </Link>
+    </div>
   );
 };
