@@ -15,10 +15,10 @@ const Favorites: React.FC = () => {
   return (
     <>
       <Navigation />
-      <main className="w-[calc(min(100vw,1200px)-50px)] mx-auto">
-        <div className="mt-[65px] w-[calc(min(100vw,1200px)-50px)] mx-auto">
+      <main className="w-full max-w-[1200px] mx-auto justify-start px-4 pt-[calc(env(safe-area-inset-top)+3.5rem)] pb-[calc(env(safe-area-inset-bottom)+2rem)]">
+        <div className="w-full">
           <p>{t('your-favorites')}</p>
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-8 p-8">
+          <div className="grid grid-cols-2 sm:grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4 sm:gap-8 pt-4">
             {[...liked].map((index) => (
               <LampCard key={index} index={index} img={Lamps[index].src} name={'name'} />
             ))}
