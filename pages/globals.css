@@ -7,28 +7,6 @@
 
   --animate-breathe: breathe 7s ease-in-out infinite;
   --animate-drift: drift 24s ease-in-out infinite alternate;
-  --animate-marquee: marquee 60s linear infinite;
-  --animate-marquee-reverse: marquee 60s linear infinite reverse;
-  --animate-sway: sway 5s ease-in-out infinite;
-
-  @keyframes sway {
-    0%,
-    100% {
-      transform: rotate(-3deg) translateX(-4px);
-    }
-    50% {
-      transform: rotate(3deg) translateX(4px);
-    }
-  }
-
-  @keyframes marquee {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(-50%);
-    }
-  }
 
   @keyframes breathe {
     0%,

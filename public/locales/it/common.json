@@ -2,7 +2,6 @@
   "back-to-home": "Torna alla pagina principale",
   "error-with-status": "Sul server si verificato un errore ({{statusCode}})",
   "error-without-status": "Sul server si verificato un errore",
-  "h1": "Il tuo configuratore di lampade",
   "title": "ilumina",
   "to-lamp-swiping": "Vai alla selezione della lampada",
   "this-is-a-lamp": "Questa è una lampada",

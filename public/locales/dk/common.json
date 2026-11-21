@@ -2,7 +2,6 @@
   "back-to-home": "Tilbage til forsiden",
   "error-with-status": "En {{statusCode}} fejl opstod på serveren",
   "error-without-status": "Der opstod en fejl på serveren",
-  "h1": "Din lampekonfigurator",
   "title": "ilumina",
   "to-lamp-swiping": "Til lampevalg",
   "this-is-a-lamp": "Dette er en lampe",
