@@ -32,11 +32,8 @@ export const useLampStore = create<LampStore>((set, get) => ({
     get()._updateLiked(new Set([...get().liked, liked]));
   },
   addDisliked: (disliked) => get()._updateDisliked(new Set([...get().disliked, disliked])),
-  removeLiked: (likedId) => {
-    const liked = get().liked;
-    if (liked.delete(likedId)) get()._updateLiked(new Set([...liked]));
-  },
-  removeDisliked: (disliked) => get()._updateDisliked(new Set([...get().disliked, disliked])),
+  removeLiked: (likedId) => get()._updateLiked(new Set([...get().liked].filter((i) => i !== likedId))),
+  removeDisliked: (dislikedId) => get()._updateDisliked(new Set([...get().disliked].filter((i) => i !== dislikedId))),
   resetRatings: () => {
     get()._updateLiked(new Set());
     get()._updateDisliked(new Set());
