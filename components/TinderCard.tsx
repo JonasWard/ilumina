@@ -112,7 +112,9 @@ export const TinderCard = ({
       >
         <img src={brokenHeart.src} alt="" className="size-8" />
       </div>
-      <div className="absolute bottom-10 left-0 right-0 text-white text-center">{name}</div>
+      <div className="absolute inset-x-0 bottom-0 rounded-b-2xl bg-linear-to-t from-black/70 to-transparent pt-16 pb-6 text-lg text-white text-center pointer-events-none">
+        {name}
+      </div>
     </div>
   );
 };
