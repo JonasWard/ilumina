@@ -21,5 +21,6 @@
   "start-over": "Start forfra",
   "unlike": "Fjern fra favoritter",
   "no-favorites": "Ingen favoritter endnu. Swipe til højre på lamper, du kan lide.",
-  "back": "Tilbage"
+  "back": "Tilbage",
+  "lamp-alt": "Lampe {{number}}"
 }

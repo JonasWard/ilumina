@@ -18,7 +18,7 @@ export const LampContentCard: React.FC<{ index: number; img: string; name: strin
 
   return (
     <div className="flex md:flex-row flex-col items-center rounded-2xl overflow-clip shadow-xl mx-auto gap-4">
-      <img src={Lamps[index].src} alt="lamp" className="md:h-[50vh] w-full md:w-[50%] h-[50vh] object-cover" />
+      <img src={Lamps[index].src} alt={t('lamp-alt', { number: index + 1 })} className="md:h-[50vh] w-full md:w-[50%] h-[50vh] object-cover" />
       <div className="my-auto px-4 flex flex-col items-start justify-between w-full gap-4 shadow-none">
         <h3 className="text-2xl font-bold">{t('name')}</h3>
         <p className="m-0 text-left">{t('description')}</p>

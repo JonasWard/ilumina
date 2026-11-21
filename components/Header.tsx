@@ -8,7 +8,7 @@ export const Header: React.FC<{ heading: string; title: string; className?: stri
   return (
     <>
       <PageTitle titleKey={title === 'title' ? undefined : title} />
-      <img src={logo.src} alt="logo" className="max-w-[min(70vw,400px)] my-10" />
+      <img src={logo.src} alt="ilumina" className="max-w-[min(70vw,400px)] my-10" />
       <h1 className={`my-12 ${className ?? 'text-4xl sm:text-5xl'}`}>{t(heading)}</h1>
     </>
   );

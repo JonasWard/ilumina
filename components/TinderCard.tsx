@@ -13,6 +13,7 @@ export const TinderCard = ({
   onDislike,
   active,
   name,
+  alt,
   ref
 }: {
   url: string;
@@ -21,6 +22,7 @@ export const TinderCard = ({
   onDislike: () => void;
   active: boolean;
   name: string;
+  alt: string;
   ref?: Ref<TinderCardHandle>;
 }) => {
   const elementRef = useRef<HTMLDivElement>(null);
@@ -101,7 +103,7 @@ export const TinderCard = ({
     >
       <img
         src={url}
-        alt=""
+        alt={alt}
         draggable={false}
         decoding="async"
         fetchPriority={active ? 'high' : 'auto'}

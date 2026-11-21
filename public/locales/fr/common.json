@@ -21,5 +21,6 @@
   "start-over": "Recommencer",
   "unlike": "Retirer des favoris",
   "no-favorites": "Pas encore de favoris. Glissez vers la droite les lampes qui vous plaisent.",
-  "back": "Retour"
+  "back": "Retour",
+  "lamp-alt": "Lampe {{number}}"
 }

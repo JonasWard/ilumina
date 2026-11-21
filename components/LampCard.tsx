@@ -13,7 +13,7 @@ export const LampCard: React.FC<{ index: number; img: string; name: string }> = 
       <Link href={`/lamps/${index}`} className="block">
         <img
           src={img}
-          alt="lamp"
+          alt={t('lamp-alt', { number: index + 1 })}
           width={1024}
           height={1366}
           loading="lazy"

@@ -36,6 +36,7 @@ export const TinderSlides = () => {
               active={false}
               key={next}
               url={Lamps[next].src}
+              alt={t('lamp-alt', { number: next + 1 })}
               index={next}
               onLike={() => onLike(next)}
               onDislike={() => onDislike(next)}
@@ -48,6 +49,7 @@ export const TinderSlides = () => {
               ref={cardRef}
               key={current}
               url={Lamps[current].src}
+              alt={t('lamp-alt', { number: current + 1 })}
               index={current}
               onLike={() => onLike(current)}
               onDislike={() => onDislike(current)}
