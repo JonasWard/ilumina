@@ -24,8 +24,11 @@ export const TinderCard = ({
   const elementRef = useRef<HTMLDivElement>(null);
   const dragData = useRef({ offsetX: 0, offsetY: 0, startX: 0, startY: 0, dragging: false });
 
+  const gone = useRef(false);
+
   const fling = (liked: boolean, offsetY = 0, rotate = liked ? 15 : -15) => {
-    if (!elementRef.current) return;
+    if (!elementRef.current || gone.current) return;
+    gone.current = true;
     elementRef.current.style.transition = 'all 0.3s ease-in-out';
     elementRef.current.style.transform = `translate(${liked ? 500 : -500}px, ${offsetY}px) rotate(${rotate}deg)`;
     elementRef.current.style.opacity = '0';
