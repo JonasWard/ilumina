@@ -7,11 +7,6 @@ import { TinderCard } from '@/components/TinderCard';
 import { useLampStore } from '@/lib/store';
 import { Lamps } from '@/lib/lamps';
 
-import { SVGIcon } from '@/components/SVGIcon';
-import heart from '/assets/icons/heart.svg';
-import cart from '/assets/icons/shopping_cart.svg';
-import customize from '/assets/icons/customize.svg';
-import burger from '/assets/icons/burger.svg';
 
 export const TinderSlides = () => {
   const { t } = useTranslation(['common']);
@@ -29,15 +24,7 @@ export const TinderSlides = () => {
 
   return (
     <>
-      <Navigation
-        heading={t('heading')}
-        links={[
-          { href: 'tinder-slides', text: 'to-lamp-swiping', icon: <SVGIcon src={heart.src} className="size-6" /> },
-          { href: 'tinder-slides', text: 'to-lamp-swiping', icon: <SVGIcon src={cart.src} className="size-6" /> },
-          { href: 'favorites', text: 'to-favorites', icon: <SVGIcon src={customize.src} className="size-6" /> },
-          { href: '/', text: 'back-to-home', icon: <SVGIcon src={burger.src} className="size-6" /> }
-        ]}
-      />
+      <Navigation />
       <main className="bg-white-900 w-full">
         <div className="overflow-clip flex items-center justify-center touch-none w-full h-dvh">
           <div className="relative w-[min(85svw,600px)] h-[min(80svh,800px)]">

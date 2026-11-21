@@ -7,10 +7,6 @@ import { LampCard } from '@/components/LampCard';
 import { useLampStore } from '@/lib/store';
 import { Navigation } from '@/components/Navigation';
 import { Lamps } from '@/lib/lamps';
-import { SVGIcon } from '@/components/SVGIcon';
-import heart from '/assets/icons/heart.svg';
-import cart from '/assets/icons/shopping_cart.svg';
-import customize from '/assets/icons/customize.svg';
 
 const Favorites: React.FC = () => {
   const { t } = useTranslation(['common', 'footer']);
@@ -18,14 +14,7 @@ const Favorites: React.FC = () => {
 
   return (
     <>
-      <Navigation
-        heading={'heading'}
-        links={[
-          { href: 'tinder-slides', text: 'to-lamp-swiping', icon: <SVGIcon src={heart.src} className="size-6" /> },
-          { href: 'tinder-slides', text: 'to-lamp-swiping', icon: <SVGIcon src={cart.src} className="size-6" /> },
-          { href: 'tinder-slides', text: 'to-lamp-swiping', icon: <SVGIcon src={customize.src} className="size-6" /> }
-        ]}
-      />
+      <Navigation />
       <main className="w-[calc(min(100vw,1200px)-50px)] mx-auto">
         <div className="mt-[65px] w-[calc(min(100vw,1200px)-50px)] mx-auto">
           <p>{t('your-favorites')}</p>
