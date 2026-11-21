@@ -1,4 +1,6 @@
 import { Ref, useImperativeHandle, useRef } from 'react';
+import heart from '/assets/icons/heart.svg';
+import brokenHeart from '/assets/icons/heart_broken.svg';
 
 const SWIPE_X_REGISTRATION_DISTANCE = 60;
 
@@ -25,10 +27,19 @@ export const TinderCard = ({
   const dragData = useRef({ offsetX: 0, offsetY: 0, startX: 0, startY: 0, dragging: false });
 
   const gone = useRef(false);
+  const likeStampRef = useRef<HTMLDivElement>(null);
+  const dislikeStampRef = useRef<HTMLDivElement>(null);
+
+  const setStamps = (offsetX: number) => {
+    const strength = Math.min(1, Math.abs(offsetX) / SWIPE_X_REGISTRATION_DISTANCE);
+    if (likeStampRef.current) likeStampRef.current.style.opacity = String(offsetX > 0 ? strength : 0);
+    if (dislikeStampRef.current) dislikeStampRef.current.style.opacity = String(offsetX < 0 ? strength : 0);
+  };
 
   const fling = (liked: boolean, offsetY = 0, rotate = liked ? 15 : -15) => {
     if (!elementRef.current || gone.current) return;
     gone.current = true;
+    setStamps(liked ? 1000 : -1000);
     elementRef.current.style.transition = 'all 0.3s ease-in-out';
     elementRef.current.style.transform = `translate(${liked ? 500 : -500}px, ${offsetY}px) rotate(${rotate}deg)`;
     elementRef.current.style.opacity = '0';
@@ -49,6 +60,7 @@ export const TinderCard = ({
     dragData.current.offsetX = e.clientX - dragData.current.startX;
     dragData.current.offsetY = e.clientY - dragData.current.startY;
     const rotate = dragData.current.offsetX / 20;
+    setStamps(dragData.current.offsetX);
     elementRef.current.style.transform = `translate(${dragData.current.offsetX}px, ${dragData.current.offsetY}px) rotate(${rotate}deg)`;
 
     if (dragData.current.offsetX > SWIPE_X_REGISTRATION_DISTANCE)
@@ -67,6 +79,7 @@ export const TinderCard = ({
       elementRef.current.style.transform = '';
       elementRef.current.style.opacity = '1';
       elementRef.current.style.boxShadow = '';
+      setStamps(0);
       elementRef.current.style.transition = 'transform 0.3s ease-in-out';
     }
   };
@@ -87,6 +100,18 @@ export const TinderCard = ({
       onPointerUp={active ? endDrag : undefined}
       onPointerCancel={active ? endDrag : undefined}
     >
+      <div
+        ref={likeStampRef}
+        className="absolute top-6 left-6 grid place-items-center size-16 rounded-full bg-white/90 border-4 border-green-500 -rotate-12 opacity-0 pointer-events-none"
+      >
+        <img src={heart.src} alt="" className="size-8" />
+      </div>
+      <div
+        ref={dislikeStampRef}
+        className="absolute top-6 right-6 grid place-items-center size-16 rounded-full bg-white/90 border-4 border-red-500 rotate-12 opacity-0 pointer-events-none"
+      >
+        <img src={brokenHeart.src} alt="" className="size-8" />
+      </div>
       <div className="absolute bottom-10 left-0 right-0 text-white text-center">{name}</div>
     </div>
   );
