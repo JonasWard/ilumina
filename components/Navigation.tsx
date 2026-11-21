@@ -10,7 +10,7 @@ export const Navigation: React.FC<{
   const { t } = useTranslation('common');
 
   return (
-    <div className="fixed top-0 w-[100vw] z-10 bg-linear-to-b from-white to-transparent">
+    <div className="fixed inset-x-0 top-0 z-10 pt-[env(safe-area-inset-top)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] bg-linear-to-b from-white to-transparent">
       <div className="w-[calc(min(100vw,1200px)-50px)] mx-[calc(max(0px,calc(50vw-600px))+25px)] left-0 p-2 flex flex-row items-center justify-between">
         <Link href="/">
           <img
