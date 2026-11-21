@@ -31,18 +31,6 @@ export const TinderSlides = () => {
       <Navigation titleKey="to-lamp-swiping" />
       <main className="bg-white-900 w-full h-dvh flex flex-col items-center overflow-clip pt-[calc(env(safe-area-inset-top)+3.5rem)] pb-[calc(env(safe-area-inset-bottom)+1rem)]">
         <div className="relative flex-1 w-[min(85vw,600px)] max-h-[800px]">
-          {next !== undefined ? (
-            <TinderCard
-              active={false}
-              key={next}
-              url={Lamps[next].src}
-              alt={t('lamp-alt', { number: next + 1 })}
-              index={next}
-              onLike={() => onLike(next)}
-              onDislike={() => onDislike(next)}
-              name={t('this-is-a-lamp')}
-            />
-          ) : null}
           {hasCard ? (
             <TinderCard
               active
@@ -53,6 +41,18 @@ export const TinderSlides = () => {
               index={current}
               onLike={() => onLike(current)}
               onDislike={() => onDislike(current)}
+              name={t('this-is-a-lamp')}
+            />
+          ) : null}
+          {next !== undefined ? (
+            <TinderCard
+              active={false}
+              key={next}
+              url={Lamps[next].src}
+              alt={t('lamp-alt', { number: next + 1 })}
+              index={next}
+              onLike={() => onLike(next)}
+              onDislike={() => onDislike(next)}
               name={t('this-is-a-lamp')}
             />
           ) : null}
