@@ -6,6 +6,7 @@ import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
 import { LampContentCard } from '@/components/LampContentCard';
 import { navigateTo } from '@/lib/getCorrectHref';
+import { canGoBackInApp } from '@/lib/history';
 
 export const Lamp = () => {
   const { t } = useTranslation(['404', 'common', 'footer']);
@@ -22,7 +23,7 @@ export const Lamp = () => {
           <button
             type="button"
             onClick={() =>
-              window.history.length > 1 ? router.back() : router.push(navigateTo(router.asPath, 'favorites'))
+              canGoBackInApp() ? router.back() : router.push(navigateTo(router.asPath, 'favorites'))
             }
             className="flex items-center gap-1 min-h-11 m-0 mb-2 px-2 bg-transparent shadow-none font-semibold"
           >
