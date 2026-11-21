@@ -16,10 +16,10 @@ const GlowLanding = () => {
           src={Lamps[0].src}
           alt={t('common:lamp-alt', { number: 1 })}
           fetchPriority="high"
-          className="absolute inset-0 size-full object-cover scale-105 motion-safe:animate-drift"
+          className="absolute inset-x-0 top-0 w-full h-[62%] object-cover object-[50%_35%] scale-105 motion-safe:animate-drift"
         />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_38%,rgba(255,196,120,0.45),transparent_55%)] mix-blend-screen motion-safe:animate-breathe" />
-        <div className="absolute inset-0 bg-linear-to-t from-black via-black/60 via-45% to-black/10" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_32%,rgba(255,196,120,0.45),transparent_50%)] mix-blend-screen motion-safe:animate-breathe" />
+        <div className="absolute inset-0 bg-linear-to-t from-black from-45% via-black/70 via-60% to-black/10" />
 
         <TopBar dark className="relative z-10" />
 
