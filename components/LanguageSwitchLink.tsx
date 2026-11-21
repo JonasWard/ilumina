@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import i18nextConfig from '../next-i18next.config';
 import { changeLocale } from '@/lib/getCorrectHref';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'next-i18next';
 
 const LanguageSwitchLink: React.FC = () => {
   const router = useRouter();

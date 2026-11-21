@@ -1,5 +1,5 @@
 import { Lamps } from '@/lib/lamps';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'next-i18next';
 import { SVGIcon } from '@/components/SVGIcon';
 import brokenHeart from '/assets/icons/heart_broken.svg';
 import cart from '/assets/icons/shopping_cart.svg';

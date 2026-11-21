@@ -2,7 +2,7 @@ import logo from '/assets/icons/logo_ilumina.svg';
 import heart from '/assets/icons/heart.svg';
 import customize from '/assets/icons/customize.svg';
 import { useRouter } from 'next/router';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'next-i18next';
 import LanguageSwitchLink from './LanguageSwitchLink';
 import Link from './Link';
 import { SVGIcon } from './SVGIcon';

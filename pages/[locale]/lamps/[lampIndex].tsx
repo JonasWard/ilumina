@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { getStaticPathsWithAdditionalParams, makeStaticProps } from '../../../lib/getStatic';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'next-i18next';
 import { Lamps } from '@/lib/lamps';
 import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
