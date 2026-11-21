@@ -6,19 +6,22 @@ import { useTranslation } from 'next-i18next';
 import LanguageSwitchLink from './LanguageSwitchLink';
 import Link from './Link';
 import { SVGIcon } from './SVGIcon';
+import { PageTitle } from './PageTitle';
 
 const NAV_LINKS = [
   { href: 'tinder-slides', text: 'to-lamp-swiping', icon: customize.src },
   { href: 'favorites', text: 'to-favorites', icon: heart.src }
 ];
 
-export const Navigation: React.FC = () => {
+export const Navigation: React.FC<{ titleKey?: string }> = ({ titleKey }) => {
   const { t } = useTranslation('common');
   const router = useRouter();
   const current = router.pathname.split('/').pop();
 
   return (
-    <div className="fixed inset-x-0 top-0 z-10 pt-[env(safe-area-inset-top)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] bg-white/80 backdrop-blur-md">
+    <>
+      <PageTitle titleKey={titleKey} />
+      <div className="fixed inset-x-0 top-0 z-10 pt-[env(safe-area-inset-top)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] bg-white/80 backdrop-blur-md">
       <div className="max-w-[1200px] mx-auto px-3 py-1 flex flex-row items-center justify-between gap-2">
         <Link href="/" aria-label={t('back-to-home')} className="flex items-center min-h-11 shrink-0">
           <img src={logo.src} alt="ilumina" className="h-6 w-auto" />
@@ -38,6 +41,7 @@ export const Navigation: React.FC = () => {
           <LanguageSwitchLink />
         </span>
       </div>
-    </div>
+      </div>
+    </>
   );
 };

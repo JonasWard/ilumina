@@ -16,7 +16,7 @@ const Favorites: React.FC = () => {
 
   return (
     <>
-      <Navigation />
+      <Navigation titleKey="favorites" />
       <main className="w-full max-w-[1200px] mx-auto justify-start px-4 pt-[calc(env(safe-area-inset-top)+3.5rem)] pb-[calc(env(safe-area-inset-bottom)+2rem)]">
         <div className="w-full">
           <p>{t('your-favorites')}</p>

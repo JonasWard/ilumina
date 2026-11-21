@@ -17,7 +17,7 @@ export const Lamp = () => {
 
   return (
     <>
-      <Navigation />
+      <Navigation titleKey="name" />
       <main className="w-full max-w-[1200px] mx-auto justify-start px-4 pt-[calc(env(safe-area-inset-top)+3.5rem)] pb-[calc(env(safe-area-inset-bottom)+6rem)] md:pb-8">
         <div className="w-full">
           <button

@@ -28,7 +28,7 @@ export const TinderSlides = () => {
 
   return (
     <>
-      <Navigation />
+      <Navigation titleKey="to-lamp-swiping" />
       <main className="bg-white-900 w-full h-dvh flex flex-col items-center overflow-clip pt-[calc(env(safe-area-inset-top)+3.5rem)] pb-[calc(env(safe-area-inset-bottom)+1rem)]">
         <div className="relative flex-1 w-[min(85vw,600px)] max-h-[800px]">
           {next !== undefined ? (
