@@ -14,5 +14,8 @@
   "dislike": "Ablehnen",
   "buy": "Kaufen",
   "change-locale": "Sprache wechseln",
-  "like": "Gefällt mir"
+  "like": "Gefällt mir",
+  "deck-done": "Sie haben alle Lampen gesehen",
+  "liked-count": "Ihnen gefallen {{count}} von {{total}}.",
+  "see-favorites": "Favoriten ansehen"
 }

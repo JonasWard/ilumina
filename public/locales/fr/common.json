@@ -14,5 +14,8 @@
   "dislike": "Je n’aime pas",
   "buy": "Acheter",
   "change-locale": "Changer de langue",
-  "like": "J’aime"
+  "like": "J’aime",
+  "deck-done": "Vous avez vu toutes les lampes",
+  "liked-count": "Vous en aimez {{count}} sur {{total}}.",
+  "see-favorites": "Voir les favoris"
 }

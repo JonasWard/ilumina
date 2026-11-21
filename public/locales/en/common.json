@@ -14,5 +14,8 @@
   "dislike": "Dislike",
   "buy": "Purchase",
   "change-locale": "Change language",
-  "like": "Like"
+  "like": "Like",
+  "deck-done": "You have seen all lamps",
+  "liked-count": "You liked {{count}} of {{total}}.",
+  "see-favorites": "See favorites"
 }

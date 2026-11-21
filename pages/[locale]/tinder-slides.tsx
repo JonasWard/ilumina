@@ -7,6 +7,7 @@ import { TinderCard, TinderCardHandle } from '@/components/TinderCard';
 import { useLampStore } from '@/lib/store';
 import { Lamps } from '@/lib/lamps';
 import { SVGIcon } from '@/components/SVGIcon';
+import Link from '@/components/Link';
 import heart from '/assets/icons/heart.svg';
 import brokenHeart from '/assets/icons/heart_broken.svg';
 
@@ -53,6 +54,19 @@ export const TinderSlides = () => {
               name={t('this-is-a-lamp')}
             />
           ) : null}
+          {hydrated && !hasCard && (
+            <div className="absolute inset-0 rounded-2xl bg-white shadow-lg flex flex-col items-center justify-center gap-4 p-6">
+              <SVGIcon src={heart.src} className="size-12" />
+              <h2 className="m-0 min-w-0 text-2xl opacity-100">{t('deck-done')}</h2>
+              <p className="m-0 opacity-70">{t('liked-count', { count: liked.size, total: Lamps.length })}</p>
+              <Link
+                href="favorites"
+                className="grid place-items-center min-h-12 w-full max-w-64 rounded-full bg-black text-white font-semibold"
+              >
+                {t('see-favorites')}
+              </Link>
+            </div>
+          )}
         </div>
         {hasCard && (
           <p aria-live="polite" className="m-0 pt-3 text-sm leading-none opacity-60">

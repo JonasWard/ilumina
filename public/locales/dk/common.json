@@ -14,5 +14,8 @@
   "dislike": "Synes ikke om",
   "buy": "Køb",
   "change-locale": "Skift sprog",
-  "like": "Synes godt om"
+  "like": "Synes godt om",
+  "deck-done": "Du har set alle lamper",
+  "liked-count": "Du synes om {{count}} af {{total}}.",
+  "see-favorites": "Se favoritter"
 }
