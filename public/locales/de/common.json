@@ -18,5 +18,6 @@
   "deck-done": "Sie haben alle Lampen gesehen",
   "liked-count": "Ihnen gefallen {{count}} von {{total}}.",
   "see-favorites": "Favoriten ansehen",
-  "start-over": "Neu beginnen"
+  "start-over": "Neu beginnen",
+  "unlike": "Aus Favoriten entfernen"
 }

@@ -18,5 +18,6 @@
   "deck-done": "Du har set alle lamper",
   "liked-count": "Du synes om {{count}} af {{total}}.",
   "see-favorites": "Se favoritter",
-  "start-over": "Start forfra"
+  "start-over": "Start forfra",
+  "unlike": "Fjern fra favoritter"
 }
