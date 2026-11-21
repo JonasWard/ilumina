@@ -18,27 +18,19 @@ export const TinderCard = ({
   name: string;
 }) => {
   const elementRef = useRef<HTMLDivElement>(null);
-  const dragData = useRef({ offsetX: 0, offsetY: 0, startX: 0, startY: 0 });
+  const dragData = useRef({ offsetX: 0, offsetY: 0, startX: 0, startY: 0, dragging: false });
 
-  const startDrag = (e: any) => {
+  const startDrag = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!elementRef.current) return;
-    const x = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
-    const y = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
-    dragData.current = { startX: x, startY: y, offsetX: 0, offsetY: 0 };
-
+    e.currentTarget.setPointerCapture(e.pointerId);
+    dragData.current = { startX: e.clientX, startY: e.clientY, offsetX: 0, offsetY: 0, dragging: true };
     elementRef.current.style.transition = '';
-    document.addEventListener('mousemove', moveDrag);
-    document.addEventListener('touchmove', moveDrag, { passive: false });
-    document.addEventListener('mouseup', endDrag);
-    document.addEventListener('touchend', endDrag);
   };
 
-  const moveDrag = (e: any) => {
-    if (!elementRef.current) return;
-    const x = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
-    const y = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
-    dragData.current.offsetX = x - dragData.current.startX;
-    dragData.current.offsetY = y - dragData.current.startY;
+  const moveDrag = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!elementRef.current || !dragData.current.dragging) return;
+    dragData.current.offsetX = e.clientX - dragData.current.startX;
+    dragData.current.offsetY = e.clientY - dragData.current.startY;
     const rotate = dragData.current.offsetX / 20;
     elementRef.current.style.transform = `translate(${dragData.current.offsetX}px, ${dragData.current.offsetY}px) rotate(${rotate}deg)`;
 
@@ -50,36 +42,22 @@ export const TinderCard = ({
   };
 
   const endDrag = () => {
-    if (!elementRef.current) return;
-    const { offsetX } = dragData.current;
-    const rotate = dragData.current.offsetX / 20;
-    if (offsetX > SWIPE_X_REGISTRATION_DISTANCE) {
-      const direction = offsetX > 0 ? 1000 : -1000;
-      elementRef.current.style.transform = `translate(${direction}px, ${dragData.current.offsetY}px) rotate(${
-        direction > 0 ? 45 : -45
-      }deg)`;
-      elementRef.current.style.transform = `translate(${500}px, ${dragData.current.offsetY}px) rotate(${rotate}deg)`;
+    if (!elementRef.current || !dragData.current.dragging) return;
+    dragData.current.dragging = false;
+    const { offsetX, offsetY } = dragData.current;
+    const rotate = offsetX / 20;
+    if (Math.abs(offsetX) > SWIPE_X_REGISTRATION_DISTANCE) {
+      const liked = offsetX > 0;
+      elementRef.current.style.transform = `translate(${liked ? 500 : -500}px, ${offsetY}px) rotate(${rotate}deg)`;
       elementRef.current.style.opacity = '0';
       elementRef.current.style.transition = 'all 0.3s ease-in-out';
-      setTimeout(() => onLike(), 300);
-    } else if (offsetX < -SWIPE_X_REGISTRATION_DISTANCE) {
-      elementRef.current.style.transform = `translate(${offsetX}px, ${dragData.current.offsetY}px) rotate(${
-        offsetX > 0 ? 45 : -45
-      }deg)`;
-      elementRef.current.style.transform = `translate(${-500}px, ${dragData.current.offsetY}px) rotate(${rotate}deg)`;
-      elementRef.current.style.opacity = '0';
-      elementRef.current.style.transition = 'all 0.3s ease-in-out';
-      setTimeout(() => onDislike(), 300);
+      setTimeout(() => (liked ? onLike() : onDislike()), 300);
     } else {
       elementRef.current.style.transform = '';
       elementRef.current.style.opacity = '1';
+      elementRef.current.style.boxShadow = '';
       elementRef.current.style.transition = 'transform 0.3s ease-in-out';
     }
-
-    document.removeEventListener('mousemove', moveDrag);
-    document.removeEventListener('touchmove', moveDrag);
-    document.removeEventListener('mouseup', endDrag);
-    document.removeEventListener('touchend', endDrag);
   };
 
   return (
@@ -87,14 +65,16 @@ export const TinderCard = ({
       key={url}
       ref={elementRef}
       id={`card-${index}`}
-      className="absolute inset-0 rounded-2xl shadow-lg bg-cover bg-center cursor-grab bg-image-contain transition-shadow duration-300"
+      className="absolute inset-0 rounded-2xl shadow-lg bg-cover bg-center cursor-grab bg-image-contain transition-shadow duration-300 touch-none select-none"
       style={{
         backgroundImage: `url(${url})`,
         filter: active ? 'grayscale(0)' : 'grayscale(0.8)',
         zIndex: 1000 - index
       }}
-      onMouseDown={active ? (e) => startDrag(e) : undefined}
-      onTouchStart={active ? (e) => startDrag(e) : undefined}
+      onPointerDown={active ? startDrag : undefined}
+      onPointerMove={active ? moveDrag : undefined}
+      onPointerUp={active ? endDrag : undefined}
+      onPointerCancel={active ? endDrag : undefined}
     >
       <div className="absolute bottom-10 left-0 right-0 text-white text-center">{name}</div>
     </div>
