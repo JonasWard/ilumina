@@ -30,8 +30,8 @@ const Favorites: React.FC = () => {
         <div className="mt-[65px] w-[calc(min(100vw,1200px)-50px)] mx-auto">
           <p>{t('your-favorites')}</p>
           <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-8 p-8">
-            {liked.values().map((index) => (
-              <LampCard index={index} img={Lamps[index].src} name={'name'} />
+            {[...liked].map((index) => (
+              <LampCard key={index} index={index} img={Lamps[index].src} name={'name'} />
             ))}
           </div>
         </div>
