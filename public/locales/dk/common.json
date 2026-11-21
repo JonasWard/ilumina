@@ -12,5 +12,6 @@
   "name": "Navn",
   "description": "Et stykke harmoni til dit hjem. Bløde bølger flyder over dens overflade. Uanset om det er i stuen, soveværelset eller som et stilfuldt highlight på kontoret - denne lampe skaber en atmosfære af ro, balance og tidløs elegance.",
   "dislike": "Synes ikke om",
-  "buy": "Køb"
+  "buy": "Køb",
+  "change-locale": "Skift sprog"
 }

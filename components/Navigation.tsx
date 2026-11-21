@@ -20,17 +20,17 @@ export const Navigation: React.FC = () => {
   return (
     <div className="fixed inset-x-0 top-0 z-10 pt-[env(safe-area-inset-top)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] bg-linear-to-b from-white to-transparent">
       <div className="max-w-[1200px] mx-auto px-3 py-1 flex flex-row items-center justify-between gap-2">
-        <Link href="/" className="flex items-center min-h-11 shrink-0">
-          <img src={logo.src} alt="logo" className="h-6 w-auto" />
+        <Link href="/" aria-label={t('back-to-home')} className="flex items-center min-h-11 shrink-0">
+          <img src={logo.src} alt="ilumina" className="h-6 w-auto" />
         </Link>
         <span className="flex flex-row items-center gap-1">
           {NAV_LINKS.map((link) =>
             link.href === current ? (
-              <span key={link.href} className="grid place-items-center size-11 shrink-0 rounded-full bg-black/10">
+              <span key={link.href} aria-current="page" aria-label={t(link.text)} role="img" className="grid place-items-center size-11 shrink-0 rounded-full bg-black/10">
                 <SVGIcon src={link.icon} className="size-6" />
               </span>
             ) : (
-              <Link href={link.href} key={link.href} className="grid place-items-center size-11 shrink-0 rounded-full">
+              <Link href={link.href} key={link.href} aria-label={t(link.text)} className="grid place-items-center size-11 shrink-0 rounded-full">
                 <SVGIcon src={link.icon} className="size-6" />
               </Link>
             )

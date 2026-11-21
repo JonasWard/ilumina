@@ -9,6 +9,7 @@ const LinkComponent: React.FC<{
   skipLocaleHandling?: boolean;
   href: string;
   className?: string;
+  'aria-label'?: string;
 }> = ({ href, className, ...props }) => {
   const router = useRouter();
   return <Link className={`cursor-pointer ${className ?? ''}`} href={navigateTo(router.asPath, href)} {...props} />;
