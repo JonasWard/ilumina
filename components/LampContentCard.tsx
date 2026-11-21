@@ -7,7 +7,7 @@ import brokenHeart from '/assets/icons/heart_broken.svg';
 import cart from '/assets/icons/shopping_cart.svg';
 
 const actionClass =
-  'flex flex-row items-center justify-center gap-2 min-h-12 m-0 px-3 rounded-full border border-black shadow-none font-semibold leading-none';
+  'flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 min-h-12 m-0 px-1 py-2 md:px-3 rounded-2xl md:rounded-full border border-black shadow-none text-sm md:text-base font-semibold leading-tight';
 
 export const LampContentCard: React.FC<{ index: number; img: string; name: string; description: string }> = ({
   index
