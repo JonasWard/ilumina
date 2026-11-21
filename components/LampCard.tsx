@@ -11,7 +11,15 @@ export const LampCard: React.FC<{ index: number; img: string; name: string }> = 
   return (
     <div className="relative w-full rounded-2xl overflow-clip shadow-xl bg-white/60">
       <Link href={`/lamps/${index}`} className="block">
-        <img src={img} alt="lamp" className="w-full aspect-[3/4] object-cover" />
+        <img
+          src={img}
+          alt="lamp"
+          width={1024}
+          height={1366}
+          loading="lazy"
+          decoding="async"
+          className="w-full h-auto aspect-[3/4] object-cover"
+        />
         <h3 className="m-0 px-11 py-3 text-base font-bold truncate">{t('name')}</h3>
       </Link>
       <button
