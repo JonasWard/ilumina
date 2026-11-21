@@ -38,8 +38,8 @@ export const TinderSlides = () => {
           { href: '/', text: 'back-to-home', icon: <SVGIcon src={burger.src} /> }
         ]}
       />
-      <main className="bg-white-900 w-[100vw]">
-        <div className="overflow-clip flex items-center justify-center touch-none w-[100vw] h-[100vh] mt-[calc(100svh-100vh)]">
+      <main className="bg-white-900 w-full">
+        <div className="overflow-clip flex items-center justify-center touch-none w-full h-dvh">
           <div className="relative w-[min(85svw,600px)] h-[min(80svh,800px)]">
             {Lamps[activeIndex + 1] ? (
               <TinderCard
