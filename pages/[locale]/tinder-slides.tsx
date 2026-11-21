@@ -3,6 +3,7 @@ import { getStaticPaths, makeStaticProps } from '@/lib/getStatic';
 import { Navigation } from '@/components/Navigation';
 
 import { useRef } from 'react';
+import Head from 'next/head';
 import { TinderCard, TinderCardHandle } from '@/components/TinderCard';
 import { useLampStore } from '@/lib/store';
 import { Lamps } from '@/lib/lamps';
@@ -28,6 +29,9 @@ export const TinderSlides = () => {
 
   return (
     <>
+      <Head>
+        <link rel="preload" as="image" href={Lamps[0].src} fetchPriority="high" />
+      </Head>
       <Navigation titleKey="to-lamp-swiping" />
       <main className="bg-white-900 w-full h-dvh flex flex-col items-center overflow-clip pt-[calc(env(safe-area-inset-top)+3.5rem)] pb-[calc(env(safe-area-inset-bottom)+1rem)]">
         <div className="relative flex-1 w-[min(85vw,600px)] max-h-[800px]">
