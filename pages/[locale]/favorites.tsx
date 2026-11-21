@@ -7,10 +7,12 @@ import { LampCard } from '@/components/LampCard';
 import { useLampStore } from '@/lib/store';
 import { Navigation } from '@/components/Navigation';
 import { Lamps } from '@/lib/lamps';
+import Link from '@/components/Link';
 
 const Favorites: React.FC = () => {
   const { t } = useTranslation(['common', 'footer']);
   const liked = useLampStore((s) => s.liked);
+  const hydrated = useLampStore((s) => s.hydrated);
 
   return (
     <>
@@ -18,6 +20,17 @@ const Favorites: React.FC = () => {
       <main className="w-full max-w-[1200px] mx-auto justify-start px-4 pt-[calc(env(safe-area-inset-top)+3.5rem)] pb-[calc(env(safe-area-inset-bottom)+2rem)]">
         <div className="w-full">
           <p>{t('your-favorites')}</p>
+          {hydrated && liked.size === 0 && (
+            <div className="flex flex-col items-center gap-4 pt-8">
+              <p className="m-0 max-w-72 opacity-70">{t('no-favorites')}</p>
+              <Link
+                href="tinder-slides"
+                className="grid place-items-center min-h-12 px-6 rounded-full bg-black text-white font-semibold"
+              >
+                {t('to-lamp-swiping')}
+              </Link>
+            </div>
+          )}
           <div className="grid grid-cols-2 sm:grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4 sm:gap-8 pt-4">
             {[...liked].map((index) => (
               <LampCard key={index} index={index} img={Lamps[index].src} name={'name'} />

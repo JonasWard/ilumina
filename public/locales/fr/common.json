@@ -19,5 +19,6 @@
   "liked-count": "Vous en aimez {{count}} sur {{total}}.",
   "see-favorites": "Voir les favoris",
   "start-over": "Recommencer",
-  "unlike": "Retirer des favoris"
+  "unlike": "Retirer des favoris",
+  "no-favorites": "Pas encore de favoris. Glissez vers la droite les lampes qui vous plaisent."
 }

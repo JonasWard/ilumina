@@ -19,5 +19,6 @@
   "liked-count": "Du synes om {{count}} af {{total}}.",
   "see-favorites": "Se favoritter",
   "start-over": "Start forfra",
-  "unlike": "Fjern fra favoritter"
+  "unlike": "Fjern fra favoritter",
+  "no-favorites": "Ingen favoritter endnu. Swipe til højre på lamper, du kan lide."
 }

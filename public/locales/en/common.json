@@ -19,5 +19,6 @@
   "liked-count": "You liked {{count}} of {{total}}.",
   "see-favorites": "See favorites",
   "start-over": "Start over",
-  "unlike": "Remove from favorites"
+  "unlike": "Remove from favorites",
+  "no-favorites": "No favorites yet. Swipe right on lamps you like."
 }
