@@ -11,21 +11,18 @@ export const Navigation: React.FC<{
 
   return (
     <div className="fixed inset-x-0 top-0 z-10 pt-[env(safe-area-inset-top)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] bg-linear-to-b from-white to-transparent">
-      <div className="w-[calc(min(100vw,1200px)-50px)] mx-[calc(max(0px,calc(50vw-600px))+25px)] left-0 p-2 flex flex-row items-center justify-between">
-        <Link href="/">
-          <img
-            src={logo.src}
-            alt="logo"
-            className="max-h-[max(min(5svh,5svw),20px)] max-w-[max(min(20svh,20svw),80px)]"
-          />
+      <div className="max-w-[1200px] mx-auto px-3 py-1 flex flex-row items-center justify-between gap-2">
+        <Link href="/" className="flex items-center min-h-11 shrink-0">
+          <img src={logo.src} alt="logo" className="h-6 w-auto" />
         </Link>
-        <span className="text-sm flex flex-row items-center gap-2">
+        <span className="flex flex-row items-center gap-1">
           {links.map((link) => (
             <Link
               href={link.href}
               children={link.icon ? link.icon : t(link.text)}
               tooltip={link.icon ? t(link.text) : undefined}
               key={link.href}
+              className="grid place-items-center size-11 shrink-0 rounded-full"
             />
           ))}
           <LanguageSwitchLink />

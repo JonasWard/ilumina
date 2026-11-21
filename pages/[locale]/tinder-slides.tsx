@@ -32,10 +32,10 @@ export const TinderSlides = () => {
       <Navigation
         heading={t('heading')}
         links={[
-          { href: 'tinder-slides', text: 'to-lamp-swiping', icon: <SVGIcon src={heart.src} /> },
-          { href: 'tinder-slides', text: 'to-lamp-swiping', icon: <SVGIcon src={cart.src} /> },
-          { href: 'favorites', text: 'to-favorites', icon: <SVGIcon src={customize.src} /> },
-          { href: '/', text: 'back-to-home', icon: <SVGIcon src={burger.src} /> }
+          { href: 'tinder-slides', text: 'to-lamp-swiping', icon: <SVGIcon src={heart.src} className="size-6" /> },
+          { href: 'tinder-slides', text: 'to-lamp-swiping', icon: <SVGIcon src={cart.src} className="size-6" /> },
+          { href: 'favorites', text: 'to-favorites', icon: <SVGIcon src={customize.src} className="size-6" /> },
+          { href: '/', text: 'back-to-home', icon: <SVGIcon src={burger.src} className="size-6" /> }
         ]}
       />
       <main className="bg-white-900 w-full">

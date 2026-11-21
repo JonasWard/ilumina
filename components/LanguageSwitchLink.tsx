@@ -8,7 +8,7 @@ const LanguageSwitchLink: React.FC = () => {
 
   return (
     <select
-      className="border-[1px] border-gray-300 rounded-md px-[2px]"
+      className="h-11 min-w-11 px-2 text-base bg-transparent border border-gray-300 rounded-md"
       value={currentLocale}
       onChange={(e) => {
         const locale = e.target.value;
@@ -16,7 +16,7 @@ const LanguageSwitchLink: React.FC = () => {
       }}
     >
       {i18nextConfig.i18n.locales.map((locale) => (
-        <option style={{ fontSize: 'small' }} key={locale} value={locale}>
+        <option key={locale} value={locale}>
           {locale}
         </option>
       ))}

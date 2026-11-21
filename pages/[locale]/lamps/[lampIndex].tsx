@@ -22,9 +22,9 @@ export const Lamp = () => {
       <Navigation
         heading={'heading'}
         links={[
-          { href: 'tinder-slides', text: 'to-lamp-swiping', icon: <SVGIcon src={heart.src} /> },
-          { href: 'tinder-slides', text: 'to-lamp-swiping', icon: <SVGIcon src={cart.src} /> },
-          { href: 'tinder-slides', text: 'to-lamp-swiping', icon: <SVGIcon src={customize.src} /> }
+          { href: 'tinder-slides', text: 'to-lamp-swiping', icon: <SVGIcon src={heart.src} className="size-6" /> },
+          { href: 'tinder-slides', text: 'to-lamp-swiping', icon: <SVGIcon src={cart.src} className="size-6" /> },
+          { href: 'tinder-slides', text: 'to-lamp-swiping', icon: <SVGIcon src={customize.src} className="size-6" /> }
         ]}
       />
       <main className="w-[calc(min(100vw,1200px)-50px)] mx-auto">

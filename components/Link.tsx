@@ -11,9 +11,7 @@ const LinkComponent: React.FC<{
   className?: string;
 }> = ({ href, className, ...props }) => {
   const router = useRouter();
-  return (
-    <Link className={className + ' cursor-pointer h-full w-full'} href={navigateTo(router.asPath, href)} {...props} />
-  );
+  return <Link className={`cursor-pointer ${className ?? ''}`} href={navigateTo(router.asPath, href)} {...props} />;
 };
 
 export default LinkComponent;
