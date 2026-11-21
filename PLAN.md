@@ -229,3 +229,6 @@ Failure:
 - Missing copy in any locale.
 
 Estimate: +380 / ~0 / -0
+
+Status: done. Actual +420 / -6.
+Deviation: added `fix: keep glow headline off the photo` (white text sat on the pale lamp) and `fix: contain deck card height` (the front card covered the subtitle). `LanguageSwitchLink` got an optional `className` so it reads on a dark background, and its default look is unchanged. Animations are defined as `@theme` tokens in `globals.css`.
