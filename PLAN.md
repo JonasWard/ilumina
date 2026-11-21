@@ -253,5 +253,5 @@ Failure:
 
 Estimate: +10 / ~40 / -260
 
-Status: done. Actual +27 / -252.
+Status: done. Actual +85 / -334.
 Deviation: added `perf: load home carousel after page load`. The carousel photos were downloading alongside the hero photo, which pushed home LCP from 2.74 s to 3.07 s. With the fix it is back to 2.74 s. Also removed the now-unused `common:h1` key.
