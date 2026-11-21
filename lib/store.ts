@@ -4,6 +4,7 @@ export const LOCAL_STORAGE_KEY_LIKED = 'liked';
 export const LOCAL_STORAGE_KEY_DISLIKED = 'disliked';
 
 type LampStore = {
+  hydrated: boolean;
   liked: Set<number>;
   disliked: Set<number>;
   _updateLiked: (liked: Set<number>) => void;
@@ -15,6 +16,7 @@ type LampStore = {
 };
 
 export const useLampStore = create<LampStore>((set, get) => ({
+  hydrated: false,
   liked: new Set(),
   disliked: new Set(),
   _updateLiked: (liked) => {

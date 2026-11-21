@@ -14,6 +14,8 @@ const MyApp = ({ Component, pageProps }: { Component: any; pageProps: any }) => 
       useLampStore.setState(() => ({
         disliked: new Set(JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY_DISLIKED)!))
       }));
+
+    useLampStore.setState(() => ({ hydrated: true }));
   }, []);
 
   return <Component {...pageProps} />;

@@ -2,7 +2,7 @@ import { useTranslation } from 'next-i18next';
 import { getStaticPaths, makeStaticProps } from '@/lib/getStatic';
 import { Navigation } from '@/components/Navigation';
 
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { TinderCard, TinderCardHandle } from '@/components/TinderCard';
 import { useLampStore } from '@/lib/store';
 import { Lamps } from '@/lib/lamps';
@@ -12,34 +12,32 @@ import brokenHeart from '/assets/icons/heart_broken.svg';
 
 export const TinderSlides = () => {
   const { t } = useTranslation(['common']);
-  const [activeIndex, setActiveIndex] = useState(0);
   const cardRef = useRef<TinderCardHandle>(null);
+  const hydrated = useLampStore((s) => s.hydrated);
+  const liked = useLampStore((s) => s.liked);
+  const disliked = useLampStore((s) => s.disliked);
 
-  const onLike = (index: number) => {
-    useLampStore.getState().addLiked(index);
-    setActiveIndex((prev) => prev + 1);
-  };
+  const queue = hydrated ? Lamps.map((_, i) => i).filter((i) => !liked.has(i) && !disliked.has(i)) : [];
+  const [current, next] = queue;
 
-  const onDislike = (index: number) => {
-    useLampStore.getState().addDisliked(index);
-    setActiveIndex((prev) => prev + 1);
-  };
+  const onLike = (index: number) => useLampStore.getState().addLiked(index);
+  const onDislike = (index: number) => useLampStore.getState().addDisliked(index);
 
-  const hasCard = Boolean(Lamps[activeIndex]);
+  const hasCard = current !== undefined;
 
   return (
     <>
       <Navigation />
       <main className="bg-white-900 w-full h-dvh flex flex-col items-center overflow-clip pt-[calc(env(safe-area-inset-top)+3.5rem)] pb-[calc(env(safe-area-inset-bottom)+1rem)]">
         <div className="relative flex-1 w-[min(85vw,600px)] max-h-[800px]">
-          {Lamps[activeIndex + 1] ? (
+          {next !== undefined ? (
             <TinderCard
               active={false}
-              key={activeIndex + 1}
-              url={Lamps[activeIndex + 1].src}
-              index={activeIndex + 1}
-              onLike={() => onLike(activeIndex + 1)}
-              onDislike={() => onDislike(activeIndex + 1)}
+              key={next}
+              url={Lamps[next].src}
+              index={next}
+              onLike={() => onLike(next)}
+              onDislike={() => onDislike(next)}
               name={t('this-is-a-lamp')}
             />
           ) : null}
@@ -47,11 +45,11 @@ export const TinderSlides = () => {
             <TinderCard
               active
               ref={cardRef}
-              key={activeIndex}
-              url={Lamps[activeIndex].src}
-              index={activeIndex}
-              onLike={() => onLike(activeIndex)}
-              onDislike={() => onDislike(activeIndex)}
+              key={current}
+              url={Lamps[current].src}
+              index={current}
+              onLike={() => onLike(current)}
+              onDislike={() => onDislike(current)}
               name={t('this-is-a-lamp')}
             />
           ) : null}
