@@ -28,6 +28,9 @@ Failure:
 
 Estimate: +6 / ~6 / -2
 
+Status: done. Actual +13 / -13.
+Deviation: added `fix: use next-i18next translation hook`; components imported `useTranslation` from a second copy of `react-i18next`, so prerendered HTML showed raw keys and every page threw a hydration error.
+
 ## 2. Nav tap targets
 Usable, labeled, correct navigation.
 
@@ -47,6 +50,9 @@ Failure:
 - Any icon link without an accessible name.
 
 Estimate: +25 / ~20 / -10
+
+Status: done. Actual +65 / -86.
+Deviation: unique keys came for free once links moved into `Navigation`, so no separate keys commit. Added `fix: use blurred nav background`.
 
 ## 3. Swipe buttons
 Swipe alternative and feedback.
@@ -70,6 +76,9 @@ Failure:
 
 Estimate: +70 / ~40 / -35
 
+Status: done. Actual +209 / -160 (+73 / -71 of that is re-indenting `globals.css`).
+Deviation: added `fix: put global element styles in base layer` (unlayered global `button` styles overrode Tailwind utilities) and `fix: correct french dislike label` ("Désirer" meant "to desire"). Double taps are ignored once a card is flung.
+
 ## 4. Swipe progress
 Resume, progress and end of deck.
 
@@ -89,6 +98,8 @@ Failure:
 - Empty card area at any point in the flow.
 
 Estimate: +60 / ~15 / -5
+
+Status: done. Actual +87 / -34.
 
 ## 5. Favorites layout
 Phone friendly grid with working card actions.
@@ -110,6 +121,9 @@ Failure:
 
 Estimate: +45 / ~25 / -10
 
+Status: done. Actual +66 / -34.
+Deviation: the cart icon became a link to the detail page (there is no cart yet). Added `fix: remove item in store remove actions` (`removeDisliked` used to add).
+
 ## 6. Lamp detail actions
 Working detail page actions.
 
@@ -129,6 +143,9 @@ Failure:
 - Description contrast below 4.5:1.
 
 Estimate: +50 / ~20 / -10
+
+Status: done. Actual +84 / -26.
+Deviation: added `fix: only go back after in-app navigation` (`history.length` would leave the site) and `fix: stack detail action labels on mobile` (de/it labels overflowed at 320 px). Purchase is a button with no action, because there is no checkout yet.
 
 ## 7. Remove template
 Remove next-i18next example leftovers.
@@ -152,6 +169,9 @@ Failure:
 
 Estimate: +50 / ~30 / -110
 
+Status: done. Actual +82 / -210.
+Note: `@react-three/*` dependencies are now unused, but they are still in `package.json`.
+
 ## 8. Lamp images
 Lighter, accessible images.
 
@@ -170,7 +190,12 @@ Failure:
 
 Estimate: +30 / ~25 / -10
 
+Status: partly met. Actual +53 / -25.
+Deviation: dropped `perf: add responsive image sizes`. The sources are already 1024 px and about 125 KB each, and a static export has no image optimizer. Added `perf: load active card before next` and `perf: preload first swipe image`.
+LCP criterion not met: the swipe page measures 3.5 s with real throttling (150 ms RTT, 1.6 Mbps, 4x CPU). The original build measures 3.4 s and the static home page 2.7 s on the same setup. The remaining cost is that the deck waits for hydration to know which lamp is next. CLS is 0.
+
 ---
 
 ## Total
-33 commits, ~ +336 / ~181 / -192
+Planned: 33 commits, ~ +336 / ~181 / -192.
+Shipped: 41 commits, net +481 / -410 (git does not split out changed lines).
