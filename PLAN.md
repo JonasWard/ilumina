@@ -232,3 +232,23 @@ Estimate: +380 / ~0 / -0
 
 Status: done. Actual +378 / -2.
 Deviation: added `fix: keep glow headline off the photo` (white text sat on the pale lamp) and `fix: contain deck card height` (the front card covered the subtitle). `LanguageSwitchLink` got an optional `className` so it reads on a dark background, and its default look is unchanged. Animations are defined as `@theme` tokens in `globals.css`.
+
+---
+
+## 10. Glow as home page
+Glow was picked. It replaces the home page, and the other proposals go.
+
+Commits:
+- `feat: use glow landing as home page`
+- `chore: remove landing proposals`
+
+Success:
+- `/[locale]/` renders the Glow design in all 5 locales; `/[locale]/proposals/*` no longer exported.
+- Same checks as item 9 pass on `/[locale]/`.
+- No unused copy keys or animation tokens left behind.
+
+Failure:
+- Any route other than home and the proposals changes.
+- Home LCP worse than the 2.7 s measured in item 8.
+
+Estimate: +10 / ~40 / -260
