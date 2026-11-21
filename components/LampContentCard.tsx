@@ -20,8 +20,8 @@ export const LampContentCard: React.FC<{ index: number; img: string; name: strin
     <div className="flex md:flex-row flex-col items-center rounded-2xl overflow-clip shadow-xl mx-auto gap-4">
       <img src={Lamps[index].src} alt="lamp" className="md:h-[50vh] w-full md:w-[50%] h-[50vh] object-cover" />
       <div className="my-auto px-4 flex flex-col items-start justify-between w-full gap-4 shadow-none">
-        <h3 className="font-bold">{t('name')}</h3>
-        <p className="text-left">{t('description')}</p>
+        <h3 className="text-2xl font-bold">{t('name')}</h3>
+        <p className="m-0 text-left">{t('description')}</p>
         <div className="fixed inset-x-0 bottom-0 z-10 grid grid-cols-3 gap-2 px-4 pt-3 pb-[calc(env(safe-area-inset-bottom)+0.75rem)] bg-white/90 backdrop-blur border-t border-black/10 md:static md:w-full md:px-0 md:pt-0 md:pb-4 md:bg-transparent md:backdrop-blur-none md:border-0">
           <button
             type="button"

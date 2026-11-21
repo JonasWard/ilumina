@@ -10,7 +10,7 @@ export const Footer = () => {
   const currentLocale = router.query.locale || i18nextConfig.i18n.defaultLocale;
 
   return (
-    <footer>
+    <footer className="bg-white/50 py-12 px-4">
       <p>{t('description')}</p>
       <p>
         <LanguageSwitchLink />

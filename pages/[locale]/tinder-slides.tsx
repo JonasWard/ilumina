@@ -57,7 +57,7 @@ export const TinderSlides = () => {
           {hydrated && !hasCard && (
             <div className="absolute inset-0 rounded-2xl bg-white shadow-lg flex flex-col items-center justify-center gap-4 p-6">
               <SVGIcon src={heart.src} className="size-12" />
-              <h2 className="m-0 min-w-0 text-2xl opacity-100">{t('deck-done')}</h2>
+              <h2 className="m-0 text-2xl">{t('deck-done')}</h2>
               <p className="m-0 opacity-70">{t('liked-count', { count: liked.size, total: Lamps.length })}</p>
               <Link
                 href="favorites"

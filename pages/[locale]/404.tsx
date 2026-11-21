@@ -11,11 +11,11 @@ const Homepage = () => {
 
   return (
     <>
-      <main>
-        <Header heading={'404:h1'} title={'404:title'} />
+      <main className="flex flex-col flex-1 items-center justify-center px-4">
+        <Header className="text-2xl sm:text-4xl" heading={'404:h1'} title={'404:title'} />
         <div>
-          <Link href="/" skipLocaleHandling={false}>
-            <button type="button">{t('common:back-to-home')}</button>
+          <Link href="/" className="inline-grid place-items-center min-h-12 px-6 rounded-full bg-black text-white font-semibold">
+            {t('common:back-to-home')}
           </Link>
         </div>
       </main>

@@ -11,11 +11,11 @@ const Homepage = () => {
 
   return (
     <>
-      <main className="bg-white-900">
-        <Header className="text-black" heading={'h1'} title={'title'} />
+      <main className="flex flex-col flex-1 items-center justify-center px-4">
+        <Header heading={'h1'} title={'title'} />
         <div>
-          <Link href="/tinder-slides">
-            <button type="button">{t('to-lamp-swiping')}</button>
+          <Link href="/tinder-slides" className="inline-grid place-items-center min-h-12 px-6 rounded-full bg-black text-white font-semibold">
+            {t('to-lamp-swiping')}
           </Link>
         </div>
       </main>
