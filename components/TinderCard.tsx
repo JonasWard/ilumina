@@ -1,6 +1,8 @@
-import { useRef } from 'react';
+import { Ref, useImperativeHandle, useRef } from 'react';
 
 const SWIPE_X_REGISTRATION_DISTANCE = 60;
+
+export type TinderCardHandle = { swipe: (liked: boolean) => void };
 
 export const TinderCard = ({
   url,
@@ -8,7 +10,8 @@ export const TinderCard = ({
   onLike,
   onDislike,
   active,
-  name
+  name,
+  ref
 }: {
   url: string;
   index: number;
@@ -16,9 +19,20 @@ export const TinderCard = ({
   onDislike: () => void;
   active: boolean;
   name: string;
+  ref?: Ref<TinderCardHandle>;
 }) => {
   const elementRef = useRef<HTMLDivElement>(null);
   const dragData = useRef({ offsetX: 0, offsetY: 0, startX: 0, startY: 0, dragging: false });
+
+  const fling = (liked: boolean, offsetY = 0, rotate = liked ? 15 : -15) => {
+    if (!elementRef.current) return;
+    elementRef.current.style.transition = 'all 0.3s ease-in-out';
+    elementRef.current.style.transform = `translate(${liked ? 500 : -500}px, ${offsetY}px) rotate(${rotate}deg)`;
+    elementRef.current.style.opacity = '0';
+    setTimeout(() => (liked ? onLike() : onDislike()), 300);
+  };
+
+  useImperativeHandle(ref, () => ({ swipe: (liked) => fling(liked) }));
 
   const startDrag = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!elementRef.current) return;
@@ -45,14 +59,8 @@ export const TinderCard = ({
     if (!elementRef.current || !dragData.current.dragging) return;
     dragData.current.dragging = false;
     const { offsetX, offsetY } = dragData.current;
-    const rotate = offsetX / 20;
-    if (Math.abs(offsetX) > SWIPE_X_REGISTRATION_DISTANCE) {
-      const liked = offsetX > 0;
-      elementRef.current.style.transform = `translate(${liked ? 500 : -500}px, ${offsetY}px) rotate(${rotate}deg)`;
-      elementRef.current.style.opacity = '0';
-      elementRef.current.style.transition = 'all 0.3s ease-in-out';
-      setTimeout(() => (liked ? onLike() : onDislike()), 300);
-    } else {
+    if (Math.abs(offsetX) > SWIPE_X_REGISTRATION_DISTANCE) fling(offsetX > 0, offsetY, offsetX / 20);
+    else {
       elementRef.current.style.transform = '';
       elementRef.current.style.opacity = '1';
       elementRef.current.style.boxShadow = '';
