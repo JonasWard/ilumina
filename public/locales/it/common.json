@@ -17,5 +17,6 @@
   "like": "Mi piace",
   "deck-done": "Hai visto tutte le lampade",
   "liked-count": "Ti piacciono {{count}} su {{total}}.",
-  "see-favorites": "Vedi preferiti"
+  "see-favorites": "Vedi preferiti",
+  "start-over": "Ricomincia"
 }

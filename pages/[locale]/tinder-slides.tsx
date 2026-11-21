@@ -65,6 +65,13 @@ export const TinderSlides = () => {
               >
                 {t('see-favorites')}
               </Link>
+              <button
+                type="button"
+                onClick={() => useLampStore.getState().resetRatings()}
+                className="min-h-12 w-full max-w-64 m-0 rounded-full bg-white border border-black shadow-none font-semibold"
+              >
+                {t('start-over')}
+              </button>
             </div>
           )}
         </div>
