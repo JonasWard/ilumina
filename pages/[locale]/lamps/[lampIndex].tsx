@@ -16,8 +16,8 @@ export const Lamp = () => {
   return (
     <>
       <Navigation />
-      <main className="w-[calc(min(100vw,1200px)-50px)] mx-auto">
-        <div className="mt-[65px] w-[calc(min(100vw,1200px)-50px)]">
+      <main className="w-full max-w-[1200px] mx-auto justify-start px-4 pt-[calc(env(safe-area-inset-top)+3.5rem)] pb-[calc(env(safe-area-inset-bottom)+6rem)] md:pb-8">
+        <div className="w-full">
           {Lamps[index] && (
             <LampContentCard index={index} img={Lamps[index].src} name={t('name')} description={t('description')} />
           )}
