@@ -325,6 +325,13 @@ Failure:
 
 Estimate: +300 / ~10 / -0
 
+Status: done. Actual +418 / -3 (the font license file is 93 of those lines).
+Deviations:
+- Added `chore: remove unrelated tailwind package`. `package.json` depended on `tailwind`, an unrelated npm package (an "evented CQS" library) that pulled in Express and an old `cookie` which broke Astro's build.
+- Astro's built-in `i18n` routing is not used. Own `[locale]` routes plus `localizedPath()` give the same URLs with less magic.
+- During coexistence Tailwind runs through `@tailwindcss/vite` with Next's `postcss.config.mjs` disabled for Astro.
+Results: all 165 lookups (33 keys × 5 locales) match i18next exactly, `/dk/` has `lang="da"`, there are 6 `hreflang` links per page, and the parity check fails on a removed key and names it.
+
 ## 12. Static pages
 Commits:
 - `feat: port home page to astro`
@@ -347,6 +354,10 @@ Failure:
 - Any page in `out/` that has no matching page in `dist/`.
 
 Estimate: +260 / ~0 / -0
+
+Status: done. Actual +248 / -3.
+Deviation: `/404/` without a locale is not generated. GitHub Pages serves `404.html` for it, which forwards to the localized 404 page, as for any unknown URL.
+Results: home, detail and 404 pages are pixel-identical to Next.js at 320 / 412 / 1280 px. `da-DK` → `/dk/`, `de-CH` → `/de/`, `ja` → `/en/`, a saved choice wins, and the redirect page is not in the back history.
 
 ## 13. Interactive islands
 Commits:
@@ -377,6 +388,15 @@ Failure:
 
 Estimate: +230 / ~70 / -20
 
+Status: done. Actual +426 / -22.
+Deviations:
+- Dropped `refactor: use forward ref in tinder card`: Preact 11 passes `ref` as a prop like React 19.
+- Added `perf: keep icons as cacheable files`: inlined SVGs were repeated in every swipe card and page.
+- Before hydration only the first card shows. Showing the next card too made its photo compete with the first.
+- The back button checks `document.referrer` instead of a sessionStorage flag.
+- `zustand` has to be bundled in Astro's `prerender` environment so it uses `preact/compat` while rendering.
+Results: every behaviour check from items 3–6 passes, swipe and favorites pages are pixel-identical, and favorites saved in the Next.js format load unchanged. The swipe page ships 34.9 KB of JS (was 446 KB), and returning visitors see their next lamp from the first frame.
+
 ## 14. Optimized images
 Commits:
 - `perf: serve lamp images through astro assets`
@@ -395,6 +415,13 @@ Failure:
 
 Estimate: +70 / ~40 / -10
 
+Status: done. Actual +158 / -41.
+Deviations:
+- The JPEG fallback is the original file: a re-encoded JPEG came out larger (130 KB vs 110 KB).
+- `<picture>` uses `display: contents`, so its `<source>` elements are hidden explicitly; otherwise they became flex items and added gaps.
+- Not met: hero ≤ 30 KB at 320 px. It holds at 1x, but a 2x iPhone SE needs the 640 px version (38 KB) to stay sharp, and sharpness won.
+Results: Pixel 7 hero 79 KB (was 110 KB), home hero 0.87 s, CLS 0, and a 22 s build.
+
 ## 15. Navigation speed
 Commits:
 - `perf: prefetch swipe page from home`
@@ -411,6 +438,10 @@ Failure:
 - Prefetching pushes the home page's hero photo later.
 
 Estimate: +10 / ~5 / -0
+
+Status: done. Actual +30 / -5.
+Deviation: Astro's `prefetch` was replaced by a few inline lines. Astro's version started before the hero photo had loaded and added a script to the home page.
+Results: tapping "Find your lamp" after the home page settles shows the first card in 0.23 s, and the prefetch starts only after the hero has loaded.
 
 ## 16. Switch and clean up
 Commits:
@@ -438,10 +469,31 @@ Failure:
 
 Estimate: +120 / ~30 / -900
 
+Status: done. Actual +213 / -936.
+Deviations:
+- `TinderCard`, the store and the lamp list moved into `src/`.
+- `next lint`, which never had a config, became `astro check` (0 errors).
+- `@astrojs/check` and `playwright` (1.63.0, matching the CI browser setup) were added as dev dependencies.
+Not verified here: the GitHub Actions deploy, and a full `bun install` (this sandbox blocks the `locize-cli` tarball host). `bun.lock` was generated with `bun --lockfile-only`, so the first CI run is the real install.
+
 ---
 
 ## Astro migration total
-27 commits, ~ +990 / ~155 / -930
+Planned: 27 commits, ~ +990 / ~155 / -930.
+Shipped: 28 commits, +1493 / -1010 (excluding `bun.lock`; git does not split out changed lines).
+
+Results (throttled Pixel 7, served with gzip like GitHub Pages; budgets in `scripts/perf-budget.json`):
+
+| | Next.js | Astro |
+|---|---|---|
+| Home first paint | 645 ms | 312 ms |
+| Home hero photo | 1749 ms | 871 ms |
+| Swipe, first card, new visitor | 1869 ms | 1058 ms |
+| Swipe, first card, returning visitor | 3340 ms | 1139 ms |
+| Home JS | ~410 KB | 0 (inline only) |
+| Swipe page JS (uncompressed) | 446 KB | 34.9 KB |
+
+Correction: the prototype numbers at the top of this section, and in items 8 and 10, were measured without compression. With gzip, as GitHub Pages serves it, Next.js was faster than those numbers suggested (home hero 1.75 s rather than 2.7 s). The gap to Astro is still about 2x.
 
 Not doing:
 - **Service worker / offline**: GitHub Pages' fixed 10-minute cache plus hashed assets already make repeat visits cheap, and a worker adds update and staleness bugs.
