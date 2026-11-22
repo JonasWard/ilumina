@@ -15,6 +15,8 @@ export const TinderCard = ({
   name,
   alt,
   loading,
+  sources,
+  sizes,
   ref
 }: {
   url: string;
@@ -25,6 +27,9 @@ export const TinderCard = ({
   name: string;
   alt: string;
   loading?: 'lazy' | 'eager';
+  /** Modern formats for a `<picture>`; `url` stays the fallback. */
+  sources?: { type: string; srcset: string }[];
+  sizes?: string;
   ref?: Ref<TinderCardHandle>;
 }) => {
   const elementRef = useRef<HTMLDivElement>(null);
@@ -103,15 +108,18 @@ export const TinderCard = ({
       onPointerUp={active ? endDrag : undefined}
       onPointerCancel={active ? endDrag : undefined}
     >
-      <img
-        src={url}
-        alt={alt}
-        loading={loading}
-        draggable={false}
-        decoding="async"
-        fetchPriority={active ? 'high' : 'auto'}
-        className="absolute inset-0 size-full object-cover pointer-events-none"
-      />
+      <picture style={{ display: 'contents' }}>
+        {sources?.map((source) => <source key={source.type} type={source.type} srcSet={source.srcset} sizes={sizes} />)}
+        <img
+          src={url}
+          alt={alt}
+          loading={loading}
+          draggable={false}
+          decoding="async"
+          fetchPriority={active ? 'high' : 'auto'}
+          className="absolute inset-0 size-full object-cover pointer-events-none"
+        />
+      </picture>
       <div
         ref={likeStampRef}
         className="absolute top-6 left-6 grid place-items-center size-16 rounded-full bg-white/90 border-4 border-green-500 -rotate-12 opacity-0 pointer-events-none"

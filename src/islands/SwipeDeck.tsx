@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { TinderCard, type TinderCardHandle } from '../../components/TinderCard';
 import { useHydrateLampStore, useLampStore } from '../../lib/store';
 import { interpolate } from '../i18n/interpolate';
+import type { LampPicture } from '../images/lampPicture';
 
 export type SwipeDeckLabels = {
   like: string;
@@ -22,7 +23,7 @@ export const SwipeDeck = ({
   favoritesHref,
   icons
 }: {
-  lamps: string[];
+  lamps: LampPicture[];
   labels: SwipeDeckLabels;
   favoritesHref: string;
   icons: { heart: string; brokenHeart: string };
@@ -50,7 +51,9 @@ export const SwipeDeck = ({
       active={active}
       ref={active ? cardRef : undefined}
       key={index}
-      url={lamps[index]}
+      url={lamps[index].src}
+      sources={lamps[index].sources}
+      sizes={lamps[index].sizes}
       alt={interpolate(labels.lampAlt, { number: index + 1 })}
       index={index}
       onLike={() => onLike(index)}

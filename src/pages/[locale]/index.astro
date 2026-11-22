@@ -1,6 +1,8 @@
 ---
 import Base from '../../layouts/Base.astro';
 import TopBar from '../../components/TopBar.astro';
+import Picture from '../../components/Picture.astro';
+import { lampPicture } from '../../images/lampPicture';
 import { Lamps } from '../../../lib/lamps';
 import { localeStaticPaths, localizedPath, useTranslations, type Locale } from '../../i18n';
 
@@ -8,13 +10,14 @@ export const getStaticPaths = localeStaticPaths;
 const locale = Astro.params.locale as Locale;
 const t = useTranslations(locale, 'landing');
 const swipe = localizedPath(locale, 'tinder-slides');
+const pictures = await Promise.all(Lamps.map((lamp) => lampPicture(lamp)));
 ---
 
 <Base locale={locale}>
   <div class="bg-black text-white text-left">
     <section class="relative h-dvh min-h-[560px] overflow-clip">
-      <img
-        src={Lamps[0].src}
+      <Picture
+        picture={pictures[0]}
         alt={t('common:lamp-alt', { number: 1 })}
         fetchpriority="high"
         class="absolute inset-x-0 top-0 w-full h-[62%] object-cover object-[50%_35%] scale-105 motion-safe:animate-drift"
@@ -44,13 +47,24 @@ const swipe = localizedPath(locale, 'tinder-slides');
       <h2 class="m-0 px-6 pb-6 text-xs uppercase tracking-[0.3em] text-amber-200">{t('collection')}</h2>
       <div class="flex flex-row gap-4 overflow-x-auto snap-x snap-mandatory px-6 pb-4 [scrollbar-width:none]">
         {
-          Lamps.map((lamp, i) => (
+          pictures.map((picture, i) => (
             <a
               href={localizedPath(locale, `lamps/${i}`)}
               aria-label={t('common:lamp-alt', { number: i + 1 })}
               class="relative shrink-0 w-[68vw] max-w-72 snap-center rounded-2xl overflow-clip"
             >
-              <img data-after-load={lamp.src} alt="" class="block w-full aspect-[3/4] object-cover bg-white/5" />
+              <picture class="contents [&>source]:hidden">
+                {picture.sources.map((source) => (
+                  <source type={source.type} data-after-load={source.srcset} sizes={picture.sizes} />
+                ))}
+                <img
+                  data-after-load={picture.src}
+                  alt=""
+                  width={picture.width}
+                  height={picture.height}
+                  class="block w-full h-auto aspect-[3/4] object-cover bg-white/5"
+                />
+              </picture>
               <span class="absolute bottom-3 left-4 text-sm text-white/90">{String(i + 1).padStart(2, '0')}</span>
             </a>
           ))
@@ -67,7 +81,9 @@ const swipe = localizedPath(locale, 'tinder-slides');
   <script is:inline>
     // The carousel waits for the hero photo, so it never competes with it for bandwidth.
     const showCarousel = () =>
-      document.querySelectorAll('img[data-after-load]').forEach((img) => (img.src = img.dataset.afterLoad));
+      document.querySelectorAll('[data-after-load]').forEach((el) => {
+        el[el.tagName === 'SOURCE' ? 'srcset' : 'src'] = el.dataset.afterLoad;
+      });
     document.readyState === 'complete' ? showCarousel() : addEventListener('load', showCarousel);
   </script>
 </Base>

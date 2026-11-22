@@ -1,5 +1,6 @@
 import { useHydrateLampStore, useLampStore } from '../../lib/store';
 import { interpolate } from '../i18n/interpolate';
+import type { LampPicture } from '../images/lampPicture';
 
 export type FavoritesLabels = {
   unlike: string;
@@ -18,7 +19,7 @@ export const FavoritesGrid = ({
   swipeHref,
   icons
 }: {
-  lamps: string[];
+  lamps: LampPicture[];
   labels: FavoritesLabels;
   /** Detail page URL prefix; the lamp index and a slash are appended. */
   lampHref: string;
@@ -43,15 +44,20 @@ export const FavoritesGrid = ({
         {[...liked].map((index) => (
           <div key={index} class="relative w-full rounded-2xl overflow-clip shadow-xl bg-white/60">
             <a href={`${lampHref}${index}/`} class="block">
-              <img
-                src={lamps[index]}
-                alt={interpolate(labels.lampAlt, { number: index + 1 })}
-                width={1024}
-                height={1366}
-                loading="lazy"
-                decoding="async"
-                class="w-full h-auto aspect-[3/4] object-cover"
-              />
+              <picture class="contents [&>source]:hidden">
+                {lamps[index].sources.map((source) => (
+                  <source key={source.type} type={source.type} srcset={source.srcset} sizes={lamps[index].sizes} />
+                ))}
+                <img
+                  src={lamps[index].src}
+                  alt={interpolate(labels.lampAlt, { number: index + 1 })}
+                  width={lamps[index].width}
+                  height={lamps[index].height}
+                  loading="lazy"
+                  decoding="async"
+                  class="w-full h-auto aspect-[3/4] object-cover"
+                />
+              </picture>
               <h3 class="m-0 px-11 py-3 text-base font-bold truncate">{labels.name}</h3>
             </a>
             <button
