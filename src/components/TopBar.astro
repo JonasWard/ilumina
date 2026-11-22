@@ -1,0 +1,26 @@
+---
+import logo from '../../assets/icons/logo_ilumina.svg?url';
+import LanguageSelect from './LanguageSelect.astro';
+import { localizedPath, useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  path?: string;
+  dark?: boolean;
+  class?: string;
+}
+
+const { locale, path = '', dark = false, class: className = '' } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<div class={`flex flex-row items-center justify-between px-4 pt-[calc(env(safe-area-inset-top)+0.5rem)] ${className}`}>
+  <a href={localizedPath(locale)} aria-label={t('back-to-home')} class="flex items-center min-h-11">
+    <img src={logo} alt="ilumina" class={`h-7 w-auto ${dark ? 'invert' : ''}`} />
+  </a>
+  <LanguageSelect
+    locale={locale}
+    path={path}
+    class={dark ? 'border-white/30 text-white [&>option]:text-black' : 'border-black/20'}
+  />
+</div>

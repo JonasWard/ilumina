@@ -1,11 +1,73 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { localeStaticPaths, type Locale } from '../../i18n';
+import TopBar from '../../components/TopBar.astro';
+import { Lamps } from '../../../lib/lamps';
+import { localeStaticPaths, localizedPath, useTranslations, type Locale } from '../../i18n';
 
 export const getStaticPaths = localeStaticPaths;
 const locale = Astro.params.locale as Locale;
+const t = useTranslations(locale, 'landing');
+const swipe = localizedPath(locale, 'tinder-slides');
 ---
 
 <Base locale={locale}>
-  <main></main>
+  <div class="bg-black text-white text-left">
+    <section class="relative h-dvh min-h-[560px] overflow-clip">
+      <img
+        src={Lamps[0].src}
+        alt={t('common:lamp-alt', { number: 1 })}
+        fetchpriority="high"
+        class="absolute inset-x-0 top-0 w-full h-[62%] object-cover object-[50%_35%] scale-105 motion-safe:animate-drift"
+      />
+      <div
+        class="absolute inset-0 bg-[radial-gradient(circle_at_50%_32%,rgba(255,196,120,0.45),transparent_50%)] mix-blend-screen motion-safe:animate-breathe"
+      >
+      </div>
+      <div class="absolute inset-0 bg-linear-to-t from-black from-45% via-black/70 via-60% to-black/10"></div>
+
+      <TopBar locale={locale} dark class="relative z-10" />
+
+      <div class="absolute inset-x-0 bottom-0 flex flex-col gap-4 px-6 pb-[calc(env(safe-area-inset-bottom)+2rem)] max-w-xl">
+        <p class="m-0 text-xs uppercase tracking-[0.3em] text-amber-200">{t('eyebrow')}</p>
+        <h1 class="m-0 text-4xl sm:text-6xl font-light leading-[1.1]">{t('glow-title')}</h1>
+        <p class="m-0 text-white/80">{t('glow-body')}</p>
+        <a
+          href={swipe}
+          class="grid place-items-center min-h-12 mt-2 rounded-full bg-white text-black font-semibold shadow-[0_0_40px_rgba(255,196,120,0.45)]"
+        >
+          {t('cta-start')}
+        </a>
+      </div>
+    </section>
+
+    <section class="py-12 pb-[calc(env(safe-area-inset-bottom)+3rem)]">
+      <h2 class="m-0 px-6 pb-6 text-xs uppercase tracking-[0.3em] text-amber-200">{t('collection')}</h2>
+      <div class="flex flex-row gap-4 overflow-x-auto snap-x snap-mandatory px-6 pb-4 [scrollbar-width:none]">
+        {
+          Lamps.map((lamp, i) => (
+            <a
+              href={localizedPath(locale, `lamps/${i}`)}
+              aria-label={t('common:lamp-alt', { number: i + 1 })}
+              class="relative shrink-0 w-[68vw] max-w-72 snap-center rounded-2xl overflow-clip"
+            >
+              <img data-after-load={lamp.src} alt="" class="block w-full aspect-[3/4] object-cover bg-white/5" />
+              <span class="absolute bottom-3 left-4 text-sm text-white/90">{String(i + 1).padStart(2, '0')}</span>
+            </a>
+          ))
+        }
+      </div>
+      <div class="px-6 pt-6">
+        <a href={swipe} class="grid place-items-center min-h-12 rounded-full border border-white/40 text-white font-semibold">
+          {t('cta-start')}
+        </a>
+      </div>
+    </section>
+  </div>
+
+  <script is:inline>
+    // The carousel waits for the hero photo, so it never competes with it for bandwidth.
+    const showCarousel = () =>
+      document.querySelectorAll('img[data-after-load]').forEach((img) => (img.src = img.dataset.afterLoad));
+    document.readyState === 'complete' ? showCarousel() : addEventListener('load', showCarousel);
+  </script>
 </Base>
