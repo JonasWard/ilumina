@@ -262,45 +262,68 @@ Deviation: added `perf: load home carousel after page load`. The carousel photos
 
 Branch: `refactor/astro-migration`, created from `feat/mobile-ui` (it needs the mobile work). One PR to `main`.
 
-Goal: ship the same site as static Astro pages. Pages are plain HTML and CSS. React only loads where something is interactive (swipe deck, favorites, detail actions).
-Measured reason: a prototype of the home page loaded its main photo (LCP) in 1.04 s instead of 2.73 s, and downloaded 164 KB instead of 586 KB (slow 4G, 4x CPU, Pixel 7).
+Goal: ship the same site as static Astro pages. Pages are plain HTML and CSS, and Preact loads only where something is interactive (swipe deck, favorites, detail actions).
 
-Approach: Astro lives in `src/` next to the Next.js `pages/` until the switch, so `bun run build` (Next.js) keeps passing at every commit. `bun run build:astro` builds the new site until item 15 makes it the only build.
+Measured on prototypes (slow 4G, 4x CPU, Pixel 7, home page):
+
+| Build | First paint | Hero photo loaded | Downloaded |
+|---|---|---|---|
+| Next.js today | 1.09 s | 2.71 s | 586 KB |
+| Astro, straight port | 0.61 s | 1.14 s | 165 KB |
+| + inline CSS, self-hosted font | 0.36 s | 1.05 s | 164 KB |
+| + AVIF/WebP hero | 0.37 s | 0.90 s | 134 KB |
+
+Island runtime with the swipe deck's hooks plus zustand: React 224 KB raw (70 KB gzip), Preact 25 KB raw (10 KB gzip).
+
+Approach: Astro lives in `src/` next to the Next.js `pages/` until the switch, so `bun run build` (Next.js) keeps passing at every commit. `bun run build:astro` builds the new site until item 16 makes it the only build.
 
 Kept as is:
-- **URLs**: `/`, `/404.html`, `/{locale}/`, `/{locale}/tinder-slides/`, `/{locale}/favorites/`, `/{locale}/lamps/{0-9}/`, with trailing slashes.
+- **URLs**: `/`, `/404.html`, `/{locale}/`, `/{locale}/tinder-slides/`, `/{locale}/favorites/`, `/{locale}/lamps/{0-9}/`, with trailing slashes. `/dk/` stays as a URL.
 - **Stored data**: the localStorage keys `liked` and `disliked`, so people keep their favorites.
-- **Locales**: en, de, dk, it, fr. `en` is the fallback.
-- **Hosting**: GitHub Pages on `ilumina.ch`; `PAGES_BASE_PATH` becomes Astro's `base`.
-- **Components**: `TinderCard`, `lib/store.ts` and `lib/lamps.ts` are reused as React and plain TypeScript.
+- **Hosting**: GitHub Pages on `ilumina.ch`; `PAGES_BASE_PATH` becomes Astro's `base`. GitHub Pages fixes cache headers (10 min) and serves gzip, so neither is tunable.
+- **Components**: `TinderCard`, `lib/store.ts` and `lib/lamps.ts` are reused through `preact/compat`.
 
-Global failure criteria for every commit: `bun run build` or `bun run build:astro` fails, or a page that already exists in Astro fails the UI checks from items 1–10 (no horizontal scroll at 320 px, tap targets ≥ 44 px, no console errors, motion off under reduced motion).
+## Localisation design
+- **Source**: the same JSON namespaces as now (`common`, `landing`, `404`, `footer`, `navigation`). They stay where locize downloads them, and move to `src/i18n/locales` in item 16.
+- **Routing**: `src/pages/[locale]/…` with `getStaticPaths` over `en`, `de`, `dk`, `it`, `fr`, plus Astro's `i18n` config (`prefixDefaultLocale: true`), so every locale gets its own static HTML.
+- **Translating**: `useTranslations(locale)` returns `t('ns:key', vars)` with `{{var}}` interpolation. Keys are typed from the English files, so a typo is a type error. Missing keys in other locales fail the build through a parity check. No plural rules are used today, so no i18n library is needed.
+- **Islands**: they receive already-translated strings as props, plus templates such as `liked-count` that they fill in with the same `{{var}}` helper (about 10 lines). No i18n code or locale JSON ships to the browser.
+- **Language tags**: the URL segment `dk` maps to the language tag `da`, used in `<html lang>` and `hreflang`. The other locales map to themselves.
+- **SEO**: every page gets `<link rel="alternate" hreflang>` for all 5 locales plus `x-default` (pointing to `/en/`), and a canonical link.
+- **Language switch**: it saves the choice to localStorage (`locale`) and goes to the same page in the new locale.
+- **`/` redirect**: an inline script picks the saved choice, then the first `navigator.languages` match (`da*` maps to `dk`), then `en`. It uses `location.replace`, so the redirect page doesn't stay in the back history. `<noscript>` lists the 5 language links.
+- **404**: it uses the locale from the URL prefix if there is one, otherwise the same detection as `/`.
+
+Global failure criteria for every commit: `bun run build` or `bun run build:astro` fails, or a page already ported to Astro fails the UI checks from items 1–10 (no horizontal scroll at 320 px, tap targets ≥ 44 px, no console errors, motion off under reduced motion).
 
 ---
 
 ## 11. Astro foundation
 Commits:
-- `chore: add astro with react and tailwind`
+- `chore: add astro with preact and tailwind`
+- `perf: self-host quicksand font`
+- `perf: inline page css`
 - `feat: add astro i18n helpers`
-- `feat: add astro base layout`
+- `chore: add locale key parity check`
+- `feat: add astro base layout with hreflang`
 - `feat: add astro nav and language select`
 
 Details:
-- `astro.config.mjs`: `output: 'static'`, `trailingSlash: 'always'`, `base` from `PAGES_BASE_PATH`, `@astrojs/react`, `@tailwindcss/vite`.
-- i18n: `t(locale, 'ns:key', vars)` reads the existing JSON files and supports `{{var}}`. Islands receive translated strings as props, so no i18n library ships to the browser.
-- Layout: head (title, favicon, font, viewport), slot, body classes.
-- Nav: renders the active state on the server. The language select is a `<select>` with an inline script of a few lines.
+- `astro.config.mjs`: `output: 'static'`, `trailingSlash: 'always'`, `base` from `PAGES_BASE_PATH`, `@astrojs/preact` with `compat: true`, `@tailwindcss/vite`, `build.inlineStylesheets: 'always'`.
+- Font: Quicksand variable weights 300–600, Latin subset as one 28 KB woff2 (covers å æ ø ß é ü), with `font-display: swap` and a preload.
+- Parity check: `scripts/check-locales.mjs` runs before `build:astro` and fails on any missing or extra key per namespace.
 
 Success:
-- `bun run build:astro` builds an empty locale shell for all 5 locales.
-- `t()` returns the same strings as `next-i18next` for every key in `common.json` (checked by a script that compares all keys).
-- Nav markup matches the Next.js nav: same links, `aria-label`s and `aria-current`, 44 px targets.
+- `bun run build:astro` builds a shell for all 5 locales with no requests to `fonts.googleapis.com` or `fonts.gstatic.com`, and no external stylesheet.
+- `t()` returns the same strings as `next-i18next` for every key in every namespace and locale (checked by comparing all keys).
+- `/dk/` pages have `lang="da"`, and every page lists 6 `hreflang` links (5 locales plus `x-default`).
+- Removing one key from `fr/common.json` makes `build:astro` fail and name the key.
 
 Failure:
 - Any translated key renders as a raw key.
-- Any i18n or React runtime shipped on a page without an island.
+- Any i18n library or framework runtime shipped on a page without an island.
 
-Estimate: +220 / ~5 / -0
+Estimate: +300 / ~10 / -0
 
 ## 12. Static pages
 Commits:
@@ -312,16 +335,15 @@ Commits:
 Details:
 - Home: the Glow page as pure HTML. The carousel loads after the `load` event (inline script).
 - Detail: image, name and description are static, and the actions arrive in item 13.
-- `/`: inline locale detection with the same order as now (saved choice, `navigator.languages`, `en`). `<noscript>` links to `/en/`.
-- `404.html`: localized from the browser language and links home.
+- `/` and `404.html` as described in the localisation design.
 
 Success:
-- Home in Astro has LCP ≤ 1.1 s and 0 KB of JS apart from inline scripts, on the throttled run.
-- Visiting `/` with a German browser lands on `/de/`, and with an unknown language on `/en/`.
+- Home: first paint ≤ 0.45 s and hero photo ≤ 1.1 s on the throttled run, with 0 KB of JS apart from inline scripts.
+- `/` with a `da-DK` browser lands on `/dk/`, with `de-CH` on `/de/`, with `ja` on `/en/`, and a saved choice wins over the browser language.
 - Screenshots at 320 / 412 / 1280 px match the Next.js pages, apart from font anti-aliasing.
 
 Failure:
-- Redirect loop, or a flash of the wrong locale for longer than 100 ms.
+- Redirect loop, or the redirect page left in the back history.
 - Any page in `out/` that has no matching page in `dist/`.
 
 Estimate: +260 / ~0 / -0
@@ -329,26 +351,31 @@ Estimate: +260 / ~0 / -0
 ## 13. Interactive islands
 Commits:
 - `refactor: hydrate lamp store without next app`
-- `feat: port swipe deck as react island`
-- `feat: port favorites grid as react island`
-- `feat: port detail actions as react island`
+- `refactor: use forward ref in tinder card`
+- `feat: port swipe deck as preact island`
+- `perf: render first deck card before hydration`
+- `feat: port favorites grid as preact island`
+- `feat: port detail actions as preact island`
 - `feat: port back button to astro`
 
 Details:
 - Store: the `hydrated` flag is set when the store module first runs in the browser (replaces `_app.tsx`).
+- `TinderCard`: `preact/compat` does not pass `ref` as a prop to function components the way React 19 does, so it wraps in `forwardRef`.
+- First card before hydration: the HTML contains all 10 cards, hidden. A blocking inline script in `<head>` reads `liked` and `disliked` and sets `data-first` and `data-next` on the deck before first paint. CSS shows only those two cards, so the right photo paints without waiting for JS, and the island then takes over the same DOM.
 - Swipe and favorites use `client:load`; detail actions use `client:visible`.
-- Back button: a plain button with an inline script that goes back only after in-app navigation (sessionStorage flag set on page load).
+- Back button: a plain button with an inline script that goes back only after in-app navigation (a sessionStorage flag set on page load).
 
 Success:
 - Every behaviour verified in items 3–6 still passes: button and swipe give the same store state, double tap counts once, reload resumes the deck, end card and reset work, unlike works on cards, and like/dislike on the detail page are exclusive.
 - Favorites stored by the Next.js site load unchanged in the Astro site.
-- Swipe page JS ≤ 200 KB uncompressed (Next.js today: ~410 KB), and swipe LCP ≤ 2.5 s on the throttled run.
+- Swipe page JS ≤ 40 KB raw (Next.js today: ~410 KB), and the swipe page's first card loads in ≤ 1.2 s on the throttled run (Next.js today: 3.5 s).
+- A returning visitor with 3 rated lamps sees lamp 4 as the first paint, with no frame showing lamp 1.
 
 Failure:
 - Any island hydration error or mismatch warning.
 - Store state diverges between two islands on one page.
 
-Estimate: +180 / ~60 / -20
+Estimate: +230 / ~70 / -20
 
 ## 14. Optimized images
 Commits:
@@ -356,49 +383,71 @@ Commits:
 - `perf: add responsive lamp image sizes`
 
 Details:
-- `astro:assets` `<Picture>` with AVIF and WebP plus a JPEG fallback, `srcset` widths 480 / 768 / 1024, and correct `sizes` for the hero, carousel, grid and detail images.
-- Swipe deck: the island receives the same generated URLs as props.
+- `astro:assets` `<Picture>` with AVIF and WebP plus a JPEG fallback, `srcset` widths 480 / 768 / 1024, and correct `sizes` for the hero, carousel, grid, detail and deck images.
 
 Success:
-- Hero image transfer on Pixel 7 ≤ 60 KB (JPEG today: 110 KB).
-- Home LCP ≤ 0.9 s on the throttled run; CLS stays 0.
+- Hero photo on Pixel 7 ≤ 85 KB (JPEG today: 110 KB), and ≤ 30 KB at 320 px wide.
+- Home hero photo loaded ≤ 0.95 s on the throttled run; CLS stays 0.
 
 Failure:
 - Visible quality loss at 2x DPR (compare screenshots against the source JPEG).
 - Build time over 60 s.
 
-Estimate: +60 / ~40 / -10
+Estimate: +70 / ~40 / -10
 
-## 15. Switch and clean up
+## 15. Navigation speed
+Commits:
+- `perf: prefetch swipe page from home`
+- `perf: prefetch detail pages from favorites`
+
+Details:
+- Astro `prefetch` with `prefetchAll: false`. The home CTAs prefetch on viewport; the favorites cards prefetch on hover or touch start.
+
+Success:
+- After the home page settles, tapping "Find your lamp" shows the swipe page's first card in ≤ 0.5 s on the throttled run.
+- Prefetching never starts before the home hero photo has loaded.
+
+Failure:
+- Prefetching pushes the home page's hero photo later.
+
+Estimate: +10 / ~5 / -0
+
+## 16. Switch and clean up
 Commits:
 - `chore: build and deploy with astro`
 - `chore: remove next.js`
 - `chore: move locales into src`
+- `chore: add performance budget check`
 - `docs: update claude.md for astro`
 
 Details:
 - `build` becomes `astro build`. The workflow uploads `dist/`, and `CNAME` moves to `public/CNAME`.
-- Removed: `pages/`, `next.config.ts`, `next-env.d.ts`, `next-i18next.config.js`, the Next-only `lib/` and `components/`, and the dependencies `next`, `next-i18next`, `i18next`, `react-i18next`, `next-language-detector`, `@react-three/*` and `eslint-config-next`.
+- Removed: `pages/`, `next.config.ts`, `next-env.d.ts`, `next-i18next.config.js`, the Next-only `lib/` and `components/`, and the dependencies `next`, `next-i18next`, `i18next`, `react-i18next`, `next-language-detector`, `react`, `react-dom`, `@react-three/*` and `eslint-config-next`.
 - Locales move to `src/i18n/locales`, and the `downloadLocales` path is updated.
+- Budget check: `scripts/perf-check.mjs` (Playwright, run locally) checks the throttled numbers from items 12–15 and fails when any of them regresses by more than 20%.
 - `CLAUDE.md`: stack line, verify commands, and the note that `dist/` is the output.
 
 Success:
 - Clean `bun install && bun run build` produces `dist/` containing every URL in the list above, plus `CNAME`.
-- No `next` or `i18next` package in `bun.lock`.
-- The deployed site on `ilumina.ch` passes the UI checks and the item 12–14 LCP targets.
+- No `next`, `i18next` or `react-dom` package in `bun.lock`.
+- The deployed site on `ilumina.ch` passes the UI checks and the budget check.
 
 Failure:
 - Deploy workflow fails or the custom domain stops resolving.
-- Any file under `src/` still imports from `next`.
+- Any file under `src/` still imports from `next` or `react`.
 
-Estimate: +40 / ~30 / -900
+Estimate: +120 / ~30 / -900
 
 ---
 
 ## Astro migration total
-19 commits, ~ +760 / ~135 / -930
+27 commits, ~ +990 / ~155 / -930
+
+Not doing:
+- **Service worker / offline**: GitHub Pages' fixed 10-minute cache plus hashed assets already make repeat visits cheap, and a worker adds update and staleness bugs.
+- **Vanilla JS instead of Preact**: it would save another ~25 KB but means rewriting the swipe card and store.
 
 Risks:
 - **bun**: this environment has no `bun`, so `bun.lock` cannot be regenerated here. Install bun via npm for the migration, or regenerate the lock on a machine that has it.
 - **Astro 7**: Astro 7 is new, so pin exact versions.
-- **Navigation feel**: moving between pages becomes a full page load. Astro's `<ClientRouter />` can bring back app-like transitions if needed, which would be a follow-up.
+- **Navigation feel**: moving between pages becomes a full page load. Prefetching (item 15) covers the main path, and Astro's `<ClientRouter />` could be a follow-up.
