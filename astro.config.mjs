@@ -6,6 +6,7 @@ export default defineConfig({
   output: 'static',
   base: process.env.PAGES_BASE_PATH || '/',
   trailingSlash: 'always',
+  build: { inlineStylesheets: 'always' },
   integrations: [preact({ compat: true })],
   vite: {
     plugins: [tailwindcss()],
