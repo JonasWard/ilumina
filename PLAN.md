@@ -255,3 +255,150 @@ Estimate: +10 / ~40 / -260
 
 Status: done. Actual +85 / -334.
 Deviation: added `perf: load home carousel after page load`. The carousel photos were downloading alongside the hero photo, which pushed home LCP from 2.74 s to 3.07 s. With the fix it is back to 2.74 s. Also removed the now-unused `common:h1` key.
+
+---
+
+# Astro migration
+
+Branch: `refactor/astro-migration`, created from `feat/mobile-ui` (it needs the mobile work). One PR to `main`.
+
+Goal: ship the same site as static Astro pages. Pages are plain HTML and CSS. React only loads where something is interactive (swipe deck, favorites, detail actions).
+Measured reason: a prototype of the home page loaded its main photo (LCP) in 1.04 s instead of 2.73 s, and downloaded 164 KB instead of 586 KB (slow 4G, 4x CPU, Pixel 7).
+
+Approach: Astro lives in `src/` next to the Next.js `pages/` until the switch, so `bun run build` (Next.js) keeps passing at every commit. `bun run build:astro` builds the new site until item 15 makes it the only build.
+
+Kept as is:
+- **URLs**: `/`, `/404.html`, `/{locale}/`, `/{locale}/tinder-slides/`, `/{locale}/favorites/`, `/{locale}/lamps/{0-9}/`, with trailing slashes.
+- **Stored data**: the localStorage keys `liked` and `disliked`, so people keep their favorites.
+- **Locales**: en, de, dk, it, fr. `en` is the fallback.
+- **Hosting**: GitHub Pages on `ilumina.ch`; `PAGES_BASE_PATH` becomes Astro's `base`.
+- **Components**: `TinderCard`, `lib/store.ts` and `lib/lamps.ts` are reused as React and plain TypeScript.
+
+Global failure criteria for every commit: `bun run build` or `bun run build:astro` fails, or a page that already exists in Astro fails the UI checks from items 1–10 (no horizontal scroll at 320 px, tap targets ≥ 44 px, no console errors, motion off under reduced motion).
+
+---
+
+## 11. Astro foundation
+Commits:
+- `chore: add astro with react and tailwind`
+- `feat: add astro i18n helpers`
+- `feat: add astro base layout`
+- `feat: add astro nav and language select`
+
+Details:
+- `astro.config.mjs`: `output: 'static'`, `trailingSlash: 'always'`, `base` from `PAGES_BASE_PATH`, `@astrojs/react`, `@tailwindcss/vite`.
+- i18n: `t(locale, 'ns:key', vars)` reads the existing JSON files and supports `{{var}}`. Islands receive translated strings as props, so no i18n library ships to the browser.
+- Layout: head (title, favicon, font, viewport), slot, body classes.
+- Nav: renders the active state on the server. The language select is a `<select>` with an inline script of a few lines.
+
+Success:
+- `bun run build:astro` builds an empty locale shell for all 5 locales.
+- `t()` returns the same strings as `next-i18next` for every key in `common.json` (checked by a script that compares all keys).
+- Nav markup matches the Next.js nav: same links, `aria-label`s and `aria-current`, 44 px targets.
+
+Failure:
+- Any translated key renders as a raw key.
+- Any i18n or React runtime shipped on a page without an island.
+
+Estimate: +220 / ~5 / -0
+
+## 12. Static pages
+Commits:
+- `feat: port home page to astro`
+- `feat: port lamp detail content to astro`
+- `feat: add locale redirect page`
+- `feat: port 404 page to astro`
+
+Details:
+- Home: the Glow page as pure HTML. The carousel loads after the `load` event (inline script).
+- Detail: image, name and description are static, and the actions arrive in item 13.
+- `/`: inline locale detection with the same order as now (saved choice, `navigator.languages`, `en`). `<noscript>` links to `/en/`.
+- `404.html`: localized from the browser language and links home.
+
+Success:
+- Home in Astro has LCP ≤ 1.1 s and 0 KB of JS apart from inline scripts, on the throttled run.
+- Visiting `/` with a German browser lands on `/de/`, and with an unknown language on `/en/`.
+- Screenshots at 320 / 412 / 1280 px match the Next.js pages, apart from font anti-aliasing.
+
+Failure:
+- Redirect loop, or a flash of the wrong locale for longer than 100 ms.
+- Any page in `out/` that has no matching page in `dist/`.
+
+Estimate: +260 / ~0 / -0
+
+## 13. Interactive islands
+Commits:
+- `refactor: hydrate lamp store without next app`
+- `feat: port swipe deck as react island`
+- `feat: port favorites grid as react island`
+- `feat: port detail actions as react island`
+- `feat: port back button to astro`
+
+Details:
+- Store: the `hydrated` flag is set when the store module first runs in the browser (replaces `_app.tsx`).
+- Swipe and favorites use `client:load`; detail actions use `client:visible`.
+- Back button: a plain button with an inline script that goes back only after in-app navigation (sessionStorage flag set on page load).
+
+Success:
+- Every behaviour verified in items 3–6 still passes: button and swipe give the same store state, double tap counts once, reload resumes the deck, end card and reset work, unlike works on cards, and like/dislike on the detail page are exclusive.
+- Favorites stored by the Next.js site load unchanged in the Astro site.
+- Swipe page JS ≤ 200 KB uncompressed (Next.js today: ~410 KB), and swipe LCP ≤ 2.5 s on the throttled run.
+
+Failure:
+- Any island hydration error or mismatch warning.
+- Store state diverges between two islands on one page.
+
+Estimate: +180 / ~60 / -20
+
+## 14. Optimized images
+Commits:
+- `perf: serve lamp images through astro assets`
+- `perf: add responsive lamp image sizes`
+
+Details:
+- `astro:assets` `<Picture>` with AVIF and WebP plus a JPEG fallback, `srcset` widths 480 / 768 / 1024, and correct `sizes` for the hero, carousel, grid and detail images.
+- Swipe deck: the island receives the same generated URLs as props.
+
+Success:
+- Hero image transfer on Pixel 7 ≤ 60 KB (JPEG today: 110 KB).
+- Home LCP ≤ 0.9 s on the throttled run; CLS stays 0.
+
+Failure:
+- Visible quality loss at 2x DPR (compare screenshots against the source JPEG).
+- Build time over 60 s.
+
+Estimate: +60 / ~40 / -10
+
+## 15. Switch and clean up
+Commits:
+- `chore: build and deploy with astro`
+- `chore: remove next.js`
+- `chore: move locales into src`
+- `docs: update claude.md for astro`
+
+Details:
+- `build` becomes `astro build`. The workflow uploads `dist/`, and `CNAME` moves to `public/CNAME`.
+- Removed: `pages/`, `next.config.ts`, `next-env.d.ts`, `next-i18next.config.js`, the Next-only `lib/` and `components/`, and the dependencies `next`, `next-i18next`, `i18next`, `react-i18next`, `next-language-detector`, `@react-three/*` and `eslint-config-next`.
+- Locales move to `src/i18n/locales`, and the `downloadLocales` path is updated.
+- `CLAUDE.md`: stack line, verify commands, and the note that `dist/` is the output.
+
+Success:
+- Clean `bun install && bun run build` produces `dist/` containing every URL in the list above, plus `CNAME`.
+- No `next` or `i18next` package in `bun.lock`.
+- The deployed site on `ilumina.ch` passes the UI checks and the item 12–14 LCP targets.
+
+Failure:
+- Deploy workflow fails or the custom domain stops resolving.
+- Any file under `src/` still imports from `next`.
+
+Estimate: +40 / ~30 / -900
+
+---
+
+## Astro migration total
+19 commits, ~ +760 / ~135 / -930
+
+Risks:
+- **bun**: this environment has no `bun`, so `bun.lock` cannot be regenerated here. Install bun via npm for the migration, or regenerate the lock on a machine that has it.
+- **Astro 7**: Astro 7 is new, so pin exact versions.
+- **Navigation feel**: moving between pages becomes a full page load. Astro's `<ClientRouter />` can bring back app-like transitions if needed, which would be a follow-up.
