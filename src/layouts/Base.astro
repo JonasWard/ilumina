@@ -1,0 +1,40 @@
+---
+import '../styles/global.css';
+import icon from '../../assets/icons/icon.svg?url';
+import { DEFAULT_LOCALE, LANGUAGE_TAGS, LOCALES, localizedPath, useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  /** Page path below the locale, e.g. `favorites` or `lamps/3`. Empty for the locale home. */
+  path?: string;
+  /** Translation key for the page title; the brand name is appended. */
+  titleKey?: string;
+  bodyClass?: string;
+}
+
+const { locale, path = '', titleKey, bodyClass = 'flex flex-col min-h-dvh text-center overflow-x-clip' } = Astro.props;
+const t = useTranslations(locale);
+const brand = t('title');
+const title = titleKey ? `${t(titleKey)} · ${brand}` : brand;
+const absolute = (l: Locale) => new URL(localizedPath(l, path), Astro.site).href;
+const base = import.meta.env.BASE_URL;
+---
+
+<!doctype html>
+<html lang={LANGUAGE_TAGS[locale]}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <title>{title}</title>
+    <link rel="icon" href={icon} type="image/svg+xml" />
+    <link rel="preload" href={`${base}fonts/quicksand-latin.woff2`} as="font" type="font/woff2" crossorigin />
+    <link rel="canonical" href={absolute(locale)} />
+    {LOCALES.map((l) => <link rel="alternate" hreflang={LANGUAGE_TAGS[l]} href={absolute(l)} />)}
+    <link rel="alternate" hreflang="x-default" href={absolute(DEFAULT_LOCALE)} />
+    <slot name="head" />
+  </head>
+  <body class={bodyClass}>
+    <slot />
+  </body>
+</html>

@@ -3,6 +3,7 @@ import preact from '@astrojs/preact';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
+  site: 'https://ilumina.ch',
   output: 'static',
   base: process.env.PAGES_BASE_PATH || '/',
   trailingSlash: 'always',
