@@ -3,19 +3,15 @@
   "version": "13.0.0",
   "license": "MIT",
   "scripts": {
-    "404": "cp out/404/index.html out/404.html",
-    "dev": "next dev",
-    "build": "next build",
-    "build:astro": "node scripts/check-locales.mjs && astro build",
-    "dev:astro": "astro dev",
-    "postbuild": "bun run 404",
-    "server": "next start",
+    "dev": "astro dev",
+    "build": "node scripts/check-locales.mjs && astro build",
+    "preview": "astro preview",
     "start": "bun run dev",
     "lint": "next lint",
     "test": "bun run lint",
-    "serve": "http-server out -p 8080",
+    "serve": "http-server dist -p 8080",
     "downloadLocales": "locize download --project-id=0842ada9-1d1d-4d48-ab27-08f6a132f558 --ver=latest --clean=true --path=./public/locales",
-    "clean": "rimraf .next out"
+    "clean": "rimraf dist .astro"
   },
   "dependencies": {
     "@astrojs/preact": "6.1.6",
