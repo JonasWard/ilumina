@@ -538,7 +538,7 @@ Failure:
 
 Estimate: +8 / ~4 / -10
 
-Status: done in code; the real-phone check is still open. Actual +15 / -14 (the comment on the background layer accounts for most of the extra lines).
+Status: done in code; the real-phone check is still open. Actual +14 / -13 (the comment on the background layer accounts for most of the extra lines).
 Results:
 - Only the swipe page still uses `dvh`.
 - Every page is pixel-identical to `refactor/astro-migration` at 320 / 412 / 1280 px, including a long favorites page scrolled to the middle and the end.
