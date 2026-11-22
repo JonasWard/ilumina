@@ -537,3 +537,11 @@ Failure:
 - The background gradient visibly changes or ends partway down a long page.
 
 Estimate: +8 / ~4 / -10
+
+Status: done in code; the real-phone check is still open. Actual +15 / -14 (the comment on the background layer accounts for most of the extra lines).
+Results:
+- Only the swipe page still uses `dvh`.
+- Every page is pixel-identical to `refactor/astro-migration` at 320 / 412 / 1280 px, including a long favorites page scrolled to the middle and the end.
+- Headline and CTA fit at 320×568 in all 5 locales.
+- `bun run check`: 0 errors. `bun run perf` passes.
+- The behaviour checks pass, so the background layer doesn't block taps.
