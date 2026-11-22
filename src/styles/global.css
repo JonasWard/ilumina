@@ -54,14 +54,6 @@
     pointer-events: none;
   }
 
-  #__next {
-    display: flex;
-    flex-direction: column;
-    min-height: 100dvh;
-    text-align: center;
-    overflow-x: clip;
-  }
-
   p {
     line-height: 1.65;
   }
