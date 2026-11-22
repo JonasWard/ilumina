@@ -12,6 +12,8 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
     // postcss.config.mjs belongs to Next.js; Tailwind runs through the Vite plugin here.
-    css: { postcss: {} }
+    css: { postcss: {} },
+    // Bundle zustand when prerendering so its `react` import resolves to preact/compat like in the browser.
+    environments: { prerender: { resolve: { noExternal: ['zustand'] } } }
   }
 });

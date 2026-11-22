@@ -1,0 +1,39 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import { SwipeDeck } from '../../islands/SwipeDeck';
+import { Lamps } from '../../../lib/lamps';
+import heart from '../../../assets/icons/heart.svg?url';
+import brokenHeart from '../../../assets/icons/heart_broken.svg?url';
+import { localeStaticPaths, localizedPath, useTranslations, type Locale } from '../../i18n';
+
+export const getStaticPaths = localeStaticPaths;
+const locale = Astro.params.locale as Locale;
+const t = useTranslations(locale);
+const labels = {
+  like: t('like'),
+  dislike: t('dislike'),
+  caption: t('this-is-a-lamp'),
+  lampAlt: t('lamp-alt'),
+  deckDone: t('deck-done'),
+  likedCount: t('liked-count'),
+  seeFavorites: t('see-favorites'),
+  startOver: t('start-over')
+};
+---
+
+<Base locale={locale} path="tinder-slides" titleKey="to-lamp-swiping">
+  <link slot="head" rel="preload" as="image" href={Lamps[0].src} fetchpriority="high" />
+  <Nav locale={locale} path="tinder-slides" />
+  <main
+    class="w-full h-dvh flex flex-col items-center overflow-clip pt-[calc(env(safe-area-inset-top)+3.5rem)] pb-[calc(env(safe-area-inset-bottom)+1rem)]"
+  >
+    <SwipeDeck
+      client:load
+      lamps={Lamps.map((lamp) => lamp.src)}
+      labels={labels}
+      favoritesHref={localizedPath(locale, 'favorites')}
+      icons={{ heart, brokenHeart }}
+    />
+  </main>
+</Base>
