@@ -3,7 +3,7 @@ import { createTranslator, LOCALES, type Locale, type Resources } from './core';
 export * from './core';
 export { interpolate } from './interpolate';
 
-const files = import.meta.glob<Record<string, string>>('../../public/locales/*/*.json', {
+const files = import.meta.glob<Record<string, string>>('./locales/*/*.json', {
   eager: true,
   import: 'default'
 });

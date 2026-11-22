@@ -11,7 +11,7 @@
     "check": "astro check",
     "test": "bun run check",
     "serve": "http-server dist -p 8080",
-    "downloadLocales": "locize download --project-id=0842ada9-1d1d-4d48-ab27-08f6a132f558 --ver=latest --clean=true --path=./public/locales",
+    "downloadLocales": "locize download --project-id=0842ada9-1d1d-4d48-ab27-08f6a132f558 --ver=latest --clean=true --path=./src/i18n/locales",
     "clean": "rimraf dist .astro"
   },
   "dependencies": {

@@ -2,7 +2,7 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-const root = new URL('../public/locales/', import.meta.url).pathname;
+const root = new URL('../src/i18n/locales/', import.meta.url).pathname;
 const read = (locale, file) => JSON.parse(readFileSync(join(root, locale, file), 'utf8'));
 const locales = readdirSync(root);
 const namespaces = readdirSync(join(root, 'en'));
