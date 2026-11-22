@@ -6,7 +6,7 @@ import { Lamps } from '../../../../lib/lamps';
 import heart from '../../../../assets/icons/heart.svg?url';
 import brokenHeart from '../../../../assets/icons/heart_broken.svg?url';
 import cart from '../../../../assets/icons/shopping_cart.svg?url';
-import { LOCALES, useTranslations, type Locale } from '../../../i18n';
+import { LOCALES, localizedPath, useTranslations, type Locale } from '../../../i18n';
 
 export const getStaticPaths = () =>
   LOCALES.flatMap((locale) => Lamps.map((_, i) => ({ params: { locale, lampIndex: String(i) } })));
@@ -23,6 +23,14 @@ const path = `lamps/${index}`;
     class="flex flex-col flex-1 items-center w-full max-w-[1200px] mx-auto px-4 pt-[calc(env(safe-area-inset-top)+3.5rem)] pb-[calc(env(safe-area-inset-bottom)+6rem)] md:pb-8"
   >
     <div class="w-full">
+      <button
+        type="button"
+        data-back={localizedPath(locale, 'favorites')}
+        class="flex items-center gap-1 min-h-11 m-0 mb-2 px-2 bg-transparent shadow-none font-semibold"
+      >
+        <span aria-hidden="true">←</span>
+        {t('back')}
+      </button>
       <div class="flex md:flex-row flex-col items-center rounded-2xl overflow-clip shadow-xl mx-auto gap-4">
         <img
           src={Lamps[index].src}
@@ -43,4 +51,12 @@ const path = `lamps/${index}`;
       </div>
     </div>
   </main>
+
+  <script is:inline>
+    // Go back when the visitor came from another page of this site; otherwise open favorites.
+    document.querySelector('[data-back]').addEventListener('click', (event) => {
+      const cameFromSite = document.referrer.startsWith(location.origin) && history.length > 1;
+      cameFromSite ? history.back() : (location.href = event.currentTarget.dataset.back);
+    });
+  </script>
 </Base>
