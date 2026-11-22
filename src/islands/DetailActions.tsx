@@ -1,4 +1,4 @@
-import { useHydrateLampStore, useLampStore } from '../../lib/store';
+import { useHydrateLampStore, useLampStore } from '../lib/store';
 
 const actionClass =
   'flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 min-h-12 m-0 px-1 py-2 md:px-3 rounded-2xl md:rounded-full border border-black shadow-none text-sm md:text-base font-semibold leading-tight';

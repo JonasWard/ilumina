@@ -1,4 +1,4 @@
-import { useHydrateLampStore, useLampStore } from '../../lib/store';
+import { useHydrateLampStore, useLampStore } from '../lib/store';
 import { interpolate } from '../i18n/interpolate';
 import type { LampPicture } from '../images/lampPicture';
 

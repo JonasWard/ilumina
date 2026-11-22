@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
-import { TinderCard, type TinderCardHandle } from '../../components/TinderCard';
-import { useHydrateLampStore, useLampStore } from '../../lib/store';
+import { TinderCard, type TinderCardHandle } from './TinderCard';
+import { useHydrateLampStore, useLampStore } from '../lib/store';
 import { interpolate } from '../i18n/interpolate';
 import type { LampPicture } from '../images/lampPicture';
 

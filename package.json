@@ -1,44 +1,33 @@
 {
-  "name": "next-i18next-example-ssg",
-  "version": "13.0.0",
+  "name": "ilumina",
+  "version": "1.0.0",
+  "private": true,
   "license": "MIT",
   "scripts": {
     "dev": "astro dev",
     "build": "node scripts/check-locales.mjs && astro build",
     "preview": "astro preview",
     "start": "bun run dev",
-    "lint": "next lint",
-    "test": "bun run lint",
+    "check": "astro check",
+    "test": "bun run check",
     "serve": "http-server dist -p 8080",
     "downloadLocales": "locize download --project-id=0842ada9-1d1d-4d48-ab27-08f6a132f558 --ver=latest --clean=true --path=./public/locales",
     "clean": "rimraf dist .astro"
   },
   "dependencies": {
     "@astrojs/preact": "6.1.6",
-    "@react-three/drei": "^10.7.4",
-    "@react-three/fiber": "^9.3.0",
     "@tailwindcss/vite": "4.3.5",
     "astro": "7.4.13",
-    "i18next": "24.2.2",
-    "next": "15.1.6",
-    "next-i18next": "^15.4.2",
-    "next-language-detector": "^1.1.0",
-    "postcss": "^8.5.6",
     "preact": "11.2.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-i18next": "^15.4.0",
     "zustand": "^5.0.8"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.13",
+    "@astrojs/check": "0.9.12",
     "@types/node": "^24.3.1",
-    "autoprefixer": "^10.4.21",
-    "eslint-config-next": "15.1.6",
     "http-server": "14.1.1",
     "locize-cli": "8.4.0",
     "rimraf": "^6.0.1",
-    "tailwindcss": "^4.1.13",
+    "tailwindcss": "4.3.5",
     "typescript": "^5.9.2"
   }
 }

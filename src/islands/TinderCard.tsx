@@ -1,6 +1,6 @@
-import { Ref, useImperativeHandle, useRef } from 'react';
-import heart from '/assets/icons/heart.svg';
-import brokenHeart from '/assets/icons/heart_broken.svg';
+import { type Ref, useImperativeHandle, useRef } from 'react';
+import heart from '/assets/icons/heart.svg?url';
+import brokenHeart from '/assets/icons/heart_broken.svg?url';
 
 const SWIPE_X_REGISTRATION_DISTANCE = 60;
 
@@ -55,7 +55,7 @@ export const TinderCard = ({
     setTimeout(() => (liked ? onLike() : onDislike()), 300);
   };
 
-  useImperativeHandle(ref, () => ({ swipe: (liked) => fling(liked) }));
+  useImperativeHandle(ref ?? null, () => ({ swipe: (liked) => fling(liked) }));
 
   const startDrag = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!elementRef.current) return;
@@ -124,13 +124,13 @@ export const TinderCard = ({
         ref={likeStampRef}
         className="absolute top-6 left-6 grid place-items-center size-16 rounded-full bg-white/90 border-4 border-green-500 -rotate-12 opacity-0 pointer-events-none"
       >
-        <img src={heart.src} alt="" className="size-8" />
+        <img src={heart} alt="" className="size-8" />
       </div>
       <div
         ref={dislikeStampRef}
         className="absolute top-6 right-6 grid place-items-center size-16 rounded-full bg-white/90 border-4 border-red-500 rotate-12 opacity-0 pointer-events-none"
       >
-        <img src={brokenHeart.src} alt="" className="size-8" />
+        <img src={brokenHeart} alt="" className="size-8" />
       </div>
       <div className="absolute inset-x-0 bottom-0 rounded-b-2xl bg-linear-to-t from-black/70 to-transparent pt-16 pb-6 text-lg text-white text-center pointer-events-none">
         {name}
