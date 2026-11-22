@@ -18,7 +18,7 @@ const base = import.meta.env.BASE_URL;
     {LOCALES.map((l) => <link rel="alternate" hreflang={LANGUAGE_TAGS[l]} href={new URL(localizedPath(l), Astro.site).href} />)}
     <link rel="alternate" hreflang="x-default" href={new URL(localizedPath('en'), Astro.site).href} />
   </head>
-  <body class="flex flex-col min-h-dvh items-center justify-center text-center">
+  <body class="flex flex-col min-h-svh items-center justify-center text-center">
     <noscript>
       <ul class="flex flex-row gap-2 list-none p-0">
         {

@@ -18,22 +18,23 @@ const pictures = await Promise.all(
 
 <Base locale={locale}>
   <div class="bg-black text-white text-left">
-    <section class="relative h-dvh min-h-[560px] overflow-clip">
+    <section class="relative h-svh min-h-[560px] overflow-clip">
       <Picture
         picture={hero}
         alt={t('common:lamp-alt', { number: 1 })}
         fetchpriority="high"
-        class="absolute inset-x-0 top-0 w-full h-[62%] object-cover object-[50%_35%] scale-105 motion-safe:animate-drift"
+        class="absolute inset-x-0 top-0 w-full h-[62%] object-cover object-[50%_35%] wide:left-auto wide:right-0 wide:h-full wide:w-auto wide:aspect-[3/4] wide:object-center scale-105 motion-safe:animate-drift"
       />
       <div
-        class="absolute inset-0 bg-[radial-gradient(circle_at_50%_32%,rgba(255,196,120,0.45),transparent_50%)] mix-blend-screen motion-safe:animate-breathe"
+        class="absolute inset-0 bg-linear-to-t from-black from-45% via-black/70 via-60% to-black/10 wide:bg-linear-to-l wide:from-transparent wide:from-[calc(max(75svh,420px)-8rem)] wide:via-black/60 wide:via-[max(75svh,420px)] wide:to-black wide:to-[calc(max(75svh,420px)+2rem)]"
       >
       </div>
-      <div class="absolute inset-0 bg-linear-to-t from-black from-45% via-black/70 via-60% to-black/10"></div>
 
       <TopBar locale={locale} dark class="relative z-10" />
 
-      <div class="absolute inset-x-0 bottom-0 flex flex-col gap-4 px-6 pb-[calc(env(safe-area-inset-bottom)+2rem)] max-w-xl">
+      <div
+        class="absolute inset-x-0 bottom-0 flex flex-col gap-4 px-6 pb-[calc(env(safe-area-inset-bottom)+2rem)] max-w-xl wide:top-0 wide:right-[max(75svh,420px)] wide:max-w-none wide:justify-center wide:px-[6vw] wide:pb-0"
+      >
         <p class="m-0 text-xs uppercase tracking-[0.3em] text-amber-200">{t('eyebrow')}</p>
         <h1 class="m-0 text-4xl sm:text-6xl font-light leading-[1.1]">{t('glow-title')}</h1>
         <p class="m-0 text-white/80">{t('glow-body')}</p>

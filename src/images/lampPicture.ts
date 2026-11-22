@@ -10,7 +10,8 @@ export const LAMP_WIDTHS = [320, 480, 640, 828, 1024];
 
 /** `sizes` per place a lamp photo appears, matching the Tailwind layout of each. */
 export const LAMP_SIZES = {
-  hero: '100vw',
+  // Matches the `wide` variant in global.css, where the hero photo is 3:4 at full hero height (min 560px).
+  hero: '(min-aspect-ratio: 1/1) and (min-width: 768px) max(75vh, 420px), 100vw',
   carousel: '(min-width: 424px) 288px, 68vw',
   // The card is taller than the 3:4 photo and uses object-cover, so its height decides the width.
   deck: 'max(min(85vw, 600px), min(calc((100vh - 9rem) * 0.75), 600px))',
