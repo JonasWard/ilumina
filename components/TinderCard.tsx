@@ -14,6 +14,7 @@ export const TinderCard = ({
   active,
   name,
   alt,
+  loading,
   ref
 }: {
   url: string;
@@ -23,6 +24,7 @@ export const TinderCard = ({
   active: boolean;
   name: string;
   alt: string;
+  loading?: 'lazy' | 'eager';
   ref?: Ref<TinderCardHandle>;
 }) => {
   const elementRef = useRef<HTMLDivElement>(null);
@@ -104,6 +106,7 @@ export const TinderCard = ({
       <img
         src={url}
         alt={alt}
+        loading={loading}
         draggable={false}
         decoding="async"
         fetchPriority={active ? 'high' : 'auto'}

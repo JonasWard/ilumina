@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { TinderCard, type TinderCardHandle } from '../../components/TinderCard';
 import { useHydrateLampStore, useLampStore } from '../../lib/store';
 import { interpolate } from '../i18n/interpolate';
@@ -39,8 +39,13 @@ export const SwipeDeck = ({
   const onLike = (index: number) => useLampStore.getState().addLiked(index);
   const onDislike = (index: number) => useLampStore.getState().addDisliked(index);
 
+  useEffect(() => {
+    // Hands the deck over from the pre-hydration CSS (see tinder-slides.astro) to this component.
+    if (hydrated) document.documentElement.dataset.deckLive = '';
+  }, [hydrated]);
+
   const hasCard = current !== undefined;
-  const card = (index: number, active: boolean) => (
+  const card = (index: number, active: boolean, loading?: 'lazy') => (
     <TinderCard
       active={active}
       ref={active ? cardRef : undefined}
@@ -51,12 +56,33 @@ export const SwipeDeck = ({
       onLike={() => onLike(index)}
       onDislike={() => onDislike(index)}
       name={labels.caption}
+      loading={loading}
     />
   );
 
+  if (!hydrated) {
+    // Before hydration every card is in the HTML; an inline script in <head> picks the one that is shown.
+    return (
+      <>
+        <div data-deck class="relative flex-1 w-[min(85vw,600px)] max-h-[800px]">
+          {lamps.map((_, i) => card(i, false, 'lazy'))}
+        </div>
+        <p class="m-0 pt-3 text-sm leading-none opacity-60">&nbsp;</p>
+        <div data-deck-controls class="flex flex-row gap-10 pt-3">
+          <button type="button" aria-label={labels.dislike} class="grid place-items-center size-16 m-0 p-0 rounded-full bg-white shadow-lg">
+            <img src={icons.brokenHeart} alt="" class="size-7" />
+          </button>
+          <button type="button" aria-label={labels.like} class="grid place-items-center size-16 m-0 p-0 rounded-full bg-white shadow-lg">
+            <img src={icons.heart} alt="" class="size-7" />
+          </button>
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
-      <div class="relative flex-1 w-[min(85vw,600px)] max-h-[800px]">
+      <div data-deck class="relative flex-1 w-[min(85vw,600px)] max-h-[800px]">
         {hasCard ? card(current, true) : null}
         {next !== undefined ? card(next, false) : null}
         {hydrated && !hasCard && (

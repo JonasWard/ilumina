@@ -20,17 +20,44 @@ const labels = {
   seeFavorites: t('see-favorites'),
   startOver: t('start-over')
 };
+const lampUrls = Lamps.map((lamp) => lamp.src);
+
+// Before the island hydrates, show the first unrated lamp straight from the HTML. The next card
+// waits for hydration so its photo does not compete with the first one for bandwidth.
+const deckScript = `(function () {
+  var urls = ${JSON.stringify(lampUrls)};
+  var read = function (key) {
+    try { var v = JSON.parse(localStorage.getItem(key) || '[]'); return Array.isArray(v) ? v : []; } catch (e) { return []; }
+  };
+  var rated = read('liked').concat(read('disliked'));
+  var queue = [];
+  for (var i = 0; i < urls.length; i++) if (rated.indexOf(i) < 0) queue.push(i);
+  var root = document.documentElement;
+  if (!queue.length) { root.dataset.deckDone = ''; return; }
+  root.dataset.deckFirst = queue[0];
+  var link = document.createElement('link');
+  link.rel = 'preload'; link.as = 'image'; link.href = urls[queue[0]]; link.setAttribute('fetchpriority', 'high');
+  document.head.appendChild(link);
+})();`;
+
+const pending = 'html:not([data-deck-live])';
+const deckStyle = [
+  `${pending} [data-deck] [id^=card-] { display: none; }`,
+  `${pending}[data-deck-done] [data-deck-controls] { display: none; }`,
+  ...lampUrls.map((_, i) => `${pending}[data-deck-first="${i}"] #card-${i} { display: block; filter: none !important; }`)
+].join('\n');
 ---
 
 <Base locale={locale} path="tinder-slides" titleKey="to-lamp-swiping">
-  <link slot="head" rel="preload" as="image" href={Lamps[0].src} fetchpriority="high" />
+  <script slot="head" is:inline set:html={deckScript} />
+  <style slot="head" is:inline set:html={deckStyle}></style>
   <Nav locale={locale} path="tinder-slides" />
   <main
     class="w-full h-dvh flex flex-col items-center overflow-clip pt-[calc(env(safe-area-inset-top)+3.5rem)] pb-[calc(env(safe-area-inset-bottom)+1rem)]"
   >
     <SwipeDeck
       client:load
-      lamps={Lamps.map((lamp) => lamp.src)}
+      lamps={lampUrls}
       labels={labels}
       favoritesHref={localizedPath(locale, 'favorites')}
       icons={{ heart, brokenHeart }}
