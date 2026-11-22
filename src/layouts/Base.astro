@@ -12,7 +12,7 @@ interface Props {
   bodyClass?: string;
 }
 
-const { locale, path = '', titleKey, bodyClass = 'flex flex-col min-h-dvh text-center overflow-x-clip' } = Astro.props;
+const { locale, path = '', titleKey, bodyClass = 'flex flex-col min-h-svh text-center overflow-x-clip' } = Astro.props;
 const t = useTranslations(locale);
 const brand = t('title');
 const title = titleKey ? `${t(titleKey)} · ${brand}` : brand;
