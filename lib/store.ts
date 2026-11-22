@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { create } from 'zustand';
 
 export const LOCAL_STORAGE_KEY_LIKED = 'liked';
@@ -51,3 +52,24 @@ export const useLampStore = create<LampStore>((set, get) => ({
     get()._updateDisliked(new Set());
   }
 }));
+
+const readIndices = (key: string): Set<number> => {
+  try {
+    const value = JSON.parse(localStorage.getItem(key) ?? '[]');
+    return new Set(Array.isArray(value) ? value.filter((i) => Number.isInteger(i)) : []);
+  } catch {
+    return new Set();
+  }
+};
+
+/** Loads ratings from localStorage once. Call after the first render so it matches the server HTML. */
+export const hydrateLampStore = () => {
+  if (useLampStore.getState().hydrated) return;
+  useLampStore.setState({
+    liked: readIndices(LOCAL_STORAGE_KEY_LIKED),
+    disliked: readIndices(LOCAL_STORAGE_KEY_DISLIKED),
+    hydrated: true
+  });
+};
+
+export const useHydrateLampStore = () => useEffect(hydrateLampStore, []);
