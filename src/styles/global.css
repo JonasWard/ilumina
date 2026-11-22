@@ -39,6 +39,9 @@
   }
 }
 
+/* Landscape screens wide enough for side-by-side layouts; portrait phones and tablets keep the stacked layout. */
+@custom-variant wide (@media (min-aspect-ratio: 1/1) and (min-width: 768px));
+
 @layer base {
   /*
    * The gradient sits on a fixed layer the height of the largest viewport (address bar hidden),
