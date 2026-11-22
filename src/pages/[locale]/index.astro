@@ -81,12 +81,18 @@ const pictures = await Promise.all(
     </section>
   </div>
 
-  <script is:inline>
-    // The carousel waits for the hero photo, so it never competes with it for bandwidth.
-    const showCarousel = () =>
+  <script is:inline define:vars={{ swipe }}>
+    // After the hero photo has loaded: prefetch the swipe page, then fill the carousel,
+    // so neither competes with the hero for bandwidth.
+    const afterLoad = () => {
+      const link = document.createElement('link');
+      link.rel = 'prefetch';
+      link.href = swipe;
+      document.head.appendChild(link);
       document.querySelectorAll('[data-after-load]').forEach((el) => {
         el[el.tagName === 'SOURCE' ? 'srcset' : 'src'] = el.dataset.afterLoad;
       });
-    document.readyState === 'complete' ? showCarousel() : addEventListener('load', showCarousel);
+    };
+    document.readyState === 'complete' ? afterLoad() : addEventListener('load', afterLoad);
   </script>
 </Base>
