@@ -40,9 +40,18 @@
 }
 
 @layer base {
-  body {
+  /*
+   * The gradient sits on a fixed layer the height of the largest viewport (address bar hidden),
+   * so it neither scrolls nor gets resized and repainted while mobile address bars slide in and out.
+   */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0 0 auto;
+    height: 100lvh;
+    z-index: -1;
     background-image: linear-gradient(to left top, #ffffff, #f5f5f5, #eaeaea, #e0e0e0, #d6d6d6);
-    background-attachment: fixed;
+    pointer-events: none;
   }
 
   #__next {
