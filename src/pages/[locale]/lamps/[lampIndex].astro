@@ -1,0 +1,36 @@
+---
+import Base from '../../../layouts/Base.astro';
+import Nav from '../../../components/Nav.astro';
+import { Lamps } from '../../../../lib/lamps';
+import { LOCALES, useTranslations, type Locale } from '../../../i18n';
+
+export const getStaticPaths = () =>
+  LOCALES.flatMap((locale) => Lamps.map((_, i) => ({ params: { locale, lampIndex: String(i) } })));
+
+const locale = Astro.params.locale as Locale;
+const index = Number(Astro.params.lampIndex);
+const t = useTranslations(locale);
+const path = `lamps/${index}`;
+---
+
+<Base locale={locale} path={path} titleKey="name">
+  <Nav locale={locale} path={path} />
+  <main
+    class="flex flex-col flex-1 items-center w-full max-w-[1200px] mx-auto px-4 pt-[calc(env(safe-area-inset-top)+3.5rem)] pb-[calc(env(safe-area-inset-bottom)+6rem)] md:pb-8"
+  >
+    <div class="w-full">
+      <div class="flex md:flex-row flex-col items-center rounded-2xl overflow-clip shadow-xl mx-auto gap-4">
+        <img
+          src={Lamps[index].src}
+          alt={t('lamp-alt', { number: index + 1 })}
+          fetchpriority="high"
+          class="md:h-[50vh] w-full md:w-[50%] h-[50vh] object-cover"
+        />
+        <div class="my-auto px-4 flex flex-col items-start justify-between w-full gap-4 shadow-none">
+          <h3 class="text-2xl font-bold">{t('name')}</h3>
+          <p class="m-0 text-left">{t('description')}</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</Base>
