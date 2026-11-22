@@ -3,7 +3,7 @@ import Base from '../../layouts/Base.astro';
 import Nav from '../../components/Nav.astro';
 import { FavoritesGrid } from '../../islands/FavoritesGrid';
 import { Lamps } from '../../../lib/lamps';
-import { lampPicture } from '../../images/lampPicture';
+import { LAMP_SIZES, LAMP_WIDTHS, lampPicture } from '../../images/lampPicture';
 import heart from '../../../assets/icons/heart.svg?url';
 import cart from '../../../assets/icons/shopping_cart.svg?url';
 import { localeStaticPaths, localizedPath, useTranslations, type Locale } from '../../i18n';
@@ -30,7 +30,7 @@ const labels = {
       <p>{t('your-favorites')}</p>
       <FavoritesGrid
         client:load
-        lamps={await Promise.all(Lamps.map((lamp) => lampPicture(lamp)))}
+        lamps={await Promise.all(Lamps.map((lamp) => lampPicture(lamp, { widths: LAMP_WIDTHS, sizes: LAMP_SIZES.grid })))}
         labels={labels}
         lampHref={localizedPath(locale, 'lamps')}
         swipeHref={localizedPath(locale, 'tinder-slides')}

@@ -3,7 +3,7 @@ import Base from '../../layouts/Base.astro';
 import Nav from '../../components/Nav.astro';
 import { SwipeDeck } from '../../islands/SwipeDeck';
 import { Lamps } from '../../../lib/lamps';
-import { lampPicture } from '../../images/lampPicture';
+import { LAMP_SIZES, LAMP_WIDTHS, lampPicture } from '../../images/lampPicture';
 import heart from '../../../assets/icons/heart.svg?url';
 import brokenHeart from '../../../assets/icons/heart_broken.svg?url';
 import { localeStaticPaths, localizedPath, useTranslations, type Locale } from '../../i18n';
@@ -21,7 +21,9 @@ const labels = {
   seeFavorites: t('see-favorites'),
   startOver: t('start-over')
 };
-const pictures = await Promise.all(Lamps.map((lamp) => lampPicture(lamp)));
+const pictures = await Promise.all(
+  Lamps.map((lamp) => lampPicture(lamp, { widths: LAMP_WIDTHS, sizes: LAMP_SIZES.deck }))
+);
 const lampUrls = pictures.map((picture) => picture.src);
 
 // Before the island hydrates, show the first unrated lamp straight from the HTML. The next card

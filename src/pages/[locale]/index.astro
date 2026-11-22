@@ -2,7 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import TopBar from '../../components/TopBar.astro';
 import Picture from '../../components/Picture.astro';
-import { lampPicture } from '../../images/lampPicture';
+import { LAMP_SIZES, LAMP_WIDTHS, lampPicture } from '../../images/lampPicture';
 import { Lamps } from '../../../lib/lamps';
 import { localeStaticPaths, localizedPath, useTranslations, type Locale } from '../../i18n';
 
@@ -10,14 +10,17 @@ export const getStaticPaths = localeStaticPaths;
 const locale = Astro.params.locale as Locale;
 const t = useTranslations(locale, 'landing');
 const swipe = localizedPath(locale, 'tinder-slides');
-const pictures = await Promise.all(Lamps.map((lamp) => lampPicture(lamp)));
+const hero = await lampPicture(Lamps[0], { widths: LAMP_WIDTHS, sizes: LAMP_SIZES.hero });
+const pictures = await Promise.all(
+  Lamps.map((lamp) => lampPicture(lamp, { widths: LAMP_WIDTHS, sizes: LAMP_SIZES.carousel }))
+);
 ---
 
 <Base locale={locale}>
   <div class="bg-black text-white text-left">
     <section class="relative h-dvh min-h-[560px] overflow-clip">
       <Picture
-        picture={pictures[0]}
+        picture={hero}
         alt={t('common:lamp-alt', { number: 1 })}
         fetchpriority="high"
         class="absolute inset-x-0 top-0 w-full h-[62%] object-cover object-[50%_35%] scale-105 motion-safe:animate-drift"

@@ -2,7 +2,7 @@
 import Base from '../../../layouts/Base.astro';
 import Nav from '../../../components/Nav.astro';
 import Picture from '../../../components/Picture.astro';
-import { lampPicture } from '../../../images/lampPicture';
+import { LAMP_SIZES, LAMP_WIDTHS, lampPicture } from '../../../images/lampPicture';
 import { DetailActions } from '../../../islands/DetailActions';
 import { Lamps } from '../../../../lib/lamps';
 import heart from '../../../../assets/icons/heart.svg?url';
@@ -17,7 +17,7 @@ const locale = Astro.params.locale as Locale;
 const index = Number(Astro.params.lampIndex);
 const t = useTranslations(locale);
 const path = `lamps/${index}`;
-const picture = await lampPicture(Lamps[index]);
+const picture = await lampPicture(Lamps[index], { widths: LAMP_WIDTHS, sizes: LAMP_SIZES.detail });
 ---
 
 <Base locale={locale} path={path} titleKey="name">
