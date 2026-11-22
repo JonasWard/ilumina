@@ -6,7 +6,7 @@
     "404": "cp out/404/index.html out/404.html",
     "dev": "next dev",
     "build": "next build",
-    "build:astro": "astro build",
+    "build:astro": "node scripts/check-locales.mjs && astro build",
     "dev:astro": "astro dev",
     "postbuild": "bun run 404",
     "server": "next start",
