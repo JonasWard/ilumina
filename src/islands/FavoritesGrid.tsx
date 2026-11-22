@@ -12,6 +12,18 @@ export type FavoritesLabels = {
   toLampSwiping: string;
 };
 
+const prefetched = new Set<string>();
+
+/** Starts loading a detail page as soon as a finger or pointer lands on its card. */
+const prefetch = (href: string) => {
+  if (prefetched.has(href)) return;
+  prefetched.add(href);
+  const link = document.createElement('link');
+  link.rel = 'prefetch';
+  link.href = href;
+  document.head.appendChild(link);
+};
+
 export const FavoritesGrid = ({
   lamps,
   labels,
@@ -43,7 +55,12 @@ export const FavoritesGrid = ({
       <div class="grid grid-cols-2 sm:grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4 sm:gap-8 pt-4">
         {[...liked].map((index) => (
           <div key={index} class="relative w-full rounded-2xl overflow-clip shadow-xl bg-white/60">
-            <a href={`${lampHref}${index}/`} class="block">
+            <a
+              href={`${lampHref}${index}/`}
+              onPointerDown={() => prefetch(`${lampHref}${index}/`)}
+              onMouseEnter={() => prefetch(`${lampHref}${index}/`)}
+              class="block"
+            >
               <picture class="contents [&>source]:hidden">
                 {lamps[index].sources.map((source) => (
                   <source key={source.type} type={source.type} srcset={source.srcset} sizes={lamps[index].sizes} />
@@ -70,6 +87,8 @@ export const FavoritesGrid = ({
             </button>
             <a
               href={`${lampHref}${index}/`}
+              onPointerDown={() => prefetch(`${lampHref}${index}/`)}
+              onMouseEnter={() => prefetch(`${lampHref}${index}/`)}
               aria-label={labels.buy}
               class="absolute bottom-0 right-0 grid place-items-center size-11"
             >
