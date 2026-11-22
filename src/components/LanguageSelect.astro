@@ -1,0 +1,33 @@
+---
+import { LOCALES, localizedPath, useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  path?: string;
+  class?: string;
+}
+
+const { locale, path = '', class: className = 'border-gray-300' } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<select
+  aria-label={t('change-locale')}
+  data-language-select
+  class={`h-11 min-w-11 px-2 text-base bg-transparent border rounded-md ${className}`}
+>
+  {LOCALES.map((l) => <option value={l} selected={l === locale} data-href={localizedPath(l, path)}>{l}</option>)}
+</select>
+
+<script is:inline>
+  document.querySelectorAll('[data-language-select]').forEach((select) => {
+    if (select.dataset.ready) return;
+    select.dataset.ready = '1';
+    select.addEventListener('change', () => {
+      try {
+        localStorage.setItem('locale', select.value);
+      } catch {}
+      location.href = select.selectedOptions[0].dataset.href;
+    });
+  });
+</script>
