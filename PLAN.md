@@ -503,3 +503,37 @@ Risks:
 - **bun**: this environment has no `bun`, so `bun.lock` cannot be regenerated here. Install bun via npm for the migration, or regenerate the lock on a machine that has it.
 - **Astro 7**: Astro 7 is new, so pin exact versions.
 - **Navigation feel**: moving between pages becomes a full page load. Prefetching (item 15) covers the main path, and Astro's `<ClientRouter />` could be a follow-up.
+
+---
+
+# Viewport jitter
+
+Branch: `fix/viewport-jitter`, created from `refactor/astro-migration`. One PR.
+
+Problem: on phones the address bar slides away or back while scrolling, and the visible viewport changes height over many frames. Anything sized with `dvh`, or painted with `background-attachment: fixed`, is re-laid out or repainted every frame, which shows as jitter. It is worst on the home page.
+
+## 17. Stable viewport sizing
+Commits:
+- `fix: use stable height for home hero`
+- `fix: use stable min height for pages`
+- `fix: draw page background on fixed layer`
+- `chore: remove leftover next root rule`
+
+Details:
+- Home hero: `h-dvh` → `h-svh` (height with the address bar shown), so it never resizes while scrolling.
+- Body: `min-h-dvh` → `min-h-svh` in the layout and on the redirect page.
+- Background: the body gradient moves from `background-attachment: fixed` to a fixed `::before` layer of `100lvh`, which doesn't change with the address bar.
+- The swipe page keeps `h-dvh`: it doesn't scroll, so the address bar never toggles there.
+- `#__next` styles in `global.css` are left over from Next.js and match nothing.
+
+Success:
+- No `dvh` or `background-attachment: fixed` left on pages that scroll (checked with grep: only the swipe page uses `dvh`).
+- Screenshots at 320 / 412 / 1280 px are pixel-identical to `refactor/astro-migration` on every page.
+- Headline and CTA still fully visible without scrolling at 320×568 in all 5 locales; `bun run perf` and `bun run check` pass.
+- On a real phone (Chrome Android, iOS Safari), scrolling the home page with the address bar hiding and showing moves no element other than by the scroll itself. This needs a manual check, because headless browsers have no address bar.
+
+Failure:
+- The CTA ends up below the fold on a phone with the address bar shown.
+- The background gradient visibly changes or ends partway down a long page.
+
+Estimate: +8 / ~4 / -10
