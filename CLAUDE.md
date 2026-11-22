@@ -28,9 +28,12 @@ Every plan (see `PLAN.md`) lists its branch and, per item:
 - **Commits**: the atomic commits it will contain.
 - **Success criteria**: concrete, checkable outcomes (measured, not "looks better").
 - **Failure criteria**: conditions that mean the item is not done or must be reverted.
-- **Estimate**: lines added / changed / removed.
+- **Estimate**: lines added / changed / removed, counting code only (not docs or lockfiles).
 
-Update the plan when an item ships or the estimate is off by more than 50%.
+Keep diffs minimal:
+- A plan entry is at most 15 lines. When a branch is done, its status becomes one line, written once, with numbers taken from `git diff --shortstat` first. No correction commits.
+- Explore alternatives (designs, prototypes) in a scratch directory or an artifact, not in the repo.
+- No re-indenting, file moves or comments unless the task needs them.
 
 ## Verify
 ```sh
