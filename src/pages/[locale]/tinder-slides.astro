@@ -1,0 +1,74 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import { SwipeDeck } from '../../islands/SwipeDeck';
+import { Lamps } from '../../lib/lamps';
+import { LAMP_SIZES, LAMP_WIDTHS, lampPicture } from '../../images/lampPicture';
+import heart from '../../../assets/icons/heart.svg?url';
+import brokenHeart from '../../../assets/icons/heart_broken.svg?url';
+import { localeStaticPaths, localizedPath, useTranslations, type Locale } from '../../i18n';
+
+export const getStaticPaths = localeStaticPaths;
+const locale = Astro.params.locale as Locale;
+const t = useTranslations(locale);
+const labels = {
+  like: t('like'),
+  dislike: t('dislike'),
+  caption: t('this-is-a-lamp'),
+  lampAlt: t('lamp-alt'),
+  deckDone: t('deck-done'),
+  likedCount: t('liked-count'),
+  seeFavorites: t('see-favorites'),
+  startOver: t('start-over')
+};
+const pictures = await Promise.all(
+  Lamps.map((lamp) => lampPicture(lamp, { widths: LAMP_WIDTHS, sizes: LAMP_SIZES.deck }))
+);
+const lampUrls = pictures.map((picture) => picture.src);
+
+// Before the island hydrates, show the first unrated lamp straight from the HTML. The next card
+// waits for hydration so its photo does not compete with the first one for bandwidth.
+const deckScript = `(function () {
+  var urls = ${JSON.stringify(lampUrls)};
+  var sets = ${JSON.stringify(pictures.map((p) => p.sources[0]))};
+  var sizes = ${JSON.stringify(pictures[0].sizes || '')};
+  var read = function (key) {
+    try { var v = JSON.parse(localStorage.getItem(key) || '[]'); return Array.isArray(v) ? v : []; } catch (e) { return []; }
+  };
+  var rated = read('liked').concat(read('disliked'));
+  var queue = [];
+  for (var i = 0; i < urls.length; i++) if (rated.indexOf(i) < 0) queue.push(i);
+  var root = document.documentElement;
+  if (!queue.length) { root.dataset.deckDone = ''; return; }
+  root.dataset.deckFirst = queue[0];
+  var link = document.createElement('link');
+  link.rel = 'preload'; link.as = 'image'; link.setAttribute('fetchpriority', 'high');
+  link.type = sets[queue[0]].type; link.setAttribute('imagesrcset', sets[queue[0]].srcset);
+  if (sizes) link.setAttribute('imagesizes', sizes);
+  document.head.appendChild(link);
+})();`;
+
+const pending = 'html:not([data-deck-live])';
+const deckStyle = [
+  `${pending} [data-deck] [id^=card-] { display: none; }`,
+  `${pending}[data-deck-done] [data-deck-controls] { display: none; }`,
+  ...lampUrls.map((_, i) => `${pending}[data-deck-first="${i}"] #card-${i} { display: block; filter: none !important; }`)
+].join('\n');
+---
+
+<Base locale={locale} path="tinder-slides" titleKey="to-lamp-swiping">
+  <script slot="head" is:inline set:html={deckScript} />
+  <style slot="head" is:inline set:html={deckStyle}></style>
+  <Nav locale={locale} path="tinder-slides" />
+  <main
+    class="w-full h-dvh flex flex-col items-center overflow-clip pt-[calc(env(safe-area-inset-top)+3.5rem)] pb-[calc(env(safe-area-inset-bottom)+1rem)]"
+  >
+    <SwipeDeck
+      client:load
+      lamps={pictures}
+      labels={labels}
+      favoritesHref={localizedPath(locale, 'favorites')}
+      icons={{ heart, brokenHeart }}
+    />
+  </main>
+</Base>

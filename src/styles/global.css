@@ -1,0 +1,63 @@
+@import 'tailwindcss';
+
+/* Quicksand (SIL OFL 1.1, see /fonts/Quicksand-OFL.txt), variable weight, Latin subset. */
+@font-face {
+  font-family: 'Quicksand';
+  font-style: normal;
+  font-weight: 300 600;
+  font-display: swap;
+  src: url('/fonts/quicksand-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@theme {
+  --color-circrete-red: #dc4057;
+  --color-circrete-mokka: #eaf1cf;
+  --font-sans: 'Quicksand', ui-sans-serif, system-ui, sans-serif;
+
+  --animate-breathe: breathe 7s ease-in-out infinite;
+  --animate-drift: drift 24s ease-in-out infinite alternate;
+
+  @keyframes breathe {
+    0%,
+    100% {
+      opacity: 0.55;
+    }
+    50% {
+      opacity: 0.9;
+    }
+  }
+
+  @keyframes drift {
+    from {
+      transform: scale(1.05) translateY(0);
+    }
+    to {
+      transform: scale(1.15) translateY(-2%);
+    }
+  }
+}
+
+@layer base {
+  body {
+    background-image: linear-gradient(to left top, #ffffff, #f5f5f5, #eaeaea, #e0e0e0, #d6d6d6);
+    background-attachment: fixed;
+  }
+
+  #__next {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+    text-align: center;
+    overflow-x: clip;
+  }
+
+  p {
+    line-height: 1.65;
+  }
+
+  button:not(:disabled) {
+    cursor: pointer;
+  }
+}

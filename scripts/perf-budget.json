@@ -1,0 +1,11 @@
+{
+  "_comment": "Milliseconds and bytes measured on a throttled Pixel 7 (150 ms RTT, 1.6 Mbps, 4x CPU). perf-check fails when a median exceeds its budget by more than `tolerance`.",
+  "tolerance": 0.2,
+  "homeFirstPaint": 340,
+  "homeHero": 890,
+  "swipeFirstCard": 1080,
+  "swipeFirstCardReturning": 1140,
+  "tapToSwipeCard": 260,
+  "homeExternalScripts": 0,
+  "swipeScriptBytes": 35000
+}

@@ -1,0 +1,41 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import { FavoritesGrid } from '../../islands/FavoritesGrid';
+import { Lamps } from '../../lib/lamps';
+import { LAMP_SIZES, LAMP_WIDTHS, lampPicture } from '../../images/lampPicture';
+import heart from '../../../assets/icons/heart.svg?url';
+import cart from '../../../assets/icons/shopping_cart.svg?url';
+import { localeStaticPaths, localizedPath, useTranslations, type Locale } from '../../i18n';
+
+export const getStaticPaths = localeStaticPaths;
+const locale = Astro.params.locale as Locale;
+const t = useTranslations(locale);
+const labels = {
+  unlike: t('unlike'),
+  buy: t('buy'),
+  name: t('name'),
+  lampAlt: t('lamp-alt'),
+  noFavorites: t('no-favorites'),
+  toLampSwiping: t('to-lamp-swiping')
+};
+---
+
+<Base locale={locale} path="favorites" titleKey="favorites">
+  <Nav locale={locale} path="favorites" />
+  <main
+    class="flex flex-col flex-1 items-center w-full max-w-[1200px] mx-auto px-4 pt-[calc(env(safe-area-inset-top)+3.5rem)] pb-[calc(env(safe-area-inset-bottom)+2rem)]"
+  >
+    <div class="w-full">
+      <p>{t('your-favorites')}</p>
+      <FavoritesGrid
+        client:load
+        lamps={await Promise.all(Lamps.map((lamp) => lampPicture(lamp, { widths: LAMP_WIDTHS, sizes: LAMP_SIZES.grid })))}
+        labels={labels}
+        lampHref={localizedPath(locale, 'lamps')}
+        swipeHref={localizedPath(locale, 'tinder-slides')}
+        icons={{ heart, cart }}
+      />
+    </div>
+  </main>
+</Base>

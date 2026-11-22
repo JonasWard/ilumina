@@ -1,0 +1,55 @@
+---
+import logo from '../../assets/icons/logo_ilumina.svg?url';
+import heart from '../../assets/icons/heart.svg?url';
+import customize from '../../assets/icons/customize.svg?url';
+import LanguageSelect from './LanguageSelect.astro';
+import { localizedPath, useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  /** Path of the current page below the locale; its nav link renders as the current item. */
+  path?: string;
+}
+
+const { locale, path = '' } = Astro.props;
+const t = useTranslations(locale);
+const links = [
+  { href: 'tinder-slides', text: 'to-lamp-swiping', icon: customize },
+  { href: 'favorites', text: 'to-favorites', icon: heart }
+];
+---
+
+<div
+  class="fixed inset-x-0 top-0 z-10 pt-[env(safe-area-inset-top)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] bg-white/80 backdrop-blur-md"
+>
+  <div class="max-w-[1200px] mx-auto px-3 py-1 flex flex-row items-center justify-between gap-2">
+    <a href={localizedPath(locale)} aria-label={t('back-to-home')} class="flex items-center min-h-11 shrink-0">
+      <img src={logo} alt="ilumina" class="h-6 w-auto" />
+    </a>
+    <span class="flex flex-row items-center gap-1">
+      {
+        links.map((link) =>
+          link.href === path ? (
+            <span
+              aria-current="page"
+              aria-label={t(link.text)}
+              role="img"
+              class="grid place-items-center size-11 shrink-0 rounded-full bg-black/10"
+            >
+              <img src={link.icon} alt="" class="size-6" />
+            </span>
+          ) : (
+            <a
+              href={localizedPath(locale, link.href)}
+              aria-label={t(link.text)}
+              class="grid place-items-center size-11 shrink-0 rounded-full"
+            >
+              <img src={link.icon} alt="" class="size-6" />
+            </a>
+          )
+        )
+      }
+      <LanguageSelect locale={locale} path={path} />
+    </span>
+  </div>
+</div>

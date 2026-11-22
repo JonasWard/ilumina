@@ -1,0 +1,65 @@
+---
+import Base from '../../../layouts/Base.astro';
+import Nav from '../../../components/Nav.astro';
+import Picture from '../../../components/Picture.astro';
+import { LAMP_SIZES, LAMP_WIDTHS, lampPicture } from '../../../images/lampPicture';
+import { DetailActions } from '../../../islands/DetailActions';
+import { Lamps } from '../../../lib/lamps';
+import heart from '../../../../assets/icons/heart.svg?url';
+import brokenHeart from '../../../../assets/icons/heart_broken.svg?url';
+import cart from '../../../../assets/icons/shopping_cart.svg?url';
+import { LOCALES, localizedPath, useTranslations, type Locale } from '../../../i18n';
+
+export const getStaticPaths = () =>
+  LOCALES.flatMap((locale) => Lamps.map((_, i) => ({ params: { locale, lampIndex: String(i) } })));
+
+const locale = Astro.params.locale as Locale;
+const index = Number(Astro.params.lampIndex);
+const t = useTranslations(locale);
+const path = `lamps/${index}`;
+const picture = await lampPicture(Lamps[index], { widths: LAMP_WIDTHS, sizes: LAMP_SIZES.detail });
+---
+
+<Base locale={locale} path={path} titleKey="name">
+  <Nav locale={locale} path={path} />
+  <main
+    class="flex flex-col flex-1 items-center w-full max-w-[1200px] mx-auto px-4 pt-[calc(env(safe-area-inset-top)+3.5rem)] pb-[calc(env(safe-area-inset-bottom)+6rem)] md:pb-8"
+  >
+    <div class="w-full">
+      <button
+        type="button"
+        data-back={localizedPath(locale, 'favorites')}
+        class="flex items-center gap-1 min-h-11 m-0 mb-2 px-2 bg-transparent shadow-none font-semibold"
+      >
+        <span aria-hidden="true">←</span>
+        {t('back')}
+      </button>
+      <div class="flex md:flex-row flex-col items-center rounded-2xl overflow-clip shadow-xl mx-auto gap-4">
+        <Picture
+          picture={picture}
+          alt={t('lamp-alt', { number: index + 1 })}
+          fetchpriority="high"
+          class="md:h-[50vh] w-full md:w-[50%] h-[50vh] object-cover"
+        />
+        <div class="my-auto px-4 flex flex-col items-start justify-between w-full gap-4 shadow-none">
+          <h3 class="text-2xl font-bold">{t('name')}</h3>
+          <p class="m-0 text-left">{t('description')}</p>
+          <DetailActions
+            client:visible
+            index={index}
+            labels={{ dislike: t('dislike'), like: t('like'), buy: t('buy') }}
+            icons={{ heart, brokenHeart, cart }}
+          />
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script is:inline>
+    // Go back when the visitor came from another page of this site; otherwise open favorites.
+    document.querySelector('[data-back]').addEventListener('click', (event) => {
+      const cameFromSite = document.referrer.startsWith(location.origin) && history.length > 1;
+      cameFromSite ? history.back() : (location.href = event.currentTarget.dataset.back);
+    });
+  </script>
+</Base>

@@ -1,0 +1,20 @@
+---
+// GitHub Pages serves this for every unknown URL. It forwards to the localized 404 page,
+// keeping the locale from the URL when there is one, like the Next.js site did.
+import '../styles/global.css';
+import { localeRedirectScript } from '../i18n/detect';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="robots" content="noindex" />
+    <title>ilumina</title>
+    <script is:inline set:html={localeRedirectScript(import.meta.env.BASE_URL, '404/', true)} />
+  </head>
+  <body>
+    <noscript><a href={`${import.meta.env.BASE_URL}en/404/`} class="underline">404</a></noscript>
+  </body>
+</html>

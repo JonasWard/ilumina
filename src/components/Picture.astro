@@ -1,0 +1,27 @@
+---
+import type { LampPicture } from '../images/lampPicture';
+
+interface Props {
+  picture: LampPicture;
+  alt: string;
+  class?: string;
+  loading?: 'lazy' | 'eager';
+  fetchpriority?: 'high' | 'low' | 'auto';
+}
+
+const { picture, alt, class: className, loading, fetchpriority } = Astro.props;
+---
+
+<picture class="contents [&>source]:hidden">
+  {picture.sources.map((source) => <source type={source.type} srcset={source.srcset} sizes={picture.sizes} />)}
+  <img
+    src={picture.src}
+    alt={alt}
+    width={picture.width}
+    height={picture.height}
+    loading={loading}
+    fetchpriority={fetchpriority}
+    decoding="async"
+    class={className}
+  />
+</picture>
